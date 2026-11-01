@@ -10,21 +10,21 @@
 
 # the former calculation: the BLUE and its factors from os_moments() at the scenario's ranks
 old_path <- function(n, sc) {
-  mo <- osmoments::os_moments(n, scenario_ranks(n, sc))
-  bw <- fivenumMeta:::.blue_weights(mo$alpha, mo$B)
+  mo <- orderStatMoments::os_moments(n, scenario_ranks(n, sc))
+  bw <- meta5number:::.blue_weights(mo$alpha, mo$B)
   c(c_mu = sqrt(drop(bw$w_mu %*% mo$B %*% bw$w_mu)),
     c_sigma = sqrt(drop(bw$w_sig %*% mo$B %*% bw$w_sig)))
 }
 
 test_that("at n = 4Q + 1 (and 20m + 1) under type 7 the factors are those of the former calculation", {
-  skip_on_cran()                                         # 39 sample sizes x 3 scenarios
-  # the 39-point grid of the companion paper: every n = 4Q + 1 from 5 to 101 and 14 larger ones
+  skip_on_cran()                                         # 40 sample sizes x 3 scenarios
+  # the 40-point grid of the companion paper: every n = 4Q + 1 from 5 to 101 and 15 larger ones
   grid <- c(seq(5L, 101L, by = 4L), 121L, 141L, 161L, 181L, 201L, 253L, 301L, 353L, 401L,
-            501L, 601L, 701L, 801L, 1001L)
-  expect_length(grid, 39L)
+            501L, 601L, 701L, 801L, 901L, 1001L)
+  expect_length(grid, 40L)
   for (sc in c("S1", "S2", "S3")) for (n in grid) {
     o <- old_path(n, sc)
-    mo <- fivenumMeta:::.reported_moments(n, sc, 7)
+    mo <- meta5number:::.reported_moments(n, sc, 7)
     expect_identical(mo$ranks, scenario_ranks(n, sc))
     expect_lt(abs(c_mu(n, sc) - o[["c_mu"]]), 1e-10)
     expect_lt(abs(c_sigma(n, sc) - o[["c_sigma"]]), 1e-10)
@@ -39,7 +39,7 @@ test_that("at n = 4Q + 1 (and 20m + 1) under type 7 the factors are those of the
 test_that("under S1 at n = 40, 38 and 15 the BLUE and its SEs equal an independent calculation", {
   # reference values from a separate calculation written for the companion paper: the BLUE
   # from (min, median, max) by generalized least squares on the three statistics, the median
-  # at even n the average of the two middle order statistics, computed with osmoments
+  # at even n the average of the two middle order statistics, computed with orderStatMoments
   # directly and not through this package; the data are the vitamin D studies of Nnoaham
   # and Clarke (2008)
   ref <- data.frame(
@@ -68,7 +68,7 @@ test_that("a simulation at n = 40 under S2 (interpolated quartiles, type 7) agre
   x <- matrix(rnorm(R * n), R, n)
   x <- t(apply(x, 1, sort))
   # the type-7 quartiles of each sample, from the weights of the reported values
-  des <- fivenumMeta:::.reported_design(n, "S2", 7)
+  des <- meta5number:::.reported_design(n, "S2", 7)
   Y <- x[, des$ranks] %*% des$W
   w_mu <- estimator_weights(n, "S2", "mean", "blue"); w_sd <- estimator_weights(n, "S2", "sd", "blue")
   # the same quartiles as stats::quantile(), type 7, on the first sample
@@ -88,7 +88,7 @@ test_that("the quantile definition is checked, and a rounding residue of the wei
   expect_true(bad(se_imputed(c(q1 = 10, med = 12, q3 = 15), 40L, "S2", type = "7")))
   # under type 8 at n = 41, os_quantile_weights() gives the median a weight of order 1e-15
   # on rank 20 beside 1 on rank 21; the design drops it
-  des <- fivenumMeta:::.reported_design(41L, "S2", 8)
+  des <- meta5number:::.reported_design(41L, "S2", 8)
   expect_false(20L %in% des$ranks)
   expect_lt(max(abs(colSums(des$W) - 1)), 1e-12)
   # every definition gives a factor, and they differ at an n not of the form 4Q + 1

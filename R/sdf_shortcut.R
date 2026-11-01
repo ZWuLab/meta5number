@@ -49,21 +49,21 @@
 #' @details
 #' Fitted forms and accuracy (relative error against the exact factor), BLUE:
 #' \itemize{
-#' \item S1: \eqn{1.2533/\sqrt{n + 2.006\log n - 0.810}}; error \eqn{\le 0.34\%}
-#'   on the grid and \eqn{\le 0.08\%} at \eqn{n = 2001, 5001, 10001}.
-#' \item S2: \eqn{1.0780/\sqrt{n + 0.142}}; error \eqn{\le 0.046\%} on the grid
-#'   and \eqn{\le 0.003\%} beyond.
-#' \item S3: \eqn{1.0780/\sqrt{n + 0.838\log n - 0.576}}; error
-#'   \eqn{\le 0.33\%} on the grid and \eqn{\le 0.09\%} beyond.
+#' \item S1: \eqn{1.2533/\sqrt{n + 2.00\log n - 0.80}}; error \eqn{\le 0.35\%}
+#'   on the grid and \eqn{\le 0.078\%} at \eqn{n = 2001, 5001, 10001}.
+#' \item S2: \eqn{1.0780/\sqrt{n + 0.14}}; error \eqn{\le 0.065\%}
+#'   on the grid and \eqn{\le 0.002\%} at \eqn{n = 2001, 5001, 10001}.
+#' \item S3: \eqn{1.0780/\sqrt{n + 0.84\log n - 0.58}}; error \eqn{\le 0.34\%}
+#'   on the grid and \eqn{\le 0.081\%} at \eqn{n = 2001, 5001, 10001}.
 #' }
 #' Shortcut version (Luo's shortcut mean):
 #' \itemize{
-#' \item S1: \eqn{1.2533/\sqrt{n + 2.006\log n - 0.811}}; error \eqn{\le 0.34\%}
-#'   on the grid and \eqn{\le 0.06\%} beyond.
-#' \item S2: \eqn{1.0780/\sqrt{n + 0.142}}; error \eqn{\le 0.046\%} on the grid
-#'   and \eqn{\le 0.003\%} beyond.
-#' \item S3: \eqn{1.0780/\sqrt{n + 0.835\log n - 0.572}}; error
-#'   \eqn{\le 0.34\%} on the grid and \eqn{\le 0.08\%} beyond.
+#' \item S1: \eqn{1.2533/\sqrt{n + 2.00\log n - 0.80}}; error \eqn{\le 0.35\%}
+#'   on the grid and \eqn{\le 0.058\%} at \eqn{n = 2001, 5001, 10001}.
+#' \item S2: \eqn{1.0780/\sqrt{n + 0.14}}; error \eqn{\le 0.065\%}
+#'   on the grid and \eqn{\le 0.002\%} at \eqn{n = 2001, 5001, 10001}.
+#' \item S3: \eqn{1.0780/\sqrt{n + 0.83\log n - 0.56}}; error \eqn{\le 0.34\%}
+#'   on the grid and \eqn{\le 0.081\%} at \eqn{n = 2001, 5001, 10001}.
 #' }
 #' Assumptions: iid normal data. The errors are measured on the grid of
 #' \eqn{n = 4Q+1}, where the quartiles are single order statistics (type 7), and
@@ -86,13 +86,13 @@ c_mu_shortcut <- function(n, scenario = c("S3", "S1", "S2"), version = c("blue",
   # no extreme is reported), c2 is the additive constant.
   co <- switch(version,
     blue = switch(scenario,
-      S1 = c(A = 1.2533, c1 = 2.006, c2 = -0.810),
-      S2 = c(A = 1.0780, c1 = 0,     c2 = 0.142),
-      S3 = c(A = 1.0780, c1 = 0.838, c2 = -0.576)),
+      S1 = c(A = 1.2533, c1 = 2.00, c2 = -0.80),
+      S2 = c(A = 1.0780, c1 = 0,     c2 = 0.14),
+      S3 = c(A = 1.0780, c1 = 0.84, c2 = -0.58)),
     wan_luo_shi = switch(scenario,
-      S1 = c(A = 1.2533, c1 = 2.006, c2 = -0.811),
-      S2 = c(A = 1.0780, c1 = 0,     c2 = 0.142),
-      S3 = c(A = 1.0780, c1 = 0.835, c2 = -0.572)))
+      S1 = c(A = 1.2533, c1 = 2.00, c2 = -0.80),
+      S2 = c(A = 1.0780, c1 = 0,     c2 = 0.14),
+      S3 = c(A = 1.0780, c1 = 0.83, c2 = -0.56)))
   if (any(n < 5))
     warning("c_mu_shortcut() was fitted on n >= 5; extrapolating below.")
   as.numeric(co["A"] / sqrt(n + co["c1"] * log(n) + co["c2"]))
@@ -112,9 +112,10 @@ c_mu_shortcut <- function(n, scenario = c("S3", "S1", "S2"), version = c("blue",
 #' \code{version = "blue"} (the default) for the factor of the BLUE of
 #' \eqn{\sigma}, and \code{version = "wan_luo_shi"} for the factor of the SD
 #' estimators of Wan (under S1 and S2) and Shi (under S3). Both are fitted by
-#' minimax relative error over the paper's 39-point grid of \eqn{n = 4Q+1}
-#' (every such \eqn{n} from 5 to 101 and 14 larger ones up to 1001), with the
-#' constants exactly as the paper prints them.
+#' minimax relative error over the paper's 40-point grid of \eqn{n = 4Q+1}
+#' (every such \eqn{n} from 5 to 101 and 15 larger ones up to 1001), with the
+#' constants exactly as the paper prints them: the anchors to four decimals, the
+#' fitted constants to two.
 #'
 #' @param n Integer sample size(s); vectorized. Applied at any \eqn{n}, as the
 #'   source papers apply their formulas. No upper bound on \eqn{n} is checked;
@@ -126,22 +127,24 @@ c_mu_shortcut <- function(n, scenario = c("S3", "S1", "S2"), version = c("blue",
 #' Accuracy is the relative error of the printed constants against the exact
 #' factor, on the grid and at \eqn{n = 2001, 5001, 10001} beyond it. BLUE:
 #' \itemize{
-#' \item S1: \eqn{0.8278/(\log n + 0.330)^{1.2041}}; error \eqn{\le 0.37\%} on
-#'   the grid, and \eqn{-0.8\%}, \eqn{-1.4\%}, \eqn{-1.9\%} at
+#' \item S1: \eqn{0.84/(\log n + 0.35)^{1.21}}; error \eqn{\le 0.39\%} on
+#'   the grid, and \eqn{-0.8\%}, \eqn{-1.5\%}, \eqn{-2.1\%} at
 #'   \eqn{n = 2001, 5001, 10001}: this formula has no limit to hold it, and its
 #'   error grows slowly beyond the grid.
-#' \item S2: \eqn{1.1664/\sqrt{n - 0.863}}; error \eqn{\le 0.13\%} on the grid
+#' \item S2: \eqn{1.1664/\sqrt{n - 0.87}}; error \eqn{\le 0.16\%} on the grid
 #'   and \eqn{\le 0.003\%} beyond.
-#' \item S3: \eqn{1.1664/\sqrt{n + 5.267(\log n)^2 - 10.364\log n + 8.327}};
-#'   error \eqn{\le 0.42\%} on the grid and \eqn{\le 0.32\%} beyond.
+#' \item S3: \eqn{1.1664/\sqrt{n + 5.26(\log n)^2 - 10.33\log n + 8.29}};
+#'   error \eqn{\le 0.43\%} on the grid and \eqn{\le 0.33\%} beyond.
 #' }
 #' Shortcut version:
 #' \itemize{
-#' \item S1: \eqn{0.8705/(\log n + 0.418)^{1.2199}}; error \eqn{\le 0.37\%} on
-#'   the grid, and \eqn{-0.8\%}, \eqn{-1.5\%}, \eqn{-2.0\%} beyond.
-#' \item S2: \eqn{1.1664/\sqrt{n - 0.845}}; error \eqn{\le 0.099\%} on the grid
-#'   and \eqn{\le 0.002\%} beyond.
-#' \item S3: \eqn{1.1664/\sqrt{n + 5.191(\log n)^2 - 10.204\log n + 8.525}};
+#' \item S1: \eqn{0.87/(\log n + 0.42)^{1.22}}; error \eqn{\le 0.50\%} on
+#'   the grid, and \eqn{-0.9\%}, \eqn{-1.6\%}, \eqn{-2.1\%} at
+#'   \eqn{n = 2001, 5001, 10001}: this formula has no limit to hold it, and its
+#'   error grows slowly beyond the grid.
+#' \item S2: \eqn{1.1664/\sqrt{n - 0.84}}; error \eqn{\le 0.12\%} on the grid
+#'   and \eqn{\le 0.001\%} beyond.
+#' \item S3: \eqn{1.1664/\sqrt{n + 5.19(\log n)^2 - 10.20\log n + 8.52}};
 #'   error \eqn{\le 0.44\%} on the grid and \eqn{\le 0.27\%} beyond.
 #' }
 #' Assumptions: iid normal data. The errors are measured on the grid of
@@ -163,13 +166,13 @@ c_sigma_shortcut <- function(n, scenario = c("S3", "S1", "S2"), version = c("blu
   # reported). S1: the log-power form c1 / (log n + c2)^c3.
   co <- switch(version,
     blue = switch(scenario,
-      S1 = c(c1 = 0.8278, c2 = 0.330, c3 = 1.2041),
-      S2 = c(A = 1.1664, c1 = 0,     c2 = 0,       c3 = -0.863),
-      S3 = c(A = 1.1664, c1 = 5.267, c2 = -10.364, c3 = 8.327)),
+      S1 = c(c1 = 0.84, c2 = 0.35, c3 = 1.21),
+      S2 = c(A = 1.1664, c1 = 0,     c2 = 0,       c3 = -0.87),
+      S3 = c(A = 1.1664, c1 = 5.26, c2 = -10.33, c3 = 8.29)),
     wan_luo_shi = switch(scenario,
-      S1 = c(c1 = 0.8705, c2 = 0.418, c3 = 1.2199),
-      S2 = c(A = 1.1664, c1 = 0,     c2 = 0,       c3 = -0.845),
-      S3 = c(A = 1.1664, c1 = 5.191, c2 = -10.204, c3 = 8.525)))
+      S1 = c(c1 = 0.87, c2 = 0.42, c3 = 1.22),
+      S2 = c(A = 1.1664, c1 = 0,     c2 = 0,       c3 = -0.84),
+      S3 = c(A = 1.1664, c1 = 5.19, c2 = -10.20, c3 = 8.52)))
   if (any(n < 5))
     warning("c_sigma_shortcut() was fitted on n >= 5; extrapolating below.")
   L <- log(n)

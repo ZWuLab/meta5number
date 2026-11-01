@@ -3,7 +3,7 @@
 # Purpose: se_imputed(): both versions, both standard errors, exact at every n, and
 #          the input checks. Block 12 of the former test script R/se_imputed_test.R
 #          of the research repository (commit db76e19), assertions and tolerances
-#          unchanged, with the moments from osmoments::os_moments().
+#          unchanged, with the moments from orderStatMoments::os_moments().
 
 test_that("se_imputed() matches the published formulas (wan_luo_shi) and the BLUE weights (default), both SEs, exact at every n, and the input checks", {
   # (a) version = "wan_luo_shi": mu-hat, sigma-hat, the naive SE and both plug-in SEs
@@ -47,9 +47,9 @@ test_that("se_imputed() matches the published formulas (wan_luo_shi) and the BLU
     expect_lt(abs(r$c_n - cn), 1e-12); expect_lt(abs(r$c_sigma - cs), 1e-12)
     # (b) the BLUE, the default
     rb <- se_imputed(q5, nn, sc)
-    rm <- if (nn == 25L) { mo <- osmoments::os_moments(nn, scenario_ranks(nn, sc)); list(alpha = mo$alpha, B = mo$B) } else
-      fivenumMeta:::.reported_moments(nn, sc, 7)
-    bw <- fivenumMeta:::.blue_weights(rm$alpha, rm$B)
+    rm <- if (nn == 25L) { mo <- orderStatMoments::os_moments(nn, scenario_ranks(nn, sc)); list(alpha = mo$alpha, B = mo$B) } else
+      meta5number:::.reported_moments(nn, sc, 7)
+    bw <- meta5number:::.blue_weights(rm$alpha, rm$B)
     expect_identical(rb$version_used, "blue"); expect_true(isTRUE(rb$exact))
     expect_lt(max(abs(rb$w_mean - bw$w_mu)), 1e-12); expect_lt(max(abs(rb$w_sd - bw$w_sig)), 1e-12)
     expect_lt(abs(rb$mu_hat - sum(bw$w_mu * xq(sc))), 1e-12)
@@ -60,8 +60,8 @@ test_that("se_imputed() matches the published formulas (wan_luo_shi) and the BLU
   }
   # (c) S1 at an odd n not of the form 4Q+1 reports single order statistics: the BLUE
   #     equals the one at the ranks of scenario_ranks()
-  mo7 <- osmoments::os_moments(7L, scenario_ranks(7L, "S1"))
-  r7 <- se_imputed(q5, 7L, "S1"); bw7 <- fivenumMeta:::.blue_weights(mo7$alpha, mo7$B)
+  mo7 <- orderStatMoments::os_moments(7L, scenario_ranks(7L, "S1"))
+  r7 <- se_imputed(q5, 7L, "S1"); bw7 <- meta5number:::.blue_weights(mo7$alpha, mo7$B)
   expect_true(isTRUE(r7$exact)); expect_lt(max(abs(r7$w_mean - bw7$w_mu)), 1e-12)
   # (d) invalid inputs are rejected: unordered values, a missing entry, a factor
   #     (its level codes must not be taken as values), a wrong scenario, a

@@ -50,7 +50,7 @@ and S5 only \code{"blue"}.
   \eqn{(q_3-q_1)/\eta_B}. For S1/S2 Shi recommends Wan's estimators.}
 }}
 
-\item{moments}{Optional precomputed result of \code{osmoments::os_moments(n, ranks)}
+\item{moments}{Optional precomputed result of \code{orderStatMoments::os_moments(n, ranks)}
 for the standard normal, at this \code{n} and at the ranks that the reported
 values use (at \code{n = 4Q+1} under type 7 these are
 \code{scenario_ranks(n, scenario)}), or a list with its components

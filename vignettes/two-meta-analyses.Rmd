@@ -10,7 +10,7 @@ vignette: >
 ---
 
 ```{r setup}
-library(fivenumMeta)
+library(meta5number)
 has_mm <- requireNamespace("metamedian", quietly = TRUE)  # the SD case's data
 has_mf <- requireNamespace("metafor", quietly = TRUE)     # confirms the pooling
 ```
@@ -42,7 +42,7 @@ up <- function(f) 100 * (f["exact", "se"] / f["naive", "se"] - 1)
 
 This vignette assumes that the reader knows what `se_imputed_diff()` and `se_imputed_df()`
 return: each study's imputed mean and SD with their naive and exact standard errors, in the
-columns that `vignette("fivenumMeta")` describes. Start there if the columns, the scenarios or
+columns that `vignette("meta5number")` describes. Start there if the columns, the scenarios or
 the conventions are new.
 
 Wu, Shi and Tong (2026) illustrate the exact standard errors on two published meta-analyses,
@@ -70,7 +70,7 @@ Higgins and Thompson (2002).
 We run each meta-analysis twice: with the naive standard errors, which treat the imputed mean
 and SD as a sample mean and SD, and with the exact standard errors computed from the exact
 standard deviation factors, which this package takes from the moments of the normal order
-statistics of the `osmoments` package (Wu and Tong, 2026). That is, the two analyses share the
+statistics of the `orderStatMoments` package (Wu and Tong, 2026). That is, the two analyses share the
 $y_i$ and differ only in the $v_i$. The function `pool_imputed()` computes the four quantities
 above twice from the output of `se_imputed_diff()`, once with the naive and once with the
 exact standard errors, and prints the two fits side by side. Both cases call it.
@@ -262,5 +262,5 @@ Statistical Software 36(3), 1-48.
 Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard deviation from a
 five-number summary. Manuscript.
 
-Wu Z, Tong T (2026). osmoments: Exact means, variances and covariances of order statistics in
+Wu Z, Tong T (2026). orderStatMoments: Exact means, variances and covariances of order statistics in
 R. Manuscript.

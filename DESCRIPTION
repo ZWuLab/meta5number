@@ -1,8 +1,8 @@
-Package: fivenumMeta
+Package: meta5number
 Type: Package
 Title: Five-Number Summaries Based Estimation and Inference in Meta-Analysis
-Version: 0.1.0
-Date: 2026-10-17
+Version: 0.2.0
+Date: 2026-11-01
 Authors@R: c(
     person("Zheyang", "Wu", email = "zheyangwu@wpi.edu", role = c("aut", "cre"))
     )
@@ -20,23 +20,23 @@ Description: Tools for meta-analyses of studies that report a median with quarti
     errors, for practical meta-analysis. The methods are described by Wu, Shi
     and Tong (2026) in 'Precision of the imputed mean and standard deviation
     from a five-number summary' (manuscript). The moments of the normal order
-    statistics come from the 'osmoments' package, described by Wu and Tong
-    (2026) in 'osmoments: Exact Means, Variances and Covariances of Order
+    statistics come from the 'orderStatMoments' package, described by Wu and Tong
+    (2026) in 'orderStatMoments: Exact Means, Variances and Covariances of Order
     Statistics in R' (manuscript).
-URL: https://zwulab.github.io/fivenumMeta/, https://github.com/ZWuLab/fivenumMeta
-BugReports: https://github.com/ZWuLab/fivenumMeta/issues
+URL: https://zwulab.github.io/meta5number/, https://github.com/ZWuLab/meta5number
+BugReports: https://github.com/ZWuLab/meta5number/issues
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 3.5.0)
-Imports: osmoments,
+Imports: orderStatMoments,
     stats
 Suggests: knitr,
     metafor,
     metamedian,
     rmarkdown,
     testthat (>= 3.0.0)
-Remotes: ZWuLab/osmoments
+Remotes: ZWuLab/orderStatMoments
 VignetteBuilder: knitr
 RoxygenNote: 7.3.3
 Language: en-US

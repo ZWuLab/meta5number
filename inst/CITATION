@@ -1,7 +1,7 @@
 # The paper that the package accompanies: the factors, their limits, the shortcut formulas
-# and the checks of the computation. citation("fivenumMeta") prints this entry.
+# and the checks of the computation. citation("meta5number") prints this entry.
 
-citHeader("To cite fivenumMeta in publications use:")
+citHeader("To cite meta5number in publications use:")
 
 bibentry(
   bibtype = "Unpublished",

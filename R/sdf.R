@@ -3,7 +3,7 @@
 # Purpose: The standard deviation factors (SDFs) C_mu(n), C_sigma(n) and the inflation
 #          factors kappa_mu(n), kappa_sigma(n) of the mean and SD imputed from a
 #          five-number summary under normality, from the exact moments of the normal
-#          order statistics computed by osmoments::os_moments().
+#          order statistics computed by orderStatMoments::os_moments().
 #
 # EXPORTED FUNCTIONS:
 #   - imputed_moments()   Var/Cov of the imputed mean and SD for a scenario and method
@@ -55,7 +55,7 @@
 #'   \code{NA} to skip the SD part.
 #' @param w_mean,w_sd Optional numeric weight vectors overriding the presets
 #'   (length = number of reported values, in increasing order).
-#' @param moments Optional precomputed result of \code{osmoments::os_moments(n, ranks)}
+#' @param moments Optional precomputed result of \code{orderStatMoments::os_moments(n, ranks)}
 #'   for the standard normal, at this \code{n} and at the ranks that the reported
 #'   values use (at \code{n = 4Q+1} under type 7 these are
 #'   \code{scenario_ranks(n, scenario)}), or a list with its components
@@ -89,7 +89,7 @@
 #' \code{\link[stats]{quantile}} is a fixed linear combination
 #' \eqn{(1-h)X_{(j)} + hX_{(j+1)}} of two adjacent order statistics (Hyndman and
 #' Fan 1996). So \eqn{Y = W'X}, with \eqn{W} from
-#' \code{osmoments::os_quantile_weights()}, and the means and covariance matrix
+#' \code{orderStatMoments::os_quantile_weights()}, and the means and covariance matrix
 #' of the standardized \eqn{Y} are \eqn{\alpha_Y = W'\alpha} and
 #' \eqn{B_Y = W'BW}, exact at every \eqn{n}. At \eqn{n = 4Q+1} under type 7 the
 #' quartiles are the order statistics at ranks \eqn{Q+1, 2Q+1, 3Q+1}; at other

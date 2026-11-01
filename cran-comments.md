@@ -1,4 +1,4 @@
-# cran-comments for fivenumMeta 0.1.0
+# cran-comments for meta5number 0.2.0
 
 ## Test environment
 - R 4.3.2 on aarch64-apple-darwin20

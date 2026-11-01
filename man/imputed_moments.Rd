@@ -43,7 +43,7 @@ sec. 2 recommends Wan's SD for S1/S2). Ignored if \code{w_sd} given. Set to
 \item{w_mean, w_sd}{Optional numeric weight vectors overriding the presets
 (length = number of reported values, in increasing order).}
 
-\item{moments}{Optional precomputed result of \code{osmoments::os_moments(n, ranks)}
+\item{moments}{Optional precomputed result of \code{orderStatMoments::os_moments(n, ranks)}
 for the standard normal, at this \code{n} and at the ranks that the reported
 values use (at \code{n = 4Q+1} under type 7 these are
 \code{scenario_ranks(n, scenario)}), or a list with its components
@@ -91,7 +91,7 @@ sample quantile, which under every definition of
 \code{\link[stats]{quantile}} is a fixed linear combination
 \eqn{(1-h)X_{(j)} + hX_{(j+1)}} of two adjacent order statistics (Hyndman and
 Fan 1996). So \eqn{Y = W'X}, with \eqn{W} from
-\code{osmoments::os_quantile_weights()}, and the means and covariance matrix
+\code{orderStatMoments::os_quantile_weights()}, and the means and covariance matrix
 of the standardized \eqn{Y} are \eqn{\alpha_Y = W'\alpha} and
 \eqn{B_Y = W'BW}, exact at every \eqn{n}. At \eqn{n = 4Q+1} under type 7 the
 quartiles are the order statistics at ranks \eqn{Q+1, 2Q+1, 3Q+1}; at other

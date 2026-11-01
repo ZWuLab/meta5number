@@ -10,7 +10,7 @@
 test_that("the quadratic form w'Bw equals the entrywise (Luo-style) expansion", {
   # For an arbitrary asymmetric w, Var(w'X)/sigma^2 = w'Bw must equal the Luo-style
   # entrywise expansion sum_{r,s} w_r w_s E[Z_r Z_s] - (w'alpha)^2.
-  mo25 <- osmoments::os_moments(25, scenario_ranks(25, "S3"))
+  mo25 <- orderStatMoments::os_moments(25, scenario_ranks(25, "S3"))
   w <- c(0.10, 0.20, 0.30, 0.25, 0.15)
   im8 <- imputed_moments(25, "S3", w_mean = w, method_sd = NA, moments = mo25)
   M <- mo25$B + tcrossprod(mo25$alpha)
@@ -57,8 +57,8 @@ test_that("S4 and S5: the ranks, the BLUE factors, inflation_factors() and se_im
   expect_lt(abs(k2s[["kappa_sigma"]] / k2[["kappa_sigma"]] -
                 c_sigma(41L, "S2", method = "wan") / c_sigma(41L, "S2")), 1e-12)
   q7 <- c(min = 1, p10 = 6, q1 = 10, med = 12, q3 = 15, p90 = 20, max = 30)
-  r4 <- se_imputed(q7, 21L, "S4"); mo4 <- osmoments::os_moments(21L, scenario_ranks(21L, "S4"))
-  bw4 <- fivenumMeta:::.blue_weights(mo4$alpha, mo4$B); x4 <- as.numeric(q7[c("p10", "q1", "med", "q3", "p90")])
+  r4 <- se_imputed(q7, 21L, "S4"); mo4 <- orderStatMoments::os_moments(21L, scenario_ranks(21L, "S4"))
+  bw4 <- meta5number:::.blue_weights(mo4$alpha, mo4$B); x4 <- as.numeric(q7[c("p10", "q1", "med", "q3", "p90")])
   expect_true(isTRUE(r4$exact)); expect_identical(r4$version_used, "blue")
   expect_lt(abs(r4$mu_hat - sum(bw4$w_mu * x4)), 1e-12)
   expect_lt(abs(r4$sigma_hat - sum(bw4$w_sig * x4)), 1e-12)
@@ -73,14 +73,14 @@ test_that("S4 and S5: the ranks, the BLUE factors, inflation_factors() and se_im
 test_that(".b_s() and .var_s() agree with the gamma form at moderate n and stay in range at large n", {
   bS <- function(n) sqrt(2 / (n - 1)) * exp(lgamma(n / 2) - lgamma((n - 1) / 2))
   for (n in c(2, 3, 21, 100, 1001)) {
-    expect_lt(abs(fivenumMeta:::.b_s(n) - bS(n)), 1e-12)
-    expect_lt(abs(fivenumMeta:::.var_s(n) - (1 - bS(n)^2)), 1e-12)
+    expect_lt(abs(meta5number:::.b_s(n) - bS(n)), 1e-12)
+    expect_lt(abs(meta5number:::.var_s(n) - (1 - bS(n)^2)), 1e-12)
   }
-  expect_lt(abs(fivenumMeta:::.b_s(2) - sqrt(2 / pi)), 1e-15)
+  expect_lt(abs(meta5number:::.b_s(2) - sqrt(2 / pi)), 1e-15)
   # the lgamma difference gave b_S > 1 at n = 1e8; the beta form stays below 1 and Var(S) near 1/(2n)
   for (n in c(1e6, 1e8, 1e9)) {
-    expect_lt(fivenumMeta:::.b_s(n), 1)
-    expect_lt(abs(fivenumMeta:::.var_s(n) / (1 / (2 * n)) - 1), 1e-5)
+    expect_lt(meta5number:::.b_s(n), 1)
+    expect_lt(abs(meta5number:::.var_s(n) / (1 / (2 * n)) - 1), 1e-5)
   }
   expect_true(is.finite(inflation_factors(1001L, "S2")[["kappa_sigma"]]))
   # n outside the integer range, or infinite, is refused with a message, not a coercion warning

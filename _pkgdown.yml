@@ -1,4 +1,4 @@
-url: https://zwulab.github.io/fivenumMeta/
+url: https://zwulab.github.io/meta5number/
 template:
   bootstrap: 5
 reference:
@@ -34,4 +34,4 @@ reference:
   - vitd
 - title: Package
   contents:
-  - fivenumMeta-package
+  - meta5number-package

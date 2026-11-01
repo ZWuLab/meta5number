@@ -1,8 +1,8 @@
 # ==============================================================================
-# File: fivenumMeta-package.R
-# Purpose: Package-level documentation of fivenumMeta and the import from stats.
+# File: meta5number-package.R
+# Purpose: Package-level documentation of meta5number and the import from stats.
 
-#' fivenumMeta: Five-Number Summaries in Meta-Analysis, Imputed Means and SDs with Standard Errors
+#' meta5number: Five-Number Summaries in Meta-Analysis, Imputed Means and SDs with Standard Errors
 #'
 #' Meta-analyses often pool studies that report a median with quartiles or
 #' extremes rather than a mean and a standard deviation, and the established
@@ -14,7 +14,7 @@
 #' and the inflation factors \eqn{\kappa_\mu(n) = C_\mu(n)\sqrt{n}} and
 #' \eqn{\kappa_\sigma(n) = C_\sigma(n)/\sqrt{1 - b_S(n)^2}}, exactly, from the
 #' means and covariances of the normal order statistics that the package
-#' \pkg{osmoments} computes, at every sample size. The estimators covered are the
+#' \pkg{orderStatMoments} computes, at every sample size. The estimators covered are the
 #' best linear unbiased estimator (BLUE) of the reported values, the default, and
 #' the estimators of Wan, Luo and Shi, under the data-reporting scenarios
 #' \code{"S1"} (minimum, median, maximum), \code{"S2"} (the three quartiles),
@@ -48,10 +48,10 @@
 #' accompanies: the factors, their limits, the shortcut formulas and the checks
 #' of the computation.
 #'
-#' Wu Z (2026). osmoments: Exact Moments of Order Statistics. R package version
+#' Wu Z (2026). orderStatMoments: Exact Moments of Order Statistics. R package version
 #' 0.1.0. The engine that computes the moments of the normal order statistics.
 #'
-#' Wu Z, Tong T (2026). osmoments: Exact means, variances and covariances of
+#' Wu Z, Tong T (2026). orderStatMoments: Exact means, variances and covariances of
 #' order statistics in R. Manuscript. The paper of the engine.
 #'
 #' Wan X, Wang W, Liu J, Tong T (2014). Estimating the sample mean and standard

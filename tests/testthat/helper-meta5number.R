@@ -1,5 +1,5 @@
 # ==============================================================================
-# File: helper-fivenumMeta.R
+# File: helper-meta5number.R
 # Purpose: Helpers shared by the test files, from the former test script
 #          R/se_imputed_test.R of the research repository (commit db76e19).
 

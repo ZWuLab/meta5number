@@ -35,30 +35,33 @@ logarithmic \eqn{c_1/(\log n + c_2)^{c_3}}. Two constant sets are carried:
 \code{version = "blue"} (the default) for the factor of the BLUE of
 \eqn{\sigma}, and \code{version = "wan_luo_shi"} for the factor of the SD
 estimators of Wan (under S1 and S2) and Shi (under S3). Both are fitted by
-minimax relative error over the paper's 39-point grid of \eqn{n = 4Q+1}
-(every such \eqn{n} from 5 to 101 and 14 larger ones up to 1001), with the
-constants exactly as the paper prints them.
+minimax relative error over the paper's 40-point grid of \eqn{n = 4Q+1}
+(every such \eqn{n} from 5 to 101 and 15 larger ones up to 1001), with the
+constants exactly as the paper prints them: the anchors to four decimals, the
+fitted constants to two.
 }
 \details{
 Accuracy is the relative error of the printed constants against the exact
 factor, on the grid and at \eqn{n = 2001, 5001, 10001} beyond it. BLUE:
 \itemize{
-\item S1: \eqn{0.8278/(\log n + 0.330)^{1.2041}}; error \eqn{\le 0.37\%} on
-  the grid, and \eqn{-0.8\%}, \eqn{-1.4\%}, \eqn{-1.9\%} at
+\item S1: \eqn{0.84/(\log n + 0.35)^{1.21}}; error \eqn{\le 0.39\%} on
+  the grid, and \eqn{-0.8\%}, \eqn{-1.5\%}, \eqn{-2.1\%} at
   \eqn{n = 2001, 5001, 10001}: this formula has no limit to hold it, and its
   error grows slowly beyond the grid.
-\item S2: \eqn{1.1664/\sqrt{n - 0.863}}; error \eqn{\le 0.13\%} on the grid
+\item S2: \eqn{1.1664/\sqrt{n - 0.87}}; error \eqn{\le 0.16\%} on the grid
   and \eqn{\le 0.003\%} beyond.
-\item S3: \eqn{1.1664/\sqrt{n + 5.267(\log n)^2 - 10.364\log n + 8.327}};
-  error \eqn{\le 0.42\%} on the grid and \eqn{\le 0.32\%} beyond.
+\item S3: \eqn{1.1664/\sqrt{n + 5.26(\log n)^2 - 10.33\log n + 8.29}};
+  error \eqn{\le 0.43\%} on the grid and \eqn{\le 0.33\%} beyond.
 }
 Shortcut version:
 \itemize{
-\item S1: \eqn{0.8705/(\log n + 0.418)^{1.2199}}; error \eqn{\le 0.37\%} on
-  the grid, and \eqn{-0.8\%}, \eqn{-1.5\%}, \eqn{-2.0\%} beyond.
-\item S2: \eqn{1.1664/\sqrt{n - 0.845}}; error \eqn{\le 0.099\%} on the grid
-  and \eqn{\le 0.002\%} beyond.
-\item S3: \eqn{1.1664/\sqrt{n + 5.191(\log n)^2 - 10.204\log n + 8.525}};
+\item S1: \eqn{0.87/(\log n + 0.42)^{1.22}}; error \eqn{\le 0.50\%} on
+  the grid, and \eqn{-0.9\%}, \eqn{-1.6\%}, \eqn{-2.1\%} at
+  \eqn{n = 2001, 5001, 10001}: this formula has no limit to hold it, and its
+  error grows slowly beyond the grid.
+\item S2: \eqn{1.1664/\sqrt{n - 0.84}}; error \eqn{\le 0.12\%} on the grid
+  and \eqn{\le 0.001\%} beyond.
+\item S3: \eqn{1.1664/\sqrt{n + 5.19(\log n)^2 - 10.20\log n + 8.52}};
   error \eqn{\le 0.44\%} on the grid and \eqn{\le 0.27\%} beyond.
 }
 Assumptions: iid normal data. The errors are measured on the grid of

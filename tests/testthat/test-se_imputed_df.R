@@ -231,7 +231,7 @@ test_that("a reported SD of zero and a constant summary get NA with their reason
 
 test_that("a mean_range row uses the two extremes alone: one SD under every quantile type, even and odd n, against the extremes' moments", {
   for (n in c(10L, 11L, 16L, 35L)) for (v in c("blue", "wan_luo_shi")) {
-    mo <- osmoments::os_moments(n, c(1L, n))
+    mo <- orderStatMoments::os_moments(n, c(1L, n))
     div <- unname(if (v == "blue") mo$alpha[2] - mo$alpha[1] else 2 * qnorm((n - 0.375) / (n + 0.25)))
     sd_range <- sqrt(mo$B[1, 1] + mo$B[2, 2] - 2 * mo$B[1, 2])
     x <- data.frame(n = n, min = 1, max = 9, mean = 5)

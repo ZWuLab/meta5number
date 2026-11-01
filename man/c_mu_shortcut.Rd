@@ -50,21 +50,21 @@ exact factor at every \eqn{n}, and \code{\link{se_imputed}} uses it.
 \details{
 Fitted forms and accuracy (relative error against the exact factor), BLUE:
 \itemize{
-\item S1: \eqn{1.2533/\sqrt{n + 2.006\log n - 0.810}}; error \eqn{\le 0.34\%}
-  on the grid and \eqn{\le 0.08\%} at \eqn{n = 2001, 5001, 10001}.
-\item S2: \eqn{1.0780/\sqrt{n + 0.142}}; error \eqn{\le 0.046\%} on the grid
-  and \eqn{\le 0.003\%} beyond.
-\item S3: \eqn{1.0780/\sqrt{n + 0.838\log n - 0.576}}; error
-  \eqn{\le 0.33\%} on the grid and \eqn{\le 0.09\%} beyond.
+\item S1: \eqn{1.2533/\sqrt{n + 2.00\log n - 0.80}}; error \eqn{\le 0.35\%}
+  on the grid and \eqn{\le 0.078\%} at \eqn{n = 2001, 5001, 10001}.
+\item S2: \eqn{1.0780/\sqrt{n + 0.14}}; error \eqn{\le 0.065\%}
+  on the grid and \eqn{\le 0.002\%} at \eqn{n = 2001, 5001, 10001}.
+\item S3: \eqn{1.0780/\sqrt{n + 0.84\log n - 0.58}}; error \eqn{\le 0.34\%}
+  on the grid and \eqn{\le 0.081\%} at \eqn{n = 2001, 5001, 10001}.
 }
 Shortcut version (Luo's shortcut mean):
 \itemize{
-\item S1: \eqn{1.2533/\sqrt{n + 2.006\log n - 0.811}}; error \eqn{\le 0.34\%}
-  on the grid and \eqn{\le 0.06\%} beyond.
-\item S2: \eqn{1.0780/\sqrt{n + 0.142}}; error \eqn{\le 0.046\%} on the grid
-  and \eqn{\le 0.003\%} beyond.
-\item S3: \eqn{1.0780/\sqrt{n + 0.835\log n - 0.572}}; error
-  \eqn{\le 0.34\%} on the grid and \eqn{\le 0.08\%} beyond.
+\item S1: \eqn{1.2533/\sqrt{n + 2.00\log n - 0.80}}; error \eqn{\le 0.35\%}
+  on the grid and \eqn{\le 0.058\%} at \eqn{n = 2001, 5001, 10001}.
+\item S2: \eqn{1.0780/\sqrt{n + 0.14}}; error \eqn{\le 0.065\%}
+  on the grid and \eqn{\le 0.002\%} at \eqn{n = 2001, 5001, 10001}.
+\item S3: \eqn{1.0780/\sqrt{n + 0.83\log n - 0.56}}; error \eqn{\le 0.34\%}
+  on the grid and \eqn{\le 0.081\%} at \eqn{n = 2001, 5001, 10001}.
 }
 Assumptions: iid normal data. The errors are measured on the grid of
 \eqn{n = 4Q+1}, where the quartiles are single order statistics (type 7), and

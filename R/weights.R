@@ -177,7 +177,7 @@ scenario_ranks <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5")) {
 #' Under scenario `scenario` at sample size `n`, each reported value is an order
 #' statistic (the minimum, the maximum) or a sample quantile under definition
 #' `type`, which is a fixed linear combination (1 - h) X_(j) + h X_(j+1) of two
-#' adjacent order statistics (osmoments::os_quantile_weights()). Returns the
+#' adjacent order statistics (orderStatMoments::os_quantile_weights()). Returns the
 #' ranks that carry a weight and the matrix W with one column per reported value,
 #' so that the reported vector is Y = W' X_(ranks). A weight below 1e-12 in
 #' absolute value is a rounding residue of the quantile arithmetic and is set to
@@ -193,7 +193,7 @@ scenario_ranks <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5")) {
   p <- switch(scenario, S1 = 0.5, S2 = c(0.25, 0.5, 0.75), S3 = c(0.25, 0.5, 0.75),
               S4 = c(0.1, 0.25, 0.5, 0.75, 0.9), S5 = c(0.1, 0.25, 0.5, 0.75, 0.9))
   extremes <- scenario %in% c("S1", "S3", "S5")
-  qw <- osmoments::os_quantile_weights(p, n, type)
+  qw <- orderStatMoments::os_quantile_weights(p, n, type)
   Wq <- qw$W
   Wq[abs(Wq) < 1e-12] <- 0                              # rounding residues of (j, h)
   Wq <- sweep(Wq, 2, colSums(Wq), "/")                  # each quantile's weights sum to one again
@@ -208,8 +208,8 @@ scenario_ranks <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5")) {
 #' Means and covariance matrix of the reported values, in standard normal units
 #'
 #' alpha_Y = W' alpha and B_Y = W' B W, from the exact moments of the normal order
-#' statistics at the ranks of .reported_design() (osmoments::os_moments()), by the
-#' formulas of osmoments::os_lin_moments(). `moments`, when given, must be os_moments() at those
+#' statistics at the ranks of .reported_design() (orderStatMoments::os_moments()), by the
+#' formulas of orderStatMoments::os_lin_moments(). `moments`, when given, must be os_moments() at those
 #' ranks and at this n (.check_moments()); when NULL, the engine's moments come from the session's
 #' cache (.os_moments_cached()). At n = 4Q + 1 under type 7 the ranks are those of
 #' scenario_ranks(), and W is the identity, so alpha_Y and B_Y are alpha and B. The component
@@ -220,7 +220,7 @@ scenario_ranks <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5")) {
   des <- .reported_design(n, scenario, type)
   if (is.null(moments)) moments <- .os_moments_cached(n, des$ranks)
   else .check_moments(moments, n, des$ranks, scenario, type)
-  # W' alpha and W' B W, the formulas of osmoments::os_lin_moments(), taken here from the
+  # W' alpha and W' B W, the formulas of orderStatMoments::os_lin_moments(), taken here from the
   # components alpha and B so that a list carrying only those (and ranks) is accepted too
   a <- drop(crossprod(des$W, moments$alpha))
   B <- unname(crossprod(des$W, moments$B %*% des$W))
@@ -235,7 +235,7 @@ scenario_ranks <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5")) {
 
 #' Check a user-supplied `moments` object against the design
 #'
-#' `moments` is osmoments::os_moments() for the standard normal at sample size `n` and
+#' `moments` is orderStatMoments::os_moments() for the standard normal at sample size `n` and
 #' `ranks`, or a list with the components alpha and B alone (the former interface), which
 #' can be checked only for its size. Every component the object carries is compared with
 #' what the design needs: the ranks, the sample size, the distribution, the location and
@@ -246,13 +246,13 @@ scenario_ranks <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5")) {
   k <- length(ranks)
   where <- paste0(" (n = ", n, ", ", scenario, ", type ", type, ")")
   if (!is.list(moments) || is.null(moments$alpha) || is.null(moments$B))
-    stop("'moments' must be osmoments::os_moments() at the ranks ", paste(ranks, collapse = ", "),
+    stop("'moments' must be orderStatMoments::os_moments() at the ranks ", paste(ranks, collapse = ", "),
          where, ", or a list with its components alpha and B")
   # a list without ranks (alpha and B alone, as the former interface took) must match in size
   given <- if (is.null(moments$ranks)) { if (length(moments$alpha) == k) ranks else -1L } else
     as.integer(moments$ranks)
   if (!identical(given, ranks))
-    stop("'moments' must be osmoments::os_moments() at the ranks ", paste(ranks, collapse = ", "), where)
+    stop("'moments' must be orderStatMoments::os_moments() at the ranks ", paste(ranks, collapse = ", "), where)
   # the same ranks at another n are a different set of order statistics
   if (!is.null(moments$n) && moments$n != n)
     stop("'moments' was computed at n = ", moments$n, ", not at n = ", n)
@@ -278,14 +278,14 @@ scenario_ranks <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5")) {
 .moments_cache <- new.env(parent = emptyenv())
 .moments_cache_max <- 200L
 
-#' osmoments::os_moments(n, ranks) for the standard normal, from the session's cache
+#' orderStatMoments::os_moments(n, ranks) for the standard normal, from the session's cache
 #' @keywords internal
 #' @noRd
 .os_moments_cached <- function(n, ranks) {
   key <- paste(n, paste(ranks, collapse = ","))
   mo <- .moments_cache[[key]]
   if (is.null(mo)) {
-    mo <- osmoments::os_moments(n, ranks)
+    mo <- orderStatMoments::os_moments(n, ranks)
     if (length(ls(.moments_cache)) >= .moments_cache_max)
       rm(list = ls(.moments_cache)[1L], envir = .moments_cache)
     assign(key, mo, envir = .moments_cache)

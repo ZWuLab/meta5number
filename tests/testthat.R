@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(fivenumMeta)
+library(meta5number)
 
-test_check("fivenumMeta")
+test_check("meta5number")
