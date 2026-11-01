@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   meta5number: meta5number.html
   two-meta-analyses: two-meta-analyses.html
-last_built: 2026-11-01T16:43Z
+last_built: 2026-11-01T16:46Z
 urls:
   reference: https://zwulab.github.io/meta5number/reference
   article: https://zwulab.github.io/meta5number/articles
