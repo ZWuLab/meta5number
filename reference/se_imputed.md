@@ -7,8 +7,8 @@ treats \\\hat\mu\\ as a sample mean, and the plug-in standard errors
 \\\mathrm{SE}(\hat\mu) = C\_\mu(n)\\\hat\sigma\\ and
 \\\mathrm{SE}(\hat\sigma) = C\_\sigma(n)\\\hat\sigma\\ built from the
 normal-model factors of
-[`c_mu`](https://zwulab.github.io/fivenumMeta/reference/c_mu.md) and
-[`c_sigma`](https://zwulab.github.io/fivenumMeta/reference/c_sigma.md).
+[`c_mu`](https://zwulab.github.io/meta5number/reference/c_mu.md) and
+[`c_sigma`](https://zwulab.github.io/meta5number/reference/c_sigma.md).
 The default estimator version is the BLUE (Lloyd's least-squares
 estimators from the reported values, the exact-optimal version of the
 Wan-Luo-Shi estimators); `version = "wan_luo_shi"` gives the estimators
@@ -84,10 +84,10 @@ components: `mu_hat`, `sigma_hat`, `se_naive` \\= \hat\sigma/\sqrt n\\,
 C\_\sigma(n)\hat\sigma\\, the factors `c_n` and `c_sigma` used, `exact`
 (TRUE: the factors are computed exactly, at every \\n\\), `version` and
 `version_used` (the same, kept for the columns of
-[`se_imputed_df`](https://zwulab.github.io/fivenumMeta/reference/se_imputed_df.md)),
+[`se_imputed_df`](https://zwulab.github.io/meta5number/reference/se_imputed_df.md)),
 plus `n`, `scenario`, `type` and the weights `w_mean`, `w_sd`, named by
 the reported values as
-[`estimator_weights`](https://zwulab.github.io/fivenumMeta/reference/estimator_weights.md)
+[`estimator_weights`](https://zwulab.github.io/meta5number/reference/estimator_weights.md)
 names them (`a` the minimum, `m` the median, `b` the maximum, `q1`,
 `q3`, `p10`, `p90`). The example shows how to pick the fields a
 meta-analysis needs.
@@ -100,14 +100,14 @@ statistics at ranks \\Q+1, 2Q+1, 3Q+1\\. At any other \\n\\, each
 reported sample quantile is a fixed linear combination of two adjacent
 order statistics, and the estimators and their factors are computed
 exactly from the means and covariance matrix of the reported values (see
-[`imputed_moments`](https://zwulab.github.io/fivenumMeta/reference/imputed_moments.md)).
+[`imputed_moments`](https://zwulab.github.io/meta5number/reference/imputed_moments.md)).
 At such \\n\\ the factors depend on the definition of the sample
 quantiles; the median of an even sample is the average of the two middle
 values under type 7 (and types 2, 5, 6, 8 and 9).
 
 The shortcut formulas for the factors
-([`c_mu_shortcut`](https://zwulab.github.io/fivenumMeta/reference/c_mu_shortcut.md),
-[`c_sigma_shortcut`](https://zwulab.github.io/fivenumMeta/reference/c_sigma_shortcut.md))
+([`c_mu_shortcut`](https://zwulab.github.io/meta5number/reference/c_mu_shortcut.md),
+[`c_sigma_shortcut`](https://zwulab.github.io/meta5number/reference/c_sigma_shortcut.md))
 are not used here. They serve a reader without this package and a
 comparison with the exact values.
 
@@ -118,7 +118,7 @@ A constant summary, all reported values equal, has an imputed SD of
 exactly zero (the SD weights sum to zero) and so standard errors of
 zero, which cannot enter inverse-variance weights. The function returns
 them with a warning;
-[`se_imputed_df`](https://zwulab.github.io/fivenumMeta/reference/se_imputed_df.md)
+[`se_imputed_df`](https://zwulab.github.io/meta5number/reference/se_imputed_df.md)
 sets such a row to `NA` instead.
 
 Assumptions: iid normal data. The standard errors are plug-in

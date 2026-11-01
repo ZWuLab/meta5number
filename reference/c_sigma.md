@@ -6,9 +6,9 @@ deviation of the imputed SD (a function of the unknown population
 \\\sigma\\); the plug-in standard error is \\\mathrm{SE}(\hat\sigma) =
 C\_\sigma(n)\\\hat\sigma\\. The factor is exact (numerical integration
 of the order-statistic moments), and
-[`c_sigma_shortcut`](https://zwulab.github.io/fivenumMeta/reference/c_sigma_shortcut.md)
+[`c_sigma_shortcut`](https://zwulab.github.io/meta5number/reference/c_sigma_shortcut.md)
 gives its approximation formula. This is the SD companion of
-[`c_mu`](https://zwulab.github.io/fivenumMeta/reference/c_mu.md).
+[`c_mu`](https://zwulab.github.io/meta5number/reference/c_mu.md).
 
 ## Usage
 
@@ -45,23 +45,23 @@ c_sigma(
 - method:
 
   SD estimator preset (see
-  [`estimator_weights`](https://zwulab.github.io/fivenumMeta/reference/estimator_weights.md)).
+  [`estimator_weights`](https://zwulab.github.io/meta5number/reference/estimator_weights.md)).
   The default `"blue"` is the BLUE of \\\sigma\\, the default estimator
   version of Wu, Shi and Tong (2026); `NULL` selects the SD estimator of
   Wan (S1 and S2) or Shi (S3).
 
 - moments:
 
-  Optional precomputed result of `osmoments::os_moments(n, ranks)` for
-  the standard normal, at this `n` and at the ranks that the reported
-  values use (at `n = 4Q+1` under type 7 these are
-  `scenario_ranks(n, scenario)`), or a list with its components `alpha`
-  and `B` alone. The sample size, the distribution, the ranks, the
-  location and scale and the shape of `alpha` and `B` are checked where
-  the object carries them; a bare list is checked for its size only. The
-  package keeps the moments it computes itself for the session, so
-  repeated calls at one sample size integrate once without this
-  argument.
+  Optional precomputed result of
+  `orderStatMoments::os_moments(n, ranks)` for the standard normal, at
+  this `n` and at the ranks that the reported values use (at `n = 4Q+1`
+  under type 7 these are `scenario_ranks(n, scenario)`), or a list with
+  its components `alpha` and `B` alone. The sample size, the
+  distribution, the ranks, the location and scale and the shape of
+  `alpha` and `B` are checked where the object carries them; a bare list
+  is checked for its size only. The package keeps the moments it
+  computes itself for the session, so repeated calls at one sample size
+  integrate once without this argument.
 
 - type:
 
@@ -76,7 +76,7 @@ Numeric scalar \\C\_\sigma(n)\\.
 ## Details
 
 Assumptions as in
-[`imputed_moments`](https://zwulab.github.io/fivenumMeta/reference/imputed_moments.md):
+[`imputed_moments`](https://zwulab.github.io/meta5number/reference/imputed_moments.md):
 iid normal data, the reported values following definition `type`. The
 value is `sqrt(imputed_moments(...)$var_sd)`.
 

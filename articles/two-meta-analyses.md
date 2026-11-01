@@ -2,7 +2,7 @@
 
 ``` r
 
-library(fivenumMeta)
+library(meta5number)
 has_mm <- requireNamespace("metamedian", quietly = TRUE)  # the SD case's data
 has_mf <- requireNamespace("metafor", quietly = TRUE)     # confirms the pooling
 ```
@@ -10,12 +10,12 @@ has_mf <- requireNamespace("metafor", quietly = TRUE)     # confirms the pooling
 ## What the two cases show
 
 This vignette assumes that the reader knows what
-[`se_imputed_diff()`](https://zwulab.github.io/fivenumMeta/reference/se_imputed_diff.md)
+[`se_imputed_diff()`](https://zwulab.github.io/meta5number/reference/se_imputed_diff.md)
 and
-[`se_imputed_df()`](https://zwulab.github.io/fivenumMeta/reference/se_imputed_df.md)
+[`se_imputed_df()`](https://zwulab.github.io/meta5number/reference/se_imputed_df.md)
 return: each study’s imputed mean and SD with their naive and exact
 standard errors, in the columns that
-[`vignette("fivenumMeta")`](https://zwulab.github.io/fivenumMeta/articles/fivenumMeta.md)
+[`vignette("meta5number")`](https://zwulab.github.io/meta5number/articles/meta5number.md)
 describes. Start there if the columns, the scenarios or the conventions
 are new.
 
@@ -46,12 +46,12 @@ We run each meta-analysis twice: with the naive standard errors, which
 treat the imputed mean and SD as a sample mean and SD, and with the
 exact standard errors computed from the exact standard deviation
 factors, which this package takes from the moments of the normal order
-statistics of the `osmoments` package (Wu and Tong, 2026). That is, the
-two analyses share the $`y_i`$ and differ only in the $`v_i`$. The
-function
-[`pool_imputed()`](https://zwulab.github.io/fivenumMeta/reference/pool_imputed.md)
+statistics of the `orderStatMoments` package (Wu and Tong, 2026). That
+is, the two analyses share the $`y_i`$ and differ only in the $`v_i`$.
+The function
+[`pool_imputed()`](https://zwulab.github.io/meta5number/reference/pool_imputed.md)
 computes the four quantities above twice from the output of
-[`se_imputed_diff()`](https://zwulab.github.io/fivenumMeta/reference/se_imputed_diff.md),
+[`se_imputed_diff()`](https://zwulab.github.io/meta5number/reference/se_imputed_diff.md),
 once with the naive and once with the exact standard errors, and prints
 the two fits side by side. Both cases call it.
 
@@ -84,7 +84,7 @@ vitd
 
 The study that reports a mean with the range (Sasidharan, India) has no
 SD.
-[`se_imputed_df()`](https://zwulab.github.io/fivenumMeta/reference/se_imputed_df.md)
+[`se_imputed_df()`](https://zwulab.github.io/meta5number/reference/se_imputed_df.md)
 reads such a row as the scenario `mean_range`: the mean is kept as the
 sample mean, and the SD is imputed from the two extremes alone, as the
 range divided by the expected range of a normal sample of that size,
@@ -246,5 +246,5 @@ package. Journal of Statistical Software 36(3), 1-48.
 Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
 deviation from a five-number summary. Manuscript.
 
-Wu Z, Tong T (2026). osmoments: Exact means, variances and covariances
-of order statistics in R. Manuscript.
+Wu Z, Tong T (2026). orderStatMoments: Exact means, variances and
+covariances of order statistics in R. Manuscript.

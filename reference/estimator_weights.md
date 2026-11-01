@@ -25,7 +25,7 @@ estimator_weights(
   A single integer sample size. The Wan, Luo and Shi presets are closed
   forms in \\n\\ and accept any \\n \ge 2\\; the BLUE needs the sample
   sizes of
-  [`imputed_moments`](https://zwulab.github.io/fivenumMeta/reference/imputed_moments.md).
+  [`imputed_moments`](https://zwulab.github.io/meta5number/reference/imputed_moments.md).
 
 - scenario:
 
@@ -78,16 +78,16 @@ estimator_weights(
 
 - moments:
 
-  Optional precomputed result of `osmoments::os_moments(n, ranks)` for
-  the standard normal, at this `n` and at the ranks that the reported
-  values use (at `n = 4Q+1` under type 7 these are
-  `scenario_ranks(n, scenario)`), or a list with its components `alpha`
-  and `B` alone. The sample size, the distribution, the ranks, the
-  location and scale and the shape of `alpha` and `B` are checked where
-  the object carries them; a bare list is checked for its size only. The
-  package keeps the moments it computes itself for the session, so
-  repeated calls at one sample size integrate once without this
-  argument.
+  Optional precomputed result of
+  `orderStatMoments::os_moments(n, ranks)` for the standard normal, at
+  this `n` and at the ranks that the reported values use (at `n = 4Q+1`
+  under type 7 these are `scenario_ranks(n, scenario)`), or a list with
+  its components `alpha` and `B` alone. The sample size, the
+  distribution, the ranks, the location and scale and the shape of
+  `alpha` and `B` are checked where the object carries them; a bare list
+  is checked for its size only. The package keeps the moments it
+  computes itself for the session, so repeated calls at one sample size
+  integrate once without this argument.
 
 - type:
 
@@ -108,7 +108,7 @@ The Wan/Luo/Shi weights are closed-form functions of \\n\\ and are
 returned for any single integer \\n \ge 2\\, as the source papers apply
 them. The `"blue"` weights are computed from the exact means and
 covariance matrix of the reported values at any \\n\\ (see
-[`imputed_moments`](https://zwulab.github.io/fivenumMeta/reference/imputed_moments.md),
+[`imputed_moments`](https://zwulab.github.io/meta5number/reference/imputed_moments.md),
 argument `type`) and use `moments`.
 
 ## References

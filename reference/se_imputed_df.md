@@ -1,7 +1,7 @@
 # Imputed means and SDs with their standard errors for every study of a data frame
 
 The data-frame interface of
-[`se_imputed`](https://zwulab.github.io/fivenumMeta/reference/se_imputed.md)
+[`se_imputed`](https://zwulab.github.io/meta5number/reference/se_imputed.md)
 for a meta-analysis: one row per study, with the columns that such a
 data set usually carries (the sample size, the minimum, the first
 quartile, the median, the third quartile, the maximum, and the sample
@@ -60,7 +60,7 @@ se_imputed_df(
 - version:
 
   `"blue"` (default) or `"wan_luo_shi"`, as in
-  [`se_imputed`](https://zwulab.github.io/fivenumMeta/reference/se_imputed.md).
+  [`se_imputed`](https://zwulab.github.io/meta5number/reference/se_imputed.md).
 
 - prefer:
 
@@ -130,7 +130,7 @@ replaced, so a data frame can be run again after a value, the `version`
 or the `type` changes.
 
 Every imputed row is computed exactly at its own \\n\\, as in
-[`se_imputed`](https://zwulab.github.io/fivenumMeta/reference/se_imputed.md):
+[`se_imputed`](https://zwulab.github.io/meta5number/reference/se_imputed.md):
 at a sample size not of the form \\4Q + 1\\ the reported quartiles are
 interpolated under definition `type`.
 
@@ -149,11 +149,11 @@ deviation from a five-number summary. Manuscript.
 
 ## See also
 
-[`se_imputed`](https://zwulab.github.io/fivenumMeta/reference/se_imputed.md)
+[`se_imputed`](https://zwulab.github.io/meta5number/reference/se_imputed.md)
 for one study,
-[`se_imputed_diff`](https://zwulab.github.io/fivenumMeta/reference/se_imputed_diff.md)
+[`se_imputed_diff`](https://zwulab.github.io/meta5number/reference/se_imputed_diff.md)
 for two groups per row,
-[`pool_imputed`](https://zwulab.github.io/fivenumMeta/reference/pool_imputed.md)
+[`pool_imputed`](https://zwulab.github.io/meta5number/reference/pool_imputed.md)
 to pool the studies.
 
 ## Examples

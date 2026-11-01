@@ -5,13 +5,13 @@ tuberculosis cases against controls of Nnoaham and Clarke (2008), typed
 from their Table 1. Three studies report the median, minimum and maximum
 of each group (Davies, UK; Grange, Indonesia; Davies, Kenya: the
 scenario `"S1"` of
-[`se_imputed_df`](https://zwulab.github.io/fivenumMeta/reference/se_imputed_df.md)),
+[`se_imputed_df`](https://zwulab.github.io/meta5number/reference/se_imputed_df.md)),
 two a sample mean and SD (Davies, Thailand; Chan, Hong Kong:
 `"sample"`), and one a mean with the minimum and maximum (Sasidharan,
 India: `"mean_range"`, the mean kept and the SD imputed from the range).
 The same six studies are the real-data example of Luo et al. (2018) and
 of Yang, Hutson and Wang (2022). The vignette
-[`vignette("two-meta-analyses")`](https://zwulab.github.io/fivenumMeta/articles/two-meta-analyses.md)
+[`vignette("two-meta-analyses")`](https://zwulab.github.io/meta5number/articles/two-meta-analyses.md)
 pools them under the naive and the exact standard errors, as Wu, Shi and
 Tong (2026) do.
 

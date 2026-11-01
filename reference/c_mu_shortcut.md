@@ -2,7 +2,7 @@
 
 Closed-form shortcut formula \\C\_\mu(n) \approx A/\sqrt{n + c_1 \log
 n + c_2}\\ for the exact
-[`c_mu`](https://zwulab.github.io/fivenumMeta/reference/c_mu.md), in the
+[`c_mu`](https://zwulab.github.io/meta5number/reference/c_mu.md), in the
 style of Wan's \\\xi_B(n)\\ and Luo's \\w\_{opt}(n)\\ formulas. The
 leading constant \\A\\ is the limit of \\\sqrt{n}\\C\_\mu(n)\\ (Theorem
 1 of Wu, Shi and Tong, 2026) rounded to four decimals: \\\sqrt{\pi/2}\\
@@ -22,9 +22,9 @@ the paper carry the same formula. The errors below are those of the
 printed constants, on the grid and at \\n = 2001, 5001, 10001\\ beyond
 it, computed by the fitting script. The formulas serve a reader without
 this package and a comparison with the exact values;
-[`c_mu`](https://zwulab.github.io/fivenumMeta/reference/c_mu.md)
+[`c_mu`](https://zwulab.github.io/meta5number/reference/c_mu.md)
 computes the exact factor at every \\n\\, and
-[`se_imputed`](https://zwulab.github.io/fivenumMeta/reference/se_imputed.md)
+[`se_imputed`](https://zwulab.github.io/meta5number/reference/se_imputed.md)
 uses it.
 
 ## Usage
@@ -64,30 +64,30 @@ Numeric vector of approximate \\C\_\mu(n)\\ values.
 Fitted forms and accuracy (relative error against the exact factor),
 BLUE:
 
-- S1: \\1.2533/\sqrt{n + 2.006\log n - 0.810}\\; error \\\le 0.34\\\\ on
-  the grid and \\\le 0.08\\\\ at \\n = 2001, 5001, 10001\\.
+- S1: \\1.2533/\sqrt{n + 2.00\log n - 0.80}\\; error \\\le 0.35\\\\ on
+  the grid and \\\le 0.078\\\\ at \\n = 2001, 5001, 10001\\.
 
-- S2: \\1.0780/\sqrt{n + 0.142}\\; error \\\le 0.046\\\\ on the grid and
-  \\\le 0.003\\\\ beyond.
+- S2: \\1.0780/\sqrt{n + 0.14}\\; error \\\le 0.065\\\\ on the grid and
+  \\\le 0.002\\\\ at \\n = 2001, 5001, 10001\\.
 
-- S3: \\1.0780/\sqrt{n + 0.838\log n - 0.576}\\; error \\\le 0.33\\\\ on
-  the grid and \\\le 0.09\\\\ beyond.
+- S3: \\1.0780/\sqrt{n + 0.84\log n - 0.58}\\; error \\\le 0.34\\\\ on
+  the grid and \\\le 0.081\\\\ at \\n = 2001, 5001, 10001\\.
 
 Shortcut version (Luo's shortcut mean):
 
-- S1: \\1.2533/\sqrt{n + 2.006\log n - 0.811}\\; error \\\le 0.34\\\\ on
-  the grid and \\\le 0.06\\\\ beyond.
+- S1: \\1.2533/\sqrt{n + 2.00\log n - 0.80}\\; error \\\le 0.35\\\\ on
+  the grid and \\\le 0.058\\\\ at \\n = 2001, 5001, 10001\\.
 
-- S2: \\1.0780/\sqrt{n + 0.142}\\; error \\\le 0.046\\\\ on the grid and
-  \\\le 0.003\\\\ beyond.
+- S2: \\1.0780/\sqrt{n + 0.14}\\; error \\\le 0.065\\\\ on the grid and
+  \\\le 0.002\\\\ at \\n = 2001, 5001, 10001\\.
 
-- S3: \\1.0780/\sqrt{n + 0.835\log n - 0.572}\\; error \\\le 0.34\\\\ on
-  the grid and \\\le 0.08\\\\ beyond.
+- S3: \\1.0780/\sqrt{n + 0.83\log n - 0.56}\\; error \\\le 0.34\\\\ on
+  the grid and \\\le 0.081\\\\ at \\n = 2001, 5001, 10001\\.
 
 Assumptions: iid normal data. The errors are measured on the grid of \\n
 = 4Q+1\\, where the quartiles are single order statistics (type 7), and
 at the three larger sizes named; they are not bounds for every \\n\\.
-[`c_mu`](https://zwulab.github.io/fivenumMeta/reference/c_mu.md)
+[`c_mu`](https://zwulab.github.io/meta5number/reference/c_mu.md)
 computes the exact factor at any \\n\\ and definition.
 
 ## References
@@ -99,9 +99,9 @@ deviation from a five-number summary. Manuscript.
 
 ``` r
 c_mu_shortcut(25, "S2")
-#> [1] 0.2149903
+#> [1] 0.2149988
 c_mu_shortcut(25, "S2", version = "wan_luo_shi")
-#> [1] 0.2149903
+#> [1] 0.2149988
 c_mu_shortcut(5000, "S3")        # no upper limit on n
-#> [1] 0.01523523
+#> [1] 0.01523521
 ```

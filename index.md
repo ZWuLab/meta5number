@@ -1,4 +1,4 @@
-# fivenumMeta
+# meta5number
 
 Many studies in a meta-analysis report a median with the quartiles or
 the extremes instead of a mean and a standard deviation (SD). The
@@ -17,14 +17,14 @@ mean, and from 9% to more than threefold for the SD. With all five
 values reported the excesses are smaller, at most 7% for the mean and 6%
 to 51% for the SD.
 
-fivenumMeta computes those standard deviations exactly, from the means
+meta5number computes those standard deviations exactly, from the means
 and covariances of the normal order statistics that the package
-`osmoments` computes, returns the plug-in standard errors that belong in
-the weights of a meta-analysis, and pools the studies under the naive
-and the exact standard errors side by side. It covers the three
-data-reporting scenarios (the minimum, median and maximum, the three
-quartiles, or all five), the BLUE (the default) and the estimators of
-Wan, Luo and Shi, at every sample size, and it gives closed-form
+`orderStatMoments` computes, returns the plug-in standard errors that
+belong in the weights of a meta-analysis, and pools the studies under
+the naive and the exact standard errors side by side. It covers the
+three data-reporting scenarios (the minimum, median and maximum, the
+three quartiles, or all five), the BLUE (the default) and the estimators
+of Wan, Luo and Shi, at every sample size, and it gives closed-form
 shortcut formulas for the factors, for a reader without the package and
 for comparison.
 
@@ -33,8 +33,8 @@ for comparison.
 ``` r
 
 # install.packages("remotes")
-remotes::install_github("ZWuLab/osmoments")      # the engine, once it is public
-remotes::install_github("ZWuLab/fivenumMeta")    # this package
+remotes::install_github("ZWuLab/orderStatMoments")      # the engine, once it is public
+remotes::install_github("ZWuLab/meta5number")    # this package
 ```
 
 ## Usage
@@ -43,11 +43,11 @@ A meta-analysis data set with two groups per row, in the column layout
 of the data sets that the `metamedian` package ships (`n.g1`, `q1.g1`,
 `med.g1`, `q3.g1`, `mean.g1`, `sd.g1`, and the same with `.g2`). The
 example needs the packages `metamedian` (the data set) and `metafor`
-(the pooling), which fivenumMeta itself does not require:
+(the pooling), which meta5number itself does not require:
 
 ``` r
 
-library(fivenumMeta)
+library(meta5number)
 d <- se_imputed_diff(
   data     = metamedian::dat.age,   # one row per study; a study reports quartiles or a mean and SD
   suffixes = c(".g1", ".g2"),       # the two groups' column suffixes, group 1 first
@@ -58,12 +58,12 @@ metafor::rma(yi, sei = sei, data = d, method = "EE")  # the same exact fit with 
 metafor::rma(yi, sei = sei, data = d)                 # random effects (REML) with metafor, which pool_imputed() does not fit
 ```
 
-[`pool_imputed()`](https://zwulab.github.io/fivenumMeta/reference/pool_imputed.md)
+[`pool_imputed()`](https://zwulab.github.io/meta5number/reference/pool_imputed.md)
 fits the common-effect model by default and the DerSimonian-Laird
 random-effects model with `method = "DL"`. For a meta-analysis of SDs,
 `se_imputed_diff(..., measure = "lnVR")` gives the log variability ratio
 of the two groups with its two standard errors. For one group,
-[`se_imputed_df()`](https://zwulab.github.io/fivenumMeta/reference/se_imputed_df.md)
+[`se_imputed_df()`](https://zwulab.github.io/meta5number/reference/se_imputed_df.md)
 appends to each row the imputed mean and SD, the naive standard error,
 the exact plug-in standard errors of the mean and of the SD, and the
 scenario it read off the row, a study’s sample mean and SD kept as they
@@ -71,14 +71,14 @@ are and a mean with the range given the SD imputed from the range. For
 one study,
 `se_imputed(c(q1 = 10, med = 12, q3 = 15), n = 25, scenario = "S2")`.
 The factors themselves are
-[`c_mu()`](https://zwulab.github.io/fivenumMeta/reference/c_mu.md),
-[`c_sigma()`](https://zwulab.github.io/fivenumMeta/reference/c_sigma.md)
+[`c_mu()`](https://zwulab.github.io/meta5number/reference/c_mu.md),
+[`c_sigma()`](https://zwulab.github.io/meta5number/reference/c_sigma.md)
 and
-[`inflation_factors()`](https://zwulab.github.io/fivenumMeta/reference/inflation_factors.md),
+[`inflation_factors()`](https://zwulab.github.io/meta5number/reference/inflation_factors.md),
 and the shortcut formulas
-[`c_mu_shortcut()`](https://zwulab.github.io/fivenumMeta/reference/c_mu_shortcut.md)
+[`c_mu_shortcut()`](https://zwulab.github.io/meta5number/reference/c_mu_shortcut.md)
 and
-[`c_sigma_shortcut()`](https://zwulab.github.io/fivenumMeta/reference/c_sigma_shortcut.md)
+[`c_sigma_shortcut()`](https://zwulab.github.io/meta5number/reference/c_sigma_shortcut.md)
 need no integration.
 
 The factors are exact at every sample size. At n = 4Q + 1 the reported
@@ -90,10 +90,10 @@ argument `type` names another, and the factors there depend on that
 definition.
 
 The vignette,
-[`vignette("fivenumMeta")`](https://zwulab.github.io/fivenumMeta/articles/fivenumMeta.md),
+[`vignette("meta5number")`](https://zwulab.github.io/meta5number/articles/meta5number.md),
 walks through the example above and explains the columns, the scenarios
 and the convention on the sample size. A second vignette,
-[`vignette("two-meta-analyses")`](https://zwulab.github.io/fivenumMeta/articles/two-meta-analyses.md),
+[`vignette("two-meta-analyses")`](https://zwulab.github.io/meta5number/articles/two-meta-analyses.md),
 reproduces the two meta-analyses of Wu, Shi and Tong (2026), one of
 means on the data set `vitd` that ships with the package and one of SDs
 on
@@ -107,11 +107,12 @@ deviation from a five-number summary. Manuscript.
 
 It defines the factors, gives their limits in the sample size, fits the
 shortcut formulas and reports the checks of the computation.
-`citation("fivenumMeta")` prints this reference. The exact moments of
-the order statistics come from the package `osmoments`, described in:
+`citation("meta5number")` prints this reference. The exact moments of
+the order statistics come from the package `orderStatMoments`, described
+in:
 
-Wu Z, Tong T (2026). osmoments: Exact means, variances and covariances
-of order statistics in R. Manuscript.
+Wu Z, Tong T (2026). orderStatMoments: Exact means, variances and
+covariances of order statistics in R. Manuscript.
 
 > Developed with AI assistance; see
-> [AI-USE.md](https://zwulab.github.io/fivenumMeta/AI-USE.md).
+> [AI-USE.md](https://zwulab.github.io/meta5number/AI-USE.md).

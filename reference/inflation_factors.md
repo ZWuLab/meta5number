@@ -9,8 +9,8 @@ C\_\sigma(n)/\sqrt{1 - b_S(n)^2}\\, where \\b_S(n) =
 \sqrt{2/(n-1)}\\\Gamma(n/2)/\Gamma\\(n-1)/2\\\\ is the bias factor of
 \\S\\, \\E\[S\] = b_S(n)\sigma\\. The factors \\C\_\mu(n)\\ and
 \\C\_\sigma(n)\\ are the exact ones of
-[`c_mu`](https://zwulab.github.io/fivenumMeta/reference/c_mu.md) and
-[`c_sigma`](https://zwulab.github.io/fivenumMeta/reference/c_sigma.md),
+[`c_mu`](https://zwulab.github.io/meta5number/reference/c_mu.md) and
+[`c_sigma`](https://zwulab.github.io/meta5number/reference/c_sigma.md),
 from one exact moment set.
 
 ## Usage
@@ -63,7 +63,7 @@ Named numeric vector: `kappa_mu`, `kappa_sigma`.
 ## Details
 
 Assumptions as in
-[`imputed_moments`](https://zwulab.github.io/fivenumMeta/reference/imputed_moments.md):
+[`imputed_moments`](https://zwulab.github.io/meta5number/reference/imputed_moments.md):
 iid normal data, the reported values following definition `type`. An IF
 of 1.2 means a 20% larger SD than that of the full-sample statistic.
 

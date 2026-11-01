@@ -1,7 +1,7 @@
 # Shortcut formula for C_sigma(n)
 
 Closed-form shortcut formula for the exact
-[`c_sigma`](https://zwulab.github.io/fivenumMeta/reference/c_sigma.md).
+[`c_sigma`](https://zwulab.github.io/meta5number/reference/c_sigma.md).
 The form differs by scenario for a structural reason. Under S2 and S3
 \\n\\C^2\_\sigma(n)\\ has the finite limit \\h\\ (Theorem 1 of Wu, Shi
 and Tong, 2026), so the formula is \\A/\sqrt{n + \dots}\\ with \\A =
@@ -14,9 +14,10 @@ c_2)^{c_3}\\. Two constant sets are carried: `version = "blue"` (the
 default) for the factor of the BLUE of \\\sigma\\, and
 `version = "wan_luo_shi"` for the factor of the SD estimators of Wan
 (under S1 and S2) and Shi (under S3). Both are fitted by minimax
-relative error over the paper's 39-point grid of \\n = 4Q+1\\ (every
-such \\n\\ from 5 to 101 and 14 larger ones up to 1001), with the
-constants exactly as the paper prints them.
+relative error over the paper's 40-point grid of \\n = 4Q+1\\ (every
+such \\n\\ from 5 to 101 and 15 larger ones up to 1001), with the
+constants exactly as the paper prints them: the anchors to four
+decimals, the fitted constants to two.
 
 ## Usage
 
@@ -54,32 +55,34 @@ Accuracy is the relative error of the printed constants against the
 exact factor, on the grid and at \\n = 2001, 5001, 10001\\ beyond it.
 BLUE:
 
-- S1: \\0.8278/(\log n + 0.330)^{1.2041}\\; error \\\le 0.37\\\\ on the
-  grid, and \\-0.8\\\\, \\-1.4\\\\, \\-1.9\\\\ at \\n = 2001, 5001,
-  10001\\: this formula has no limit to hold it, and its error grows
-  slowly beyond the grid.
+- S1: \\0.84/(\log n + 0.35)^{1.21}\\; error \\\le 0.39\\\\ on the grid,
+  and \\-0.8\\\\, \\-1.5\\\\, \\-2.1\\\\ at \\n = 2001, 5001, 10001\\:
+  this formula has no limit to hold it, and its error grows slowly
+  beyond the grid.
 
-- S2: \\1.1664/\sqrt{n - 0.863}\\; error \\\le 0.13\\\\ on the grid and
+- S2: \\1.1664/\sqrt{n - 0.87}\\; error \\\le 0.16\\\\ on the grid and
   \\\le 0.003\\\\ beyond.
 
-- S3: \\1.1664/\sqrt{n + 5.267(\log n)^2 - 10.364\log n + 8.327}\\;
-  error \\\le 0.42\\\\ on the grid and \\\le 0.32\\\\ beyond.
+- S3: \\1.1664/\sqrt{n + 5.26(\log n)^2 - 10.33\log n + 8.29}\\; error
+  \\\le 0.43\\\\ on the grid and \\\le 0.33\\\\ beyond.
 
 Shortcut version:
 
-- S1: \\0.8705/(\log n + 0.418)^{1.2199}\\; error \\\le 0.37\\\\ on the
-  grid, and \\-0.8\\\\, \\-1.5\\\\, \\-2.0\\\\ beyond.
+- S1: \\0.87/(\log n + 0.42)^{1.22}\\; error \\\le 0.50\\\\ on the grid,
+  and \\-0.9\\\\, \\-1.6\\\\, \\-2.1\\\\ at \\n = 2001, 5001, 10001\\:
+  this formula has no limit to hold it, and its error grows slowly
+  beyond the grid.
 
-- S2: \\1.1664/\sqrt{n - 0.845}\\; error \\\le 0.099\\\\ on the grid and
-  \\\le 0.002\\\\ beyond.
+- S2: \\1.1664/\sqrt{n - 0.84}\\; error \\\le 0.12\\\\ on the grid and
+  \\\le 0.001\\\\ beyond.
 
-- S3: \\1.1664/\sqrt{n + 5.191(\log n)^2 - 10.204\log n + 8.525}\\;
-  error \\\le 0.44\\\\ on the grid and \\\le 0.27\\\\ beyond.
+- S3: \\1.1664/\sqrt{n + 5.19(\log n)^2 - 10.20\log n + 8.52}\\; error
+  \\\le 0.44\\\\ on the grid and \\\le 0.27\\\\ beyond.
 
 Assumptions: iid normal data. The errors are measured on the grid of \\n
 = 4Q+1\\, where the quartiles are single order statistics (type 7), and
 at the three larger sizes named; they are not bounds for every \\n\\.
-[`c_sigma`](https://zwulab.github.io/fivenumMeta/reference/c_sigma.md)
+[`c_sigma`](https://zwulab.github.io/meta5number/reference/c_sigma.md)
 computes the exact factor at any \\n\\ and definition.
 
 ## References
@@ -91,7 +94,7 @@ deviation from a five-number summary. Manuscript.
 
 ``` r
 c_sigma_shortcut(25, "S2")
-#> [1] 0.2374137
+#> [1] 0.2374482
 c_sigma_shortcut(5000, "S3")    # no upper limit on n
-#> [1] 0.01601851
+#> [1] 0.01601889
 ```

@@ -2,14 +2,14 @@
 
 For a data set with two groups side by side (the columns of one group
 carry one suffix, those of the other group another), runs
-[`se_imputed_df`](https://zwulab.github.io/fivenumMeta/reference/se_imputed_df.md)
+[`se_imputed_df`](https://zwulab.github.io/meta5number/reference/se_imputed_df.md)
 on each group and appends the effect of the study, group 1 against group
 2, with its standard error under the naive and under the exact standard
 errors: the difference of means (`measure = "MD"`, the default) or the
 log variability ratio (`measure = "lnVR"`), in the column names that
 [`metafor::rma()`](https://wviechtb.github.io/metafor/reference/rma.uni.html)
 takes as they are, `yi` and `sei`.
-[`pool_imputed`](https://zwulab.github.io/fivenumMeta/reference/pool_imputed.md)
+[`pool_imputed`](https://zwulab.github.io/meta5number/reference/pool_imputed.md)
 pools the result in one call.
 
 ## Usage
@@ -41,7 +41,7 @@ se_imputed_diff(
 - ...:
 
   The column-name arguments of
-  [`se_imputed_df`](https://zwulab.github.io/fivenumMeta/reference/se_imputed_df.md)
+  [`se_imputed_df`](https://zwulab.github.io/meta5number/reference/se_imputed_df.md)
   (`n`, `min`, `q1`, `med`, `q3`, `max`, `mean`, `sd`), passed to both
   groups.
 
@@ -55,7 +55,7 @@ se_imputed_diff(
 - version:
 
   `"blue"` (default) or `"wan_luo_shi"`, as in
-  [`se_imputed`](https://zwulab.github.io/fivenumMeta/reference/se_imputed.md).
+  [`se_imputed`](https://zwulab.github.io/meta5number/reference/se_imputed.md).
 
 - prefer:
 
@@ -71,14 +71,14 @@ se_imputed_diff(
 ## Value
 
 `data` with the output columns of
-[`se_imputed_df`](https://zwulab.github.io/fivenumMeta/reference/se_imputed_df.md)
+[`se_imputed_df`](https://zwulab.github.io/meta5number/reference/se_imputed_df.md)
 for each group (each with its suffix) and three more: `yi`, the effect;
 `sei_naive`, its standard error from the naive standard errors; and
 `sei`, its standard error from the exact ones. The result carries the
 attribute `"measure"`, which
-[`pool_imputed`](https://zwulab.github.io/fivenumMeta/reference/pool_imputed.md)
+[`pool_imputed`](https://zwulab.github.io/meta5number/reference/pool_imputed.md)
 reads for its heading. A row that
-[`se_imputed_df()`](https://zwulab.github.io/fivenumMeta/reference/se_imputed_df.md)
+[`se_imputed_df()`](https://zwulab.github.io/meta5number/reference/se_imputed_df.md)
 could not use in either group has `NA` in the three columns.
 
 ## Details
@@ -104,7 +104,7 @@ the extremes, or the range alone), which the group's columns carry as
 two terms. These are the two variances of Wu, Shi and Tong (2026): exact
 in the factor \\C\_\sigma(n)\\, first-order in the log, so neither is
 the finite-sample variance of the log ratio, and the intervals of
-[`pool_imputed`](https://zwulab.github.io/fivenumMeta/reference/pool_imputed.md)
+[`pool_imputed`](https://zwulab.github.io/meta5number/reference/pool_imputed.md)
 are normal approximations. The small-sample bias correction of Nakagawa
 et al. (2015), which `metafor::escalc(measure = "VR")` adds to \\y_i\\,
 is not applied, as in Wu, Shi and Tong (2026). Both analyses use the
@@ -122,9 +122,9 @@ deviation from a five-number summary. Manuscript.
 
 ## See also
 
-[`se_imputed_df`](https://zwulab.github.io/fivenumMeta/reference/se_imputed_df.md),
-[`se_imputed`](https://zwulab.github.io/fivenumMeta/reference/se_imputed.md),
-[`pool_imputed`](https://zwulab.github.io/fivenumMeta/reference/pool_imputed.md).
+[`se_imputed_df`](https://zwulab.github.io/meta5number/reference/se_imputed_df.md),
+[`se_imputed`](https://zwulab.github.io/meta5number/reference/se_imputed.md),
+[`pool_imputed`](https://zwulab.github.io/meta5number/reference/pool_imputed.md).
 
 ## Examples
 

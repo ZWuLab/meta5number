@@ -43,7 +43,7 @@ These are the sample sizes at which every reported value is a single
 order statistic under R's default quantile definition (type 7). At other
 sample sizes the functions of the package build the reported values from
 two adjacent order statistics each (see
-[`imputed_moments`](https://zwulab.github.io/fivenumMeta/reference/imputed_moments.md)).
+[`imputed_moments`](https://zwulab.github.io/meta5number/reference/imputed_moments.md)).
 
 ## References
 

@@ -1,7 +1,7 @@
 # Pool the studies under the naive and the exact standard errors, side by side
 
 Takes the output of
-[`se_imputed_diff`](https://zwulab.github.io/fivenumMeta/reference/se_imputed_diff.md)
+[`se_imputed_diff`](https://zwulab.github.io/meta5number/reference/se_imputed_diff.md)
 (or any data frame with the columns `yi`, `sei_naive` and `sei`) and
 pools the studies twice, once with the naive standard errors and once
 with the exact ones, by the common-effect model (`method = "EE"`, the
@@ -28,7 +28,7 @@ print(x, digits = 4L, ...)
   A data frame with the columns `yi` (the effect of each study),
   `sei_naive` (its standard error from the naive standard errors) and
   `sei` (from the exact ones), as
-  [`se_imputed_diff`](https://zwulab.github.io/fivenumMeta/reference/se_imputed_diff.md)
+  [`se_imputed_diff`](https://zwulab.github.io/meta5number/reference/se_imputed_diff.md)
   returns it; the three must be numeric. A row whose effect is not
   finite, or whose standard error in either column is not finite and
   positive, is dropped from both fits, so that the two rows compare the
@@ -70,7 +70,7 @@ data frame with the rows `naive` and `exact` and the columns `estimate`,
 `naive` and `exact`, the weights in percent of their total; `k`, the
 number of studies used; `method`; `level`; and `measure`, read from the
 attribute that
-[`se_imputed_diff`](https://zwulab.github.io/fivenumMeta/reference/se_imputed_diff.md)
+[`se_imputed_diff`](https://zwulab.github.io/meta5number/reference/se_imputed_diff.md)
 sets (`"MD"` or `"lnVR"`), `NA` when `data` carries none (a column
 subset `data[, cols]` drops the attribute, a row subset keeps it;
 without it the print says "Pooled estimate").
@@ -137,9 +137,9 @@ deviation from a five-number summary. Manuscript.
 
 ## See also
 
-[`se_imputed_diff`](https://zwulab.github.io/fivenumMeta/reference/se_imputed_diff.md),
+[`se_imputed_diff`](https://zwulab.github.io/meta5number/reference/se_imputed_diff.md),
 which builds `data`;
-[`se_imputed_df`](https://zwulab.github.io/fivenumMeta/reference/se_imputed_df.md).
+[`se_imputed_df`](https://zwulab.github.io/meta5number/reference/se_imputed_df.md).
 
 ## Examples
 

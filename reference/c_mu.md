@@ -6,7 +6,7 @@ function of the unknown population \\\sigma\\). The plug-in standard
 error is \\\mathrm{SE}(\hat\mu) = C\_\mu(n)\\\hat\sigma\\; its reference
 distribution is the subject of a separate study. Exact (numerical
 integration); for the closed-form shortcut formula see
-[`c_mu_shortcut`](https://zwulab.github.io/fivenumMeta/reference/c_mu_shortcut.md).
+[`c_mu_shortcut`](https://zwulab.github.io/meta5number/reference/c_mu_shortcut.md).
 
 ## Usage
 
@@ -43,23 +43,23 @@ c_mu(
 - method:
 
   Mean estimator preset; see
-  [`estimator_weights`](https://zwulab.github.io/fivenumMeta/reference/estimator_weights.md).
+  [`estimator_weights`](https://zwulab.github.io/meta5number/reference/estimator_weights.md).
   The default `"blue"` is the BLUE, the default estimator version of Wu,
   Shi and Tong (2026); `"luo"` gives the factor of Luo's shortcut mean
   estimator.
 
 - moments:
 
-  Optional precomputed result of `osmoments::os_moments(n, ranks)` for
-  the standard normal, at this `n` and at the ranks that the reported
-  values use (at `n = 4Q+1` under type 7 these are
-  `scenario_ranks(n, scenario)`), or a list with its components `alpha`
-  and `B` alone. The sample size, the distribution, the ranks, the
-  location and scale and the shape of `alpha` and `B` are checked where
-  the object carries them; a bare list is checked for its size only. The
-  package keeps the moments it computes itself for the session, so
-  repeated calls at one sample size integrate once without this
-  argument.
+  Optional precomputed result of
+  `orderStatMoments::os_moments(n, ranks)` for the standard normal, at
+  this `n` and at the ranks that the reported values use (at `n = 4Q+1`
+  under type 7 these are `scenario_ranks(n, scenario)`), or a list with
+  its components `alpha` and `B` alone. The sample size, the
+  distribution, the ranks, the location and scale and the shape of
+  `alpha` and `B` are checked where the object carries them; a bare list
+  is checked for its size only. The package keeps the moments it
+  computes itself for the session, so repeated calls at one sample size
+  integrate once without this argument.
 
 - type:
 
