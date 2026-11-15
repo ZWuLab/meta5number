@@ -26,8 +26,8 @@ formulas for the factors, for a reader without the package and for comparison.
 
 ```r
 # install.packages("remotes")
-remotes::install_github("ZWuLab/orderStatMoments")      # the engine, once it is public
-remotes::install_github("ZWuLab/meta5number")    # this package
+remotes::install_github("ZWuLab/orderStatMoments")   # the engine that computes the moments
+remotes::install_github("ZWuLab/meta5number")        # this package
 ```
 
 ## Usage
@@ -80,7 +80,7 @@ It defines the factors, gives their limits in the sample size, fits the shortcut
 reports the checks of the computation. `citation("meta5number")` prints this reference. The
 exact moments of the order statistics come from the package `orderStatMoments`, described in:
 
-Wu Z, Tong T (2026). orderStatMoments: Exact means, variances and covariances of order statistics in
+Wu Z, Tong T (2026). orderStatMoments: Exact means, variances, and covariances of order statistics in
 R. Manuscript.
 
 > Developed with AI assistance; see [AI-USE.md](AI-USE.md).

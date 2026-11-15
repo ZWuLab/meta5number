@@ -48,10 +48,13 @@ for the standard normal, at this \code{n} and at the ranks that the reported
 values use (at \code{n = 4Q+1} under type 7 these are
 \code{scenario_ranks(n, scenario)}), or a list with its components
 \code{alpha} and \code{B} alone. The sample size, the distribution, the
-ranks, the location and scale and the shape of \code{alpha} and \code{B} are
-checked where the object carries them; a bare list is checked for its size
-only. The package keeps the moments it computes itself for the session, so
-repeated calls at one sample size integrate once without this argument.}
+ranks, the component \code{affine} (the constants \eqn{a} and \eqn{b} of
+\eqn{a + bZ}, which must be 0 and 1) and the shape of \code{alpha} and
+\code{B} are checked where the object carries them; a bare list is checked
+for its size only. An object computed by a version of \pkg{orderStatMoments}
+before 0.3.0 does not carry \code{affine} and is refused. The package keeps
+the moments it computes itself for the session, so repeated calls at one
+sample size integrate once without this argument.}
 
 \item{type}{The definition of the sample quantiles, an integer from 1 to 9 as
 in \code{\link[stats]{quantile}}; 7, R's default, unless a study states

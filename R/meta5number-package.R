@@ -49,9 +49,9 @@
 #' of the computation.
 #'
 #' Wu Z (2026). orderStatMoments: Exact Moments of Order Statistics. R package version
-#' 0.1.0. The engine that computes the moments of the normal order statistics.
+#' 0.3.0. The engine that computes the moments of the normal order statistics.
 #'
-#' Wu Z, Tong T (2026). orderStatMoments: Exact means, variances and covariances of
+#' Wu Z, Tong T (2026). orderStatMoments: Exact means, variances, and covariances of
 #' order statistics in R. Manuscript. The paper of the engine.
 #'
 #' Wan X, Wang W, Liu J, Tong T (2014). Estimating the sample mean and standard

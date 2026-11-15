@@ -238,8 +238,11 @@ scenario_ranks <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5")) {
 #' `moments` is orderStatMoments::os_moments() for the standard normal at sample size `n` and
 #' `ranks`, or a list with the components alpha and B alone (the former interface), which
 #' can be checked only for its size. Every component the object carries is compared with
-#' what the design needs: the ranks, the sample size, the distribution, the location and
-#' scale, and the shape and finiteness of alpha and B (B symmetric).
+#' what the design needs: the ranks, the sample size, the distribution, the affine map
+#' (the field `affine`, the constants (a, b) of a + bX from the standard member of the family,
+#' which must be (0, 1)), and the shape and finiteness of alpha and B (B symmetric). An
+#' object of class "orderStatMoments" always carries `affine` since version 0.3.0 of the
+#' engine, so one without it is refused instead of passing unchecked.
 #' @keywords internal
 #' @noRd
 .check_moments <- function(moments, n, ranks, scenario, type) {
@@ -260,9 +263,24 @@ scenario_ranks <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5")) {
   if (!is.null(moments$dist$name) && !identical(moments$dist$name, "norm"))
     stop("'moments' must be the moments of the normal order statistics, not of dist = \"",
          moments$dist$name, "\"")
-  # a moments object computed at another location or scale would shift alpha and B
-  if (!is.null(moments$location) && !isTRUE(all.equal(c(moments$location, moments$scale), c(0, 1))))
-    stop("'moments' must be computed at location 0 and scale 1, the standard normal")
+  # a moments object of another normal distribution, a + bZ, has alpha and B shifted and
+  # rescaled. The engine stores (a, b) in `affine`, which combines the family's own mean and sd
+  # with os_shift and os_multiplier, so this one field covers the ways in which the engine's
+  # normal family gives a + bZ.
+  aff <- moments$affine
+  # an engine before 0.3.0 stored `location` and `scale` instead: refuse, never skip the check.
+  # Such an object is known by its class ("osmoments" was the engine's name before 0.2.0) or,
+  # when the class was dropped, by the two former fields ([[ ]] matches a name exactly).
+  from_engine <- inherits(moments, c("orderStatMoments", "osmoments")) ||
+    !is.null(moments[["location"]]) || !is.null(moments[["scale"]])
+  if (is.null(aff) && from_engine)
+    stop("'moments' has no component 'affine': it was computed by a version of orderStatMoments ",
+         "before 0.3.0. Recompute it with orderStatMoments::os_moments(n, ranks)")
+  # as.numeric() drops the names a and b, which all.equal() would report as a difference
+  if (!is.null(aff) && !isTRUE(all.equal(as.numeric(aff), c(0, 1))))
+    stop("'moments' must be the moments of the standard normal, orderStatMoments::os_moments(n, ranks) ",
+         "with the default mean, sd, os_shift and os_multiplier; it was computed for a + bZ with a = ",
+         format(aff[[1]]), " and b = ", format(aff[[2]]))
   alpha <- moments$alpha; B <- moments$B
   if (!is.numeric(alpha) || length(alpha) != k || any(!is.finite(alpha)))
     stop("'moments$alpha' must be ", k, " finite numbers")

@@ -1,8 +1,34 @@
+# meta5number 0.2.1
+
+* This version corrects a defect that meta5number 0.2.0 has when it runs with
+  version 0.3.0 of `orderStatMoments`, and it replaces 0.2.0. The functions that take
+  a precomputed `moments` object (`c_mu()`, `c_sigma()`, `imputed_moments()` and
+  `estimator_weights()`) check that the object holds the moments of the standard
+  normal order statistics. Since its version 0.3.0, `orderStatMoments` stores the
+  constants `a` and `b` of a distribution `a + bZ` in the component `affine`, where it
+  stored them in `location` and `scale` before, and the check of 0.2.0 read the former
+  names. With `orderStatMoments` 0.3.0 the check was therefore skipped: an object
+  computed with `mean`, `sd`, `os_shift` or `os_multiplier` away from their defaults
+  was accepted without a message, and results computed from it were wrong (the factor
+  that `c_mu()` returns, for example). The check now reads `affine`, and it stops when
+  an object of `orderStatMoments` does not carry that component. A call
+  without `moments`, or with the object of the standard normal, was not affected, and
+  its results are unchanged.
+
+* The package requires `orderStatMoments` 0.3.0 or later
+  (`Imports: orderStatMoments (>= 0.3.0)`). Update it with
+  `remotes::install_github("ZWuLab/orderStatMoments")`.
+
+* The references cite `orderStatMoments` at its version 0.3.0, and its paper by the
+  title it has now, "orderStatMoments: Exact Means, Variances, and Covariances of
+  Order Statistics in R".
+
 # meta5number 0.2.0
 
 * The engine of the exact moments is now the package `orderStatMoments`, renamed
   from `osmoments`, and every call and the `Imports` field follow it. Install it
   with `remotes::install_github("ZWuLab/orderStatMoments")`.
+
 * The package is renamed `meta5number` (it was `fivenumMeta` in 0.1.0), so that the name
   says what it is for: meta-analysis from five-number summaries. The functions, their
   arguments and their results are unchanged. `library(meta5number)` replaces

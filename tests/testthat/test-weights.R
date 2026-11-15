@@ -45,7 +45,22 @@ test_that("a supplied moments object is checked for its ranks, n, distribution a
   expect_error(c_mu(25, "S2", moments = orderStatMoments::os_moments(30, r)), "n = 30")
   expect_error(c_mu(25, "S2", moments = orderStatMoments::os_moments(25, r, dist = "unif")), "normal")
   expect_error(c_mu(25, "S2", moments = orderStatMoments::os_moments(25, c(1, 13, 25))), "ranks")
-  expect_error(c_mu(25, "S2", moments = orderStatMoments::os_moments(25, r, location = 5)), "location 0")
+  # the ways in which the engine's normal family gives a + bZ are refused: `affine` holds (a, b)
+  expect_error(c_mu(25, "S2", moments = orderStatMoments::os_moments(25, r, os_shift = 5)), "standard normal")
+  expect_error(c_mu(25, "S2", moments = orderStatMoments::os_moments(25, r, os_multiplier = 2)), "standard normal")
+  expect_error(c_mu(25, "S2", moments = orderStatMoments::os_moments(25, r, mean = 3, sd = 2)),
+               "a = 3 and b = 2")
+  # the standard object carries affine = (0, 1); one without the field (an engine before 0.3.0)
+  # is refused, so that a renamed field cannot skip the check
+  expect_equal(as.numeric(good$affine), c(0, 1))
+  old <- good; old$affine <- NULL
+  expect_error(c_mu(25, "S2", moments = old), "before 0.3.0")
+  # the same when the class was dropped or is the engine's former one: the former fields
+  # `location` and `scale` mark the object as the engine's
+  old <- unclass(old); old$location <- 5; old$scale <- 1
+  expect_error(c_mu(25, "S2", moments = old), "before 0.3.0")
+  class(old) <- "osmoments"; old$location <- NULL; old$scale <- NULL
+  expect_error(c_mu(25, "S2", moments = old), "before 0.3.0")
   bad <- good; bad$B[3, 1] <- 10 * bad$B[3, 1]
   expect_error(c_mu(25, "S2", moments = bad), "symmetric")
   bad <- good; bad$alpha[2] <- NA

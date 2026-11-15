@@ -14,5 +14,7 @@ export(scenario_ranks)
 export(se_imputed)
 export(se_imputed_df)
 export(se_imputed_diff)
-importFrom(stats,pnorm)
-importFrom(stats,qnorm)
+importFrom(stats,
+  pnorm,
+  qnorm
+)

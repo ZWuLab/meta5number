@@ -1,7 +1,7 @@
-# cran-comments for meta5number 0.2.0
+# cran-comments for meta5number 0.2.1
 
 ## Test environment
-- R 4.3.2 on aarch64-apple-darwin20
+- R 4.6.2 on aarch64-apple-darwin23
 - check command: `R CMD check --as-cran`
 - LaTeX present: full manual check ran.
 
