@@ -21,7 +21,7 @@ SD companion of c_mu."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">meta5number</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,7 +48,7 @@ SD companion of c_mu."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>The scalar C_sigma(n): standard deviation of the imputed SD in units of sigma</h1>
-      <small class="dont-index">Source: <a href="https://github.com/ZWuLab/meta5number/blob/v0.2.0/R/sdf.R" class="external-link"><code>R/sdf.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ZWuLab/meta5number/blob/main/R/sdf.R" class="external-link"><code>R/sdf.R</code></a></small>
       <div class="d-none name"><code>c_sigma.Rd</code></div>
     </div>
 
@@ -108,10 +108,13 @@ for the standard normal, at this <code>n</code> and at the ranks that the report
 values use (at <code>n = 4Q+1</code> under type 7 these are
 <code>scenario_ranks(n, scenario)</code>), or a list with its components
 <code>alpha</code> and <code>B</code> alone. The sample size, the distribution, the
-ranks, the location and scale and the shape of <code>alpha</code> and <code>B</code> are
-checked where the object carries them; a bare list is checked for its size
-only. The package keeps the moments it computes itself for the session, so
-repeated calls at one sample size integrate once without this argument.</p></dd>
+ranks, the component <code>affine</code> (the constants \(a\) and \(b\) of
+\(a + bZ\), which must be 0 and 1) and the shape of <code>alpha</code> and
+<code>B</code> are checked where the object carries them; a bare list is checked
+for its size only. An object computed by a version of <span class="pkg">orderStatMoments</span>
+before 0.3.0 does not carry <code>affine</code> and is refused. The package keeps
+the moments it computes itself for the session, so repeated calls at one
+sample size integrate once without this argument.</p></dd>
 
 
 <dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>

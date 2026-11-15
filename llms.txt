@@ -33,8 +33,8 @@ for comparison.
 ``` r
 
 # install.packages("remotes")
-remotes::install_github("ZWuLab/orderStatMoments")      # the engine, once it is public
-remotes::install_github("ZWuLab/meta5number")    # this package
+remotes::install_github("ZWuLab/orderStatMoments")   # the engine that computes the moments
+remotes::install_github("ZWuLab/meta5number")        # this package
 ```
 
 ## Usage
@@ -111,7 +111,7 @@ shortcut formulas and reports the checks of the computation.
 the order statistics come from the package `orderStatMoments`, described
 in:
 
-Wu Z, Tong T (2026). orderStatMoments: Exact means, variances and
+Wu Z, Tong T (2026). orderStatMoments: Exact means, variances, and
 covariances of order statistics in R. Manuscript.
 
 > Developed with AI assistance; see

@@ -341,10 +341,10 @@ standard deviation from the sample size, median, range and/or
 interquartile range. BMC Medical Research Methodology 14, 135.
 
 Wu Z (2026). orderStatMoments: Exact Moments of Order Statistics. R
-package version 0.1.0.
+package version 0.3.0.
 
 Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
 deviation from a five-number summary. Manuscript.
 
-Wu Z, Tong T (2026). orderStatMoments: Exact means, variances and
+Wu Z, Tong T (2026). orderStatMoments: Exact means, variances, and
 covariances of order statistics in R. Manuscript.

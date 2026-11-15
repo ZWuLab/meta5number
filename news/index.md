@@ -1,5 +1,38 @@
 # Changelog
 
+## meta5number 0.2.1
+
+- This version corrects a defect that meta5number 0.2.0 has when it runs
+  with version 0.3.0 of `orderStatMoments`, and it replaces 0.2.0. The
+  functions that take a precomputed `moments` object
+  ([`c_mu()`](https://zwulab.github.io/meta5number/reference/c_mu.md),
+  [`c_sigma()`](https://zwulab.github.io/meta5number/reference/c_sigma.md),
+  [`imputed_moments()`](https://zwulab.github.io/meta5number/reference/imputed_moments.md)
+  and
+  [`estimator_weights()`](https://zwulab.github.io/meta5number/reference/estimator_weights.md))
+  check that the object holds the moments of the standard normal order
+  statistics. Since its version 0.3.0, `orderStatMoments` stores the
+  constants `a` and `b` of a distribution `a + bZ` in the component
+  `affine`, where it stored them in `location` and `scale` before, and
+  the check of 0.2.0 read the former names. With `orderStatMoments`
+  0.3.0 the check was therefore skipped: an object computed with `mean`,
+  `sd`, `os_shift` or `os_multiplier` away from their defaults was
+  accepted without a message, and results computed from it were wrong
+  (the factor that
+  [`c_mu()`](https://zwulab.github.io/meta5number/reference/c_mu.md)
+  returns, for example). The check now reads `affine`, and it stops when
+  an object of `orderStatMoments` does not carry that component. A call
+  without `moments`, or with the object of the standard normal, was not
+  affected, and its results are unchanged.
+
+- The package requires `orderStatMoments` 0.3.0 or later
+  (`Imports: orderStatMoments (>= 0.3.0)`). Update it with
+  `remotes::install_github("ZWuLab/orderStatMoments")`.
+
+- The references cite `orderStatMoments` at its version 0.3.0, and its
+  paper by the title it has now, “orderStatMoments: Exact Means,
+  Variances, and Covariances of Order Statistics in R”.
+
 ## meta5number 0.2.0
 
 - The engine of the exact moments is now the package `orderStatMoments`,

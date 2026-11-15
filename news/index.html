@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">meta5number</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,9 +34,15 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/ZWuLab/meta5number/blob/v0.2.0/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/ZWuLab/meta5number/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.1" id="meta5number-021">meta5number 0.2.1<a class="anchor" aria-label="anchor" href="#meta5number-021"></a></h2>
+<ul><li><p>This version corrects a defect that meta5number 0.2.0 has when it runs with version 0.3.0 of <code>orderStatMoments</code>, and it replaces 0.2.0. The functions that take a precomputed <code>moments</code> object (<code><a href="../reference/c_mu.html">c_mu()</a></code>, <code><a href="../reference/c_sigma.html">c_sigma()</a></code>, <code><a href="../reference/imputed_moments.html">imputed_moments()</a></code> and <code><a href="../reference/estimator_weights.html">estimator_weights()</a></code>) check that the object holds the moments of the standard normal order statistics. Since its version 0.3.0, <code>orderStatMoments</code> stores the constants <code>a</code> and <code>b</code> of a distribution <code>a + bZ</code> in the component <code>affine</code>, where it stored them in <code>location</code> and <code>scale</code> before, and the check of 0.2.0 read the former names. With <code>orderStatMoments</code> 0.3.0 the check was therefore skipped: an object computed with <code>mean</code>, <code>sd</code>, <code>os_shift</code> or <code>os_multiplier</code> away from their defaults was accepted without a message, and results computed from it were wrong (the factor that <code><a href="../reference/c_mu.html">c_mu()</a></code> returns, for example). The check now reads <code>affine</code>, and it stops when an object of <code>orderStatMoments</code> does not carry that component. A call without <code>moments</code>, or with the object of the standard normal, was not affected, and its results are unchanged.</p></li>
+<li><p>The package requires <code>orderStatMoments</code> 0.3.0 or later (<code>Imports: orderStatMoments (&gt;= 0.3.0)</code>). Update it with <code>remotes::install_github("ZWuLab/orderStatMoments")</code>.</p></li>
+<li><p>The references cite <code>orderStatMoments</code> at its version 0.3.0, and its paper by the title it has now, “orderStatMoments: Exact Means, Variances, and Covariances of Order Statistics in R”.</p></li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0" id="meta5number-020">meta5number 0.2.0<a class="anchor" aria-label="anchor" href="#meta5number-020"></a></h2>
 <ul><li><p>The engine of the exact moments is now the package <code>orderStatMoments</code>, renamed from <code>osmoments</code>, and every call and the <code>Imports</code> field follow it. Install it with <code>remotes::install_github("ZWuLab/orderStatMoments")</code>.</p></li>
@@ -44,7 +50,8 @@
 <li><p>The constants of the shortcut formulas <code><a href="../reference/c_mu_shortcut.html">c_mu_shortcut()</a></code> and <code><a href="../reference/c_sigma_shortcut.html">c_sigma_shortcut()</a></code> carry two decimals, as Table 3 of the paper and its supplement table print them since the refit on the paper’s grid of 40 sample sizes (n = 901 added). The anchors keep four decimals, since they are the limits of the paper’s Theorem 1. The documented errors were recomputed and are of the same size as before (at most 0.42% on the grid for the BLUE’s formulas). The constants of 0.1.0, for the record: BLUE, mean, S1 (2.006, -0.810), S2 (0.142), S3 (0.838, -0.576); SD, S1 (0.8278, 0.330, 1.2041), S2 (-0.863), S3 (5.267, -10.364, 8.327); Wan-Luo-Shi version, mean, S1 (2.006, -0.811), S2 (0.142), S3 (0.835, -0.572); SD, S1 (0.8705, 0.418, 1.2199), S2 (-0.845), S3 (5.191, -10.204, 8.525).</p></li>
 <li><p>The test grid of <code>test-exact-any-n.R</code> has 40 sample sizes (n = 901 added).</p></li>
 </ul></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

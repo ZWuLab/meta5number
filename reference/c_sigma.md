@@ -57,11 +57,14 @@ c_sigma(
   this `n` and at the ranks that the reported values use (at `n = 4Q+1`
   under type 7 these are `scenario_ranks(n, scenario)`), or a list with
   its components `alpha` and `B` alone. The sample size, the
-  distribution, the ranks, the location and scale and the shape of
+  distribution, the ranks, the component `affine` (the constants \\a\\
+  and \\b\\ of \\a + bZ\\, which must be 0 and 1) and the shape of
   `alpha` and `B` are checked where the object carries them; a bare list
-  is checked for its size only. The package keeps the moments it
-  computes itself for the session, so repeated calls at one sample size
-  integrate once without this argument.
+  is checked for its size only. An object computed by a version of
+  orderStatMoments before 0.3.0 does not carry `affine` and is refused.
+  The package keeps the moments it computes itself for the session, so
+  repeated calls at one sample size integrate once without this
+  argument.
 
 - type:
 

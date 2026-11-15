@@ -11,7 +11,7 @@ median and the maximum under S1). All formulas were read from the source PDFs.">
 
     <a class="navbar-brand me-2" href="../index.html">meta5number</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,7 +38,7 @@ median and the maximum under S1). All formulas were read from the source PDFs.">
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Weight vectors of the published quantile-based estimators and the BLUE</h1>
-      <small class="dont-index">Source: <a href="https://github.com/ZWuLab/meta5number/blob/v0.2.0/R/weights.R" class="external-link"><code>R/weights.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ZWuLab/meta5number/blob/main/R/weights.R" class="external-link"><code>R/weights.R</code></a></small>
       <div class="d-none name"><code>estimator_weights.Rd</code></div>
     </div>
 
@@ -121,10 +121,13 @@ for the standard normal, at this <code>n</code> and at the ranks that the report
 values use (at <code>n = 4Q+1</code> under type 7 these are
 <code>scenario_ranks(n, scenario)</code>), or a list with its components
 <code>alpha</code> and <code>B</code> alone. The sample size, the distribution, the
-ranks, the location and scale and the shape of <code>alpha</code> and <code>B</code> are
-checked where the object carries them; a bare list is checked for its size
-only. The package keeps the moments it computes itself for the session, so
-repeated calls at one sample size integrate once without this argument.</p></dd>
+ranks, the component <code>affine</code> (the constants \(a\) and \(b\) of
+\(a + bZ\), which must be 0 and 1) and the shape of <code>alpha</code> and
+<code>B</code> are checked where the object carries them; a bare list is checked
+for its size only. An object computed by a version of <span class="pkg">orderStatMoments</span>
+before 0.3.0 does not carry <code>affine</code> and is refused. The package keeps
+the moments it computes itself for the session, so repeated calls at one
+sample size integrate once without this argument.</p></dd>
 
 
 <dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
@@ -161,7 +164,7 @@ deviation from a five-number summary. Manuscript.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.08214526 0.28565964 0.26439020 0.28565964 0.08214526 </span>
 <span class="r-in"><span><span class="fu">estimator_weights</span><span class="op">(</span><span class="fl">25</span>, <span class="st">"S3"</span>, <span class="st">"sd"</span><span class="op">)</span>             <span class="co"># the BLUE of the SD</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             a            q1             m            q3             b </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -1.712665e-01 -2.565653e-01 -2.315005e-16  2.565653e-01  1.712665e-01 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -1.712665e-01 -2.565653e-01 -2.667558e-16  2.565653e-01  1.712665e-01 </span>
 <span class="r-in"><span><span class="fu">estimator_weights</span><span class="op">(</span><span class="fl">25</span>, <span class="st">"S3"</span>, <span class="st">"mean"</span>, <span class="st">"luo"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          a         q1          m         q3          b </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.08221017 0.28870353 0.25817261 0.28870353 0.08221017 </span>

@@ -66,10 +66,10 @@ accompanies: the factors, their limits, the shortcut formulas and the
 checks of the computation.
 
 Wu Z (2026). orderStatMoments: Exact Moments of Order Statistics. R
-package version 0.1.0. The engine that computes the moments of the
+package version 0.3.0. The engine that computes the moments of the
 normal order statistics.
 
-Wu Z, Tong T (2026). orderStatMoments: Exact means, variances and
+Wu Z, Tong T (2026). orderStatMoments: Exact means, variances, and
 covariances of order statistics in R. Manuscript. The paper of the
 engine.
 
@@ -96,3 +96,7 @@ medians. Statistical Methods in Medical Research 32(2), 373-388.
 ## Author
 
 **Maintainer**: Zheyang Wu <zheyangwu@wpi.edu>
+
+Authors:
+
+- Zheyang Wu <zheyangwu@wpi.edu>
