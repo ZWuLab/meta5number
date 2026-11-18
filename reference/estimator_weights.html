@@ -11,7 +11,7 @@ median and the maximum under S1). All formulas were read from the source PDFs.">
 
     <a class="navbar-brand me-2" href="../index.html">meta5number</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,7 +38,7 @@ median and the maximum under S1). All formulas were read from the source PDFs.">
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Weight vectors of the published quantile-based estimators and the BLUE</h1>
-      <small class="dont-index">Source: <a href="https://github.com/ZWuLab/meta5number/blob/v0.2.1/R/weights.R" class="external-link"><code>R/weights.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ZWuLab/meta5number/blob/main/R/weights.R" class="external-link"><code>R/weights.R</code></a></small>
       <div class="d-none name"><code>estimator_weights.Rd</code></div>
     </div>
 
@@ -76,7 +76,10 @@ sizes of <code><a href="imputed_moments.html">imputed_moments</a></code>.</p></d
 note Wan 2014's C2/C3 are S3/S2 respectively. Also <code>"S4"</code> (the
 quartiles with the 10th and 90th percentiles) and <code>"S5"</code> (all five with
 the two percentiles), the names of Wu, Shi and Tong (2026) for Scenarios 5 and 7 of Balakrishnan
-et al. (2022); only the BLUE (<code>"blue"</code>) is defined for these two.</p></dd>
+et al. (2022); only the BLUE (<code>"blue"</code>) is defined for these two.
+Or an object of <code><a href="reporting_scenario.html">reporting_scenario</a></code>, which describes any
+other set of reported quantiles, with or without the minimum and the
+maximum; again only the BLUE is defined.</p></dd>
 
 
 <dt id="arg-estimand">estimand<a class="anchor" aria-label="anchor" href="#arg-estimand"></a></dt>
@@ -85,7 +88,7 @@ et al. (2022); only the BLUE (<code>"blue"</code>) is defined for these two.</p>
 
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
 <dd><p>One of the following; <code>"blue"</code> is the default. Under S4
-and S5 only <code>"blue"</code>.</p><dl><dt><code>"blue"</code></dt>
+and S5, and for a <code><a href="reporting_scenario.html">reporting_scenario</a></code>, only <code>"blue"</code>.</p><dl><dt><code>"blue"</code></dt>
 <dd><p>The default. Lloyd's generalized-least-squares best
   linear unbiased estimator computed from the exact means and covariance
   matrix of the reported values (Balakrishnan 2022 eqs. 8-9; Yang 2022
@@ -131,9 +134,10 @@ sample size integrate once without this argument.</p></dd>
 
 
 <dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
-<dd><p>The definition of the sample quantiles, an integer from 1 to 9 as
+<dd><p>The definition of the sample quantiles: an integer from 1 to 9 as
 in <code><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></code>; 7, R's default, unless a study states
-another.</p></dd>
+another. Or a function that gives a definition outside these nine, see
+"A quantile rule of your own" in Details.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -141,7 +145,9 @@ another.</p></dd>
     <p>Named numeric weight vector over the reported values, in increasing
   order, named as the scenario reports them: <code>a</code> the minimum, <code>p10</code>
   the 10th percentile, <code>q1</code>, <code>m</code> the median, <code>q3</code>, <code>p90</code>
-  the 90th percentile and <code>b</code> the maximum.</p>
+  the 90th percentile and <code>b</code> the maximum. For a
+  <code><a href="reporting_scenario.html">reporting_scenario</a></code> the names are its labels (<code>min</code>,
+  <code>p5</code>, ..., <code>max</code>).</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -164,13 +170,17 @@ deviation from a five-number summary. Manuscript.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.08214526 0.28565964 0.26439020 0.28565964 0.08214526 </span>
 <span class="r-in"><span><span class="fu">estimator_weights</span><span class="op">(</span><span class="fl">25</span>, <span class="st">"S3"</span>, <span class="st">"sd"</span><span class="op">)</span>             <span class="co"># the BLUE of the SD</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             a            q1             m            q3             b </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -1.712665e-01 -2.565653e-01 -2.667558e-16  2.565653e-01  1.712665e-01 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -1.712665e-01 -2.565653e-01 -2.315005e-16  2.565653e-01  1.712665e-01 </span>
 <span class="r-in"><span><span class="fu">estimator_weights</span><span class="op">(</span><span class="fl">25</span>, <span class="st">"S3"</span>, <span class="st">"mean"</span>, <span class="st">"luo"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          a         q1          m         q3          b </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.08221017 0.28870353 0.25817261 0.28870353 0.08221017 </span>
 <span class="r-in"><span><span class="fu">estimator_weights</span><span class="op">(</span><span class="fl">25</span>, <span class="st">"S3"</span>, <span class="st">"sd"</span>, <span class="st">"shi"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          a         q1          m         q3          b </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -0.1716592 -0.2559979  0.0000000  0.2559979  0.1716592 </span>
+<span class="r-in"><span><span class="co"># the BLUE from the median with the 5th and 95th percentiles</span></span></span>
+<span class="r-in"><span><span class="fu">estimator_weights</span><span class="op">(</span><span class="fl">60</span>, <span class="fu"><a href="reporting_scenario.html">reporting_scenario</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.05</span>, <span class="fl">0.5</span>, <span class="fl">0.95</span><span class="op">)</span><span class="op">)</span>, <span class="st">"mean"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        p5       p50       p95 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.1921978 0.6156044 0.1921978 </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -305,6 +305,133 @@ range, the imputed SD is a multiple of the interquartile range, and the
 exact standard error of the mean exceeds the naive one by the factor of
 the table above at $`n = 25`$ under $`S_2`$.
 
+## Appendix C. Other reported quantiles, and other quantile definitions
+
+The scenarios $`S_1`$ to $`S_3`$ are the parts of a five-number summary,
+and `"S4"` and `"S5"` add the 10th and 90th percentiles to the quartiles
+and to all five values. A study may report other quantiles.
+[`reporting_scenario()`](https://zwulab.github.io/meta5number/reference/reporting_scenario.md)
+describes such a report by the probabilities of its quantiles, and by
+whether the minimum and the maximum are reported, and every function
+takes its result as `scenario`. The estimator is then the BLUE from
+these reported values, and its factors are exact at every sample size.
+Suppose a study of 60 patients reports the median with the 5th and 95th
+percentiles:
+
+``` r
+
+sc <- reporting_scenario(c(0.05, 0.5, 0.95))
+sc
+#> Reporting scenario with 3 reported values: p5, p50, p95
+#> Quantiles at the probabilities 0.05, 0.50, 0.95
+se_imputed(c(2.1, 5.0, 8.4), n = 60, scenario = sc)
+#> Imputed mean and SD under the reported values (p5, p50, p95), n = 60, the BLUE, quantile type 7
+#>    mu_hat sigma_hat  se_naive     se_mu  se_sigma 
+#>    5.0961    2.0124    0.2598    0.2831    0.2242 
+#> Factors: C_mu(n) = 0.1407, C_sigma(n) = 0.1114. The weights are $w_mean and $w_sd; every field with str() or unclass().
+inflation_factors(60, sc)
+#>    kappa_mu kappa_sigma 
+#>    1.089587    1.212702
+```
+
+The reported values are given in increasing order, or named by the
+labels that the scenario prints. They need not be symmetric about the
+median, and one extreme may be reported without the other:
+
+``` r
+
+estimator_weights(30, reporting_scenario(c(0.5, 0.75), min = TRUE), "mean")
+#>       min       p50       p75 
+#> 0.1144422 0.5223927 0.3631651
+```
+
+The named scenarios are special cases, so the two calls below give one
+number. The inflation factors at two sample sizes follow. The last line
+is their limit in the sample size when the 10th and 90th percentiles are
+reported with the quartiles, computed from the limiting covariance
+matrix of the five sample quantiles as Wu, Shi and Tong (2026) give it.
+
+``` r
+
+s4 <- reporting_scenario(c(0.1, 0.25, 0.5, 0.75, 0.9))
+c(named = c_mu(41, "S4"), general = c_mu(41, s4))
+#>     named   general 
+#> 0.1609236 0.1609236
+rbind("n = 101" = inflation_factors(101, s4),
+      "n = 1001" = inflation_factors(1001, s4))
+#>          kappa_mu kappa_sigma
+#> n = 101  1.031489    1.204186
+#> n = 1001 1.032119    1.203613
+p <- s4$probs; z <- qnorm(p)
+G <- (outer(p, p, pmin) - outer(p, p)) / outer(dnorm(z), dnorm(z))
+c(kappa_mu = sqrt(1 / sum(solve(G))),
+  kappa_sigma = sqrt(2 / drop(z %*% solve(G) %*% z)))
+#>    kappa_mu kappa_sigma 
+#>    1.032188    1.203551
+```
+
+The second question is how a study turned its sample into the quantiles
+it reports. The argument `type` takes one of the nine definitions of
+[`quantile()`](https://rdrr.io/r/stats/quantile.html), 7 by default, and
+a study that names the definition it used is given that `type`. At a
+sample size where the quantiles are interpolated, the definition changes
+the factors. In the example below, at $`n = 40`$ under $`S_2`$, the
+factor of the imputed SD changes more than that of the imputed mean:
+
+``` r
+
+sapply(c(type6 = 6, type7 = 7, type2 = 2), function(t)
+  c(c_mu = c_mu(40, "S2", type = t), c_sigma = c_sigma(40, "S2", type = t)))
+#>             type6     type7     type2
+#> c_mu    0.1686310 0.1692033 0.1686501
+#> c_sigma 0.1773468 0.1828804 0.1789418
+```
+
+A definition outside these nine is supplied as a function. Under each of
+the nine definitions a sample quantile is a combination
+$`(1-\gamma)X_{(r)} + \gamma X_{(r+1)}`$ of two neighboring values of
+the ordered sample, and a rule of the same form covers other
+definitions: the function takes the probabilities `p` and the sample
+size `n` and returns the ranks `r` and the weights `gamma`. Tukey’s
+hinges, the quartiles that
+[`fivenum()`](https://rdrr.io/r/stats/fivenum.html) returns, are an
+example: the lower hinge is the median of the lower half of the ordered
+sample, the middle value included when the sample size is odd. No one of
+the nine definitions gives the hinges at every sample size.
+
+``` r
+
+hinges <- function(p, n) {
+  d <- (floor((n + 1) / 2) + 1) / 2          # the position of the lower hinge
+  pos <- ifelse(p < 0.5, d, ifelse(p > 0.5, n + 1 - d, (n + 1) / 2))
+  list(r = floor(pos), gamma = pos - floor(pos))
+}
+x <- sort(c(2.9, 3.4, 4.1, 4.4, 5.0, 5.2, 5.9, 6.3, 7.7, 9.6))
+h <- hinges(c(0.25, 0.5, 0.75), length(x))
+rbind(rule = (1 - h$gamma) * x[h$r] + h$gamma * x[h$r + 1],
+      fivenum = fivenum(x)[2:4])
+#>         [,1] [,2] [,3]
+#> rule     4.1  5.1  6.3
+#> fivenum  4.1  5.1  6.3
+se_imputed(c(min = 3, q1 = 10, med = 12, q3 = 15, max = 30), n = 30, "S3",
+           type = hinges)
+#> Imputed mean and SD under S3, n = 30, the BLUE, a user-supplied quantile rule
+#>    mu_hat sigma_hat  se_naive     se_mu  se_sigma 
+#>   12.9304    5.5706    1.0170    1.0527    0.8116 
+#> Factors: C_mu(n) = 0.189, C_sigma(n) = 0.1457. The weights are $w_mean and $w_sd; every field with str() or unclass().
+```
+
+The rule is called with the probabilities of the scenario’s quantiles
+only, and the minimum and the maximum are taken as they are. The
+data-frame functions
+[`se_imputed_df()`](https://zwulab.github.io/meta5number/reference/se_imputed_df.md)
+and
+[`se_imputed_diff()`](https://zwulab.github.io/meta5number/reference/se_imputed_diff.md)
+read the scenarios $`S_1`$ to $`S_3`$ off the columns and take the same
+`type`. A study with other reported quantiles is computed with
+[`se_imputed()`](https://zwulab.github.io/meta5number/reference/se_imputed.md)
+and its row is filled in from the result.
+
 ## References
 
 Balakrishnan N, Rychtar J, Taylor D, Walter SD (2022). Unified approach
@@ -341,10 +468,11 @@ standard deviation from the sample size, median, range and/or
 interquartile range. BMC Medical Research Methodology 14, 135.
 
 Wu Z (2026). orderStatMoments: Exact Moments of Order Statistics. R
-package version 0.3.0.
+package version 0.3.1.
 
 Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
 deviation from a five-number summary. Manuscript.
 
 Wu Z, Tong T (2026). orderStatMoments: Exact means, variances, and
-covariances of order statistics in R. Manuscript.
+covariances of order statistics in R. arXiv preprint arXiv:2611.19980.
+<https://doi.org/10.48550/arXiv.2611.19980>

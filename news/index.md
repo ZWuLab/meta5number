@@ -1,5 +1,58 @@
 # Changelog
 
+## meta5number 0.3.0
+
+- Any set of reported quantiles. The new function
+  [`reporting_scenario()`](https://zwulab.github.io/meta5number/reference/reporting_scenario.md)
+  describes what a study reports by the probabilities of its sample
+  quantiles, with or without the minimum and the maximum, for example
+  `reporting_scenario(c(0.05, 0.5, 0.95))` for the median with the 5th
+  and 95th percentiles. Its result is passed as the argument `scenario`
+  of
+  [`se_imputed()`](https://zwulab.github.io/meta5number/reference/se_imputed.md),
+  [`c_mu()`](https://zwulab.github.io/meta5number/reference/c_mu.md),
+  [`c_sigma()`](https://zwulab.github.io/meta5number/reference/c_sigma.md),
+  [`inflation_factors()`](https://zwulab.github.io/meta5number/reference/inflation_factors.md),
+  [`estimator_weights()`](https://zwulab.github.io/meta5number/reference/estimator_weights.md)
+  and
+  [`imputed_moments()`](https://zwulab.github.io/meta5number/reference/imputed_moments.md),
+  which compute the BLUE from these reported values and its exact
+  factors at every sample size that is at least the number of reported
+  values. The named scenarios `"S1"` to `"S5"` are special cases and
+  give the results they gave before.
+
+- A quantile definition of your own. The argument `type` takes, besides
+  the nine definitions of
+  [`quantile()`](https://rdrr.io/r/stats/quantile.html), a function of
+  the probabilities `p` and the sample size `n` that returns the ranks
+  `r` and the weights `gamma` of the rule
+  `(1 - gamma) x[r] + gamma x[r + 1]`. The help of
+  [`se_imputed()`](https://zwulab.github.io/meta5number/reference/se_imputed.md)
+  and Appendix C of the vignette write Tukey’s hinges, the quartiles of
+  [`fivenum()`](https://rdrr.io/r/stats/fivenum.html), as such a rule.
+
+- The print of
+  [`se_imputed()`](https://zwulab.github.io/meta5number/reference/se_imputed.md)
+  names a
+  [`reporting_scenario()`](https://zwulab.github.io/meta5number/reference/reporting_scenario.md)
+  by its reported values and a rule by “a user-supplied quantile rule”.
+
+- [`imputed_moments()`](https://zwulab.github.io/meta5number/reference/imputed_moments.md)
+  checks the length of the weights given as `w_mean` and `w_sd`, and
+  [`c_mu_shortcut()`](https://zwulab.github.io/meta5number/reference/c_mu_shortcut.md)
+  and
+  [`c_sigma_shortcut()`](https://zwulab.github.io/meta5number/reference/c_sigma_shortcut.md)
+  say that the shortcut formulas exist for the scenarios S1 to S3 when
+  they are given another scenario.
+
+- The paper of the engine, Wu and Tong (2026), is cited as
+  arXiv:2611.19980 (<https://doi.org/10.48550/arXiv.2611.19980>), where
+  it was cited as a manuscript, and `orderStatMoments` at its version
+  0.3.1.
+
+- The results for the scenarios `"S1"` to `"S5"` and the quantile
+  definitions 1 to 9 are those of 0.2.1.
+
 ## meta5number 0.2.1
 
 - This version corrects a defect that meta5number 0.2.0 has when it runs

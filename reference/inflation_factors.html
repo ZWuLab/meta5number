@@ -23,7 +23,7 @@ c_sigma, from one exact moment set."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">meta5number</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,7 +50,7 @@ c_sigma, from one exact moment set."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Inflation factors of the imputed mean and SD</h1>
-      <small class="dont-index">Source: <a href="https://github.com/ZWuLab/meta5number/blob/v0.2.1/R/sdf.R" class="external-link"><code>R/sdf.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ZWuLab/meta5number/blob/main/R/sdf.R" class="external-link"><code>R/sdf.R</code></a></small>
       <div class="d-none name"><code>inflation_factors.Rd</code></div>
     </div>
 
@@ -85,7 +85,9 @@ factor of \(S\), \(E[S] = b_S(n)\sigma\). The factors \(C_\mu(n)\) and
 and 7 under S5, under the default quantile definition. Any such <code>n</code> is
 computed exactly; see Details. Another definition may need a larger \(n\):
 where two reported values are the same order statistic (type 3 at
-\(n = 5\) under S3, for example) the BLUE is not defined and is refused.</p></dd>
+\(n = 5\) under S3, for example) the BLUE is not defined and is refused.
+For a <code><a href="reporting_scenario.html">reporting_scenario</a></code>, at least its number of reported
+values.</p></dd>
 
 
 <dt id="arg-scenario">scenario<a class="anchor" aria-label="anchor" href="#arg-scenario"></a></dt>
@@ -94,7 +96,10 @@ where two reported values are the same order statistic (type 3 at
 note Wan 2014's C2/C3 are S3/S2 respectively. Also <code>"S4"</code> (the
 quartiles with the 10th and 90th percentiles) and <code>"S5"</code> (all five with
 the two percentiles), the names of Wu, Shi and Tong (2026) for Scenarios 5 and 7 of Balakrishnan
-et al. (2022); only the BLUE (<code>"blue"</code>) is defined for these two.</p></dd>
+et al. (2022); only the BLUE (<code>"blue"</code>) is defined for these two.
+Or an object of <code><a href="reporting_scenario.html">reporting_scenario</a></code>, which describes any
+other set of reported quantiles, with or without the minimum and the
+maximum; again only the BLUE is defined.</p></dd>
 
 
 <dt id="arg-version">version<a class="anchor" aria-label="anchor" href="#arg-version"></a></dt>
@@ -105,9 +110,10 @@ defined.</p></dd>
 
 
 <dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
-<dd><p>The definition of the sample quantiles, an integer from 1 to 9 as
+<dd><p>The definition of the sample quantiles: an integer from 1 to 9 as
 in <code><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></code>; 7, R's default, unless a study states
-another.</p></dd>
+another. Or a function that gives a definition outside these nine, see
+"A quantile rule of your own" in Details.</p></dd>
 
 </dl></div>
     <div class="section level2">

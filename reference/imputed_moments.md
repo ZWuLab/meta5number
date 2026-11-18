@@ -37,7 +37,9 @@ imputed_moments(
   computed exactly; see Details. Another definition may need a larger
   \\n\\: where two reported values are the same order statistic (type 3
   at \\n = 5\\ under S3, for example) the BLUE is not defined and is
-  refused.
+  refused. For a
+  [`reporting_scenario`](https://zwulab.github.io/meta5number/reference/reporting_scenario.md),
+  at least its number of reported values.
 
 - scenario:
 
@@ -46,7 +48,11 @@ imputed_moments(
   S3/S2 respectively. Also `"S4"` (the quartiles with the 10th and 90th
   percentiles) and `"S5"` (all five with the two percentiles), the names
   of Wu, Shi and Tong (2026) for Scenarios 5 and 7 of Balakrishnan et
-  al. (2022); only the BLUE (`"blue"`) is defined for these two.
+  al. (2022); only the BLUE (`"blue"`) is defined for these two. Or an
+  object of
+  [`reporting_scenario`](https://zwulab.github.io/meta5number/reference/reporting_scenario.md),
+  which describes any other set of reported quantiles, with or without
+  the minimum and the maximum; again only the BLUE is defined.
 
 - method_mean:
 
@@ -86,9 +92,10 @@ imputed_moments(
 
 - type:
 
-  The definition of the sample quantiles, an integer from 1 to 9 as in
+  The definition of the sample quantiles: an integer from 1 to 9 as in
   [`quantile`](https://rdrr.io/r/stats/quantile.html); 7, R's default,
-  unless a study states another.
+  unless a study states another. Or a function that gives a definition
+  outside these nine, see "A quantile rule of your own" in Details.
 
 ## Value
 
@@ -117,8 +124,21 @@ and the means and covariance matrix of the standardized \\Y\\ are
 \\\alpha_Y = W'\alpha\\ and \\B_Y = W'BW\\, exact at every \\n\\. At \\n
 = 4Q+1\\ under type 7 the quartiles are the order statistics at ranks
 \\Q+1, 2Q+1, 3Q+1\\; at other \\n\\, or under another definition, they
-are interpolated, and the result depends on the definition. Assumptions:
-i.i.d. normal sample; the reported values follow definition `type`.
+are interpolated, and the result depends on the definition.
+
+A quantile rule of your own. When a study computed its quantiles by a
+definition that is not one of the nine, give `type` a function of the
+probabilities `p` and the sample size `n` that returns a list with two
+vectors as long as `p`: the whole ranks `r`, and the weights `gamma`,
+each weight between 0 and 1. The quantile at probability \\p_j\\ is then
+taken as \\(1-\gamma_j)X\_{(r_j)} + \gamma_j X\_{(r_j+1)}\\. The ranks
+must lie between 1 and \\n\\, and \\r_j + 1 \le n\\ where \\\gamma_j \>
+0\\. The function is called with the probabilities of the scenario's
+quantiles (0.25, 0.5, 0.75 under S2 and S3, for example); the minimum
+and the maximum are not passed to it. The examples write Tukey's hinges,
+the quartiles of [`fivenum`](https://rdrr.io/r/stats/fivenum.html), as
+such a rule. Assumptions: i.i.d. normal sample; the reported values
+follow definition `type`.
 
 ## References
 

@@ -31,7 +31,9 @@ c_sigma(
   computed exactly; see Details. Another definition may need a larger
   \\n\\: where two reported values are the same order statistic (type 3
   at \\n = 5\\ under S3, for example) the BLUE is not defined and is
-  refused.
+  refused. For a
+  [`reporting_scenario`](https://zwulab.github.io/meta5number/reference/reporting_scenario.md),
+  at least its number of reported values.
 
 - scenario:
 
@@ -40,7 +42,11 @@ c_sigma(
   S3/S2 respectively. Also `"S4"` (the quartiles with the 10th and 90th
   percentiles) and `"S5"` (all five with the two percentiles), the names
   of Wu, Shi and Tong (2026) for Scenarios 5 and 7 of Balakrishnan et
-  al. (2022); only the BLUE (`"blue"`) is defined for these two.
+  al. (2022); only the BLUE (`"blue"`) is defined for these two. Or an
+  object of
+  [`reporting_scenario`](https://zwulab.github.io/meta5number/reference/reporting_scenario.md),
+  which describes any other set of reported quantiles, with or without
+  the minimum and the maximum; again only the BLUE is defined.
 
 - method:
 
@@ -68,9 +74,10 @@ c_sigma(
 
 - type:
 
-  The definition of the sample quantiles, an integer from 1 to 9 as in
+  The definition of the sample quantiles: an integer from 1 to 9 as in
   [`quantile`](https://rdrr.io/r/stats/quantile.html); 7, R's default,
-  unless a study states another.
+  unless a study states another. Or a function that gives a definition
+  outside these nine, see "A quantile rule of your own" in Details.
 
 ## Value
 

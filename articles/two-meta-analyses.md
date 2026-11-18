@@ -247,4 +247,5 @@ Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
 deviation from a five-number summary. Manuscript.
 
 Wu Z, Tong T (2026). orderStatMoments: Exact means, variances, and
-covariances of order statistics in R. Manuscript.
+covariances of order statistics in R. arXiv preprint arXiv:2611.19980.
+<https://doi.org/10.48550/arXiv.2611.19980>

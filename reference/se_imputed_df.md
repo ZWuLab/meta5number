@@ -76,7 +76,9 @@ se_imputed_df(
 
   The definition of the reported sample quantiles, 1 to 9 as in
   [`quantile`](https://rdrr.io/r/stats/quantile.html); 7, R's default.
-  One value for every row.
+  One value for every row. A quantile rule supplied as a function is
+  taken too, as in
+  [`se_imputed`](https://zwulab.github.io/meta5number/reference/se_imputed.md).
 
 ## Value
 

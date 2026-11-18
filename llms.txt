@@ -89,6 +89,33 @@ definition (type 7 of
 argument `type` names another, and the factors there depend on that
 definition.
 
+A study that reports other quantiles is described by
+[`reporting_scenario()`](https://zwulab.github.io/meta5number/reference/reporting_scenario.md),
+and a study whose quantiles follow a definition outside R’s nine is
+given a rule as `type`:
+
+``` r
+
+# the median with the 5th and 95th percentiles, n = 60: the BLUE and its exact factors
+sc <- reporting_scenario(c(0.05, 0.5, 0.95))
+se_imputed(c(2.1, 5.0, 8.4), n = 60, scenario = sc)
+inflation_factors(60, sc)
+
+# the quartiles with the 10th and 90th percentiles, the scenario the package names "S4"
+inflation_factors(101, reporting_scenario(c(0.1, 0.25, 0.5, 0.75, 0.9)))
+
+# Tukey's hinges, the quartiles of fivenum(), as a rule: the quantile at probability p is
+# (1 - gamma) x[r] + gamma x[r + 1] in the ordered sample
+hinges <- function(p, n) {
+  d <- (floor((n + 1) / 2) + 1) / 2
+  pos <- ifelse(p < 0.5, d, ifelse(p > 0.5, n + 1 - d, (n + 1) / 2))
+  list(r = floor(pos), gamma = pos - floor(pos))
+}
+se_imputed(c(min = 3, q1 = 10, med = 12, q3 = 15, max = 30), n = 30, "S3", type = hinges)
+```
+
+Appendix C of the vignette explains both.
+
 The vignette,
 [`vignette("meta5number")`](https://zwulab.github.io/meta5number/articles/meta5number.md),
 walks through the example above and explains the columns, the scenarios
@@ -112,7 +139,8 @@ the order statistics come from the package `orderStatMoments`, described
 in:
 
 Wu Z, Tong T (2026). orderStatMoments: Exact means, variances, and
-covariances of order statistics in R. Manuscript.
+covariances of order statistics in R. arXiv preprint arXiv:2611.19980.
+<https://doi.org/10.48550/arXiv.2611.19980>
 
 > Developed with AI assistance; see
 > [AI-USE.md](https://zwulab.github.io/meta5number/AI-USE.md).
@@ -169,8 +197,14 @@ paper prints them.
 - [`c_sigma_shortcut()`](https://zwulab.github.io/meta5number/reference/c_sigma_shortcut.md)
   : Shortcut formula for C_sigma(n)
 
-## Weights and ranks
+## Scenarios, weights and ranks
 
+A scenario with any set of reported quantiles, the weights of the
+estimators and the ranks of the named scenarios.
+
+- [`reporting_scenario()`](https://zwulab.github.io/meta5number/reference/reporting_scenario.md)
+  [`print(`*`<reporting_scenario>`*`)`](https://zwulab.github.io/meta5number/reference/reporting_scenario.md)
+  : A data-reporting scenario with any set of quantiles
 - [`estimator_weights()`](https://zwulab.github.io/meta5number/reference/estimator_weights.md)
   : Weight vectors of the published quantile-based estimators and the
   BLUE

@@ -17,7 +17,7 @@ S5 adds the minimum and maximum (Balakrishnan 2022 sec. 3.1, Scenarios 5 and 7).
 
     <a class="navbar-brand me-2" href="../index.html">meta5number</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,7 +44,7 @@ S5 adds the minimum and maximum (Balakrishnan 2022 sec. 3.1, Scenarios 5 and 7).
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Ranks of the order statistics reported under each scenario</h1>
-      <small class="dont-index">Source: <a href="https://github.com/ZWuLab/meta5number/blob/v0.2.1/R/weights.R" class="external-link"><code>R/weights.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ZWuLab/meta5number/blob/main/R/weights.R" class="external-link"><code>R/weights.R</code></a></small>
       <div class="d-none name"><code>scenario_ranks.Rd</code></div>
     </div>
 
@@ -80,7 +80,10 @@ functions of the package accept it.</p></dd>
 note Wan 2014's C2/C3 are S3/S2 respectively. Also <code>"S4"</code> (the
 quartiles with the 10th and 90th percentiles) and <code>"S5"</code> (all five with
 the two percentiles), the names of Wu, Shi and Tong (2026) for Scenarios 5 and 7 of Balakrishnan
-et al. (2022); only the BLUE (<code>"blue"</code>) is defined for these two.</p></dd>
+et al. (2022); only the BLUE (<code>"blue"</code>) is defined for these two.
+Or an object of <code><a href="reporting_scenario.html">reporting_scenario</a></code>, which describes any
+other set of reported quantiles, with or without the minimum and the
+maximum; again only the BLUE is defined.</p></dd>
 
 </dl></div>
     <div class="section level2">

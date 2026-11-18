@@ -50,8 +50,14 @@ paper prints them.
 - [`c_sigma_shortcut()`](https://zwulab.github.io/meta5number/reference/c_sigma_shortcut.md)
   : Shortcut formula for C_sigma(n)
 
-## Weights and ranks
+## Scenarios, weights and ranks
 
+A scenario with any set of reported quantiles, the weights of the
+estimators and the ranks of the named scenarios.
+
+- [`reporting_scenario()`](https://zwulab.github.io/meta5number/reference/reporting_scenario.md)
+  [`print(`*`<reporting_scenario>`*`)`](https://zwulab.github.io/meta5number/reference/reporting_scenario.md)
+  : A data-reporting scenario with any set of quantiles
 - [`estimator_weights()`](https://zwulab.github.io/meta5number/reference/estimator_weights.md)
   : Weight vectors of the published quantile-based estimators and the
   BLUE

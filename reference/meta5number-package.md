@@ -51,10 +51,15 @@ and
 [`scenario_ranks`](https://zwulab.github.io/meta5number/reference/scenario_ranks.md),
 and
 [`imputed_moments`](https://zwulab.github.io/meta5number/reference/imputed_moments.md)
-gives the variances and the covariance of the two imputed statistics.
-Every function defaults to the BLUE; the estimators of Wan, Luo and Shi
-are reached by `version = "wan_luo_shi"` in the study-level functions
-and in
+gives the variances and the covariance of the two imputed statistics. A
+study that reports other quantiles than those of the scenarios S1 to S5
+is described by
+[`reporting_scenario`](https://zwulab.github.io/meta5number/reference/reporting_scenario.md),
+and a definition of the sample quantiles outside the nine of
+[`quantile`](https://rdrr.io/r/stats/quantile.html) is given as a
+function to the argument `type`. Every function defaults to the BLUE;
+the estimators of Wan, Luo and Shi are reached by
+`version = "wan_luo_shi"` in the study-level functions and in
 [`inflation_factors()`](https://zwulab.github.io/meta5number/reference/inflation_factors.md),
 and by the argument `method` in the others.
 
@@ -66,12 +71,13 @@ accompanies: the factors, their limits, the shortcut formulas and the
 checks of the computation.
 
 Wu Z (2026). orderStatMoments: Exact Moments of Order Statistics. R
-package version 0.3.0. The engine that computes the moments of the
+package version 0.3.1. The engine that computes the moments of the
 normal order statistics.
 
 Wu Z, Tong T (2026). orderStatMoments: Exact means, variances, and
-covariances of order statistics in R. Manuscript. The paper of the
-engine.
+covariances of order statistics in R. arXiv preprint arXiv:2611.19980.
+[doi:10.48550/arXiv.2611.19980](https://doi.org/10.48550/arXiv.2611.19980)
+. The paper of the engine.
 
 Wan X, Wang W, Liu J, Tong T (2014). Estimating the sample mean and
 standard deviation from the sample size, median, range and/or

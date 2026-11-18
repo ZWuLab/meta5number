@@ -37,7 +37,7 @@ add the 10th and 90th percentiles to &quot;S2&quot; and &quot;S3&quot;."></head>
 
     <a class="navbar-brand me-2" href="../index.html">meta5number</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,7 +64,7 @@ add the 10th and 90th percentiles to &quot;S2&quot; and &quot;S3&quot;."></head>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>meta5number: Five-Number Summaries in Meta-Analysis, Imputed Means and SDs with Standard Errors</h1>
-      <small class="dont-index">Source: <a href="https://github.com/ZWuLab/meta5number/blob/v0.2.1/R/meta5number-package.R" class="external-link"><code>R/meta5number-package.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ZWuLab/meta5number/blob/main/R/meta5number-package.R" class="external-link"><code>R/meta5number-package.R</code></a></small>
       <div class="d-none name"><code>meta5number-package.Rd</code></div>
     </div>
 
@@ -106,7 +106,11 @@ closed-form shortcut formulas <code><a href="c_mu_shortcut.html">c_mu_shortcut</
 <code><a href="c_sigma_shortcut.html">c_sigma_shortcut</a></code> for use without the integration. The weights
 and the reported ranks are <code><a href="estimator_weights.html">estimator_weights</a></code> and
 <code><a href="scenario_ranks.html">scenario_ranks</a></code>, and <code><a href="imputed_moments.html">imputed_moments</a></code> gives the
-variances and the covariance of the two imputed statistics. Every function
+variances and the covariance of the two imputed statistics. A study that
+reports other quantiles than those of the scenarios S1 to S5 is described by
+<code><a href="reporting_scenario.html">reporting_scenario</a></code>, and a definition of the sample quantiles
+outside the nine of <code><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></code> is given as a function to
+the argument <code>type</code>. Every function
 defaults to the BLUE; the estimators of Wan, Luo and Shi are reached by
 <code>version = "wan_luo_shi"</code> in the study-level functions and in
 <code><a href="inflation_factors.html">inflation_factors()</a></code>, and by the argument <code>method</code> in the others.</p>
@@ -118,9 +122,11 @@ deviation from a five-number summary. Manuscript. The paper this package
 accompanies: the factors, their limits, the shortcut formulas and the checks
 of the computation.</p>
 <p>Wu Z (2026). orderStatMoments: Exact Moments of Order Statistics. R package version
-0.3.0. The engine that computes the moments of the normal order statistics.</p>
+0.3.1. The engine that computes the moments of the normal order statistics.</p>
 <p>Wu Z, Tong T (2026). orderStatMoments: Exact means, variances, and covariances of
-order statistics in R. Manuscript. The paper of the engine.</p>
+order statistics in R. arXiv preprint arXiv:2611.19980.
+<a href="https://doi.org/10.48550/arXiv.2611.19980" class="external-link">doi:10.48550/arXiv.2611.19980</a>
+. The paper of the engine.</p>
 <p>Wan X, Wang W, Liu J, Tong T (2014). Estimating the sample mean and standard
 deviation from the sample size, median, range and/or interquartile range.
 BMC Medical Research Methodology 14, 135.</p>

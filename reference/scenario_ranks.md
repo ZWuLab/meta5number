@@ -31,7 +31,11 @@ scenario_ranks(n, scenario = c("S3", "S1", "S2", "S4", "S5"))
   S3/S2 respectively. Also `"S4"` (the quartiles with the 10th and 90th
   percentiles) and `"S5"` (all five with the two percentiles), the names
   of Wu, Shi and Tong (2026) for Scenarios 5 and 7 of Balakrishnan et
-  al. (2022); only the BLUE (`"blue"`) is defined for these two.
+  al. (2022); only the BLUE (`"blue"`) is defined for these two. Or an
+  object of
+  [`reporting_scenario`](https://zwulab.github.io/meta5number/reference/reporting_scenario.md),
+  which describes any other set of reported quantiles, with or without
+  the minimum and the maximum; again only the BLUE is defined.
 
 ## Value
 

@@ -34,7 +34,11 @@ estimator_weights(
   S3/S2 respectively. Also `"S4"` (the quartiles with the 10th and 90th
   percentiles) and `"S5"` (all five with the two percentiles), the names
   of Wu, Shi and Tong (2026) for Scenarios 5 and 7 of Balakrishnan et
-  al. (2022); only the BLUE (`"blue"`) is defined for these two.
+  al. (2022); only the BLUE (`"blue"`) is defined for these two. Or an
+  object of
+  [`reporting_scenario`](https://zwulab.github.io/meta5number/reference/reporting_scenario.md),
+  which describes any other set of reported quantiles, with or without
+  the minimum and the maximum; again only the BLUE is defined.
 
 - estimand:
 
@@ -42,8 +46,10 @@ estimator_weights(
 
 - method:
 
-  One of the following; `"blue"` is the default. Under S4 and S5 only
-  `"blue"`.
+  One of the following; `"blue"` is the default. Under S4 and S5, and
+  for a
+  [`reporting_scenario`](https://zwulab.github.io/meta5number/reference/reporting_scenario.md),
+  only `"blue"`.
 
   `"blue"`
 
@@ -94,16 +100,19 @@ estimator_weights(
 
 - type:
 
-  The definition of the sample quantiles, an integer from 1 to 9 as in
+  The definition of the sample quantiles: an integer from 1 to 9 as in
   [`quantile`](https://rdrr.io/r/stats/quantile.html); 7, R's default,
-  unless a study states another.
+  unless a study states another. Or a function that gives a definition
+  outside these nine, see "A quantile rule of your own" in Details.
 
 ## Value
 
 Named numeric weight vector over the reported values, in increasing
 order, named as the scenario reports them: `a` the minimum, `p10` the
 10th percentile, `q1`, `m` the median, `q3`, `p90` the 90th percentile
-and `b` the maximum.
+and `b` the maximum. For a
+[`reporting_scenario`](https://zwulab.github.io/meta5number/reference/reporting_scenario.md)
+the names are its labels (`min`, `p5`, ..., `max`).
 
 ## Details
 
@@ -127,11 +136,15 @@ estimator_weights(25, "S3", "mean")           # the BLUE of the mean, the defaul
 #> 0.08214526 0.28565964 0.26439020 0.28565964 0.08214526 
 estimator_weights(25, "S3", "sd")             # the BLUE of the SD
 #>             a            q1             m            q3             b 
-#> -1.712665e-01 -2.565653e-01 -2.667558e-16  2.565653e-01  1.712665e-01 
+#> -1.712665e-01 -2.565653e-01 -2.315005e-16  2.565653e-01  1.712665e-01 
 estimator_weights(25, "S3", "mean", "luo")
 #>          a         q1          m         q3          b 
 #> 0.08221017 0.28870353 0.25817261 0.28870353 0.08221017 
 estimator_weights(25, "S3", "sd", "shi")
 #>          a         q1          m         q3          b 
 #> -0.1716592 -0.2559979  0.0000000  0.2559979  0.1716592 
+# the BLUE from the median with the 5th and 95th percentiles
+estimator_weights(60, reporting_scenario(c(0.05, 0.5, 0.95)), "mean")
+#>        p5       p50       p95 
+#> 0.1921978 0.6156044 0.1921978 
 ```

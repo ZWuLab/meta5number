@@ -41,16 +41,23 @@ print(x, digits = 4L, ...)
   `p10`, `q1`, `med`, `q3`, `p90`, `max` for S5, where `p10` and `p90`
   are the 10th and 90th percentiles. Extra names are ignored, a required
   name given twice is an error, and the entries used must be
-  non-decreasing.
+  non-decreasing. For a
+  [`reporting_scenario`](https://zwulab.github.io/meta5number/reference/reporting_scenario.md),
+  the reported values in its order (the minimum if reported, the
+  quantiles by increasing probability, the maximum if reported), unnamed
+  or named by its labels.
 
 - n:
 
   Integer sample size: at least 3 under S1 and S2, 5 under S3 and S4,
-  and 7 under S5.
+  and 7 under S5, and at least the number of reported values for a
+  [`reporting_scenario`](https://zwulab.github.io/meta5number/reference/reporting_scenario.md).
 
 - scenario:
 
-  One of "S1" to "S5".
+  One of "S1" to "S5", or an object of
+  [`reporting_scenario`](https://zwulab.github.io/meta5number/reference/reporting_scenario.md)
+  for any other set of reported quantiles.
 
 - version:
 
@@ -58,9 +65,13 @@ print(x, digits = 4L, ...)
 
 - type:
 
-  The definition of the reported sample quantiles, an integer from 1 to
+  The definition of the reported sample quantiles: an integer from 1 to
   9 as in [`quantile`](https://rdrr.io/r/stats/quantile.html); 7, R's
-  default, unless the study states another. See Details.
+  default, unless the study states another. Or a function
+  `function(p, n)` that returns `list(r, gamma)` for a definition
+  outside these nine, the quantile at probability \\p\\ being
+  \\(1-\gamma)X\_{(r)} + \gamma X\_{(r+1)}\\; see Details and
+  [`imputed_moments`](https://zwulab.github.io/meta5number/reference/imputed_moments.md).
 
 - x:
 
@@ -111,8 +122,21 @@ The shortcut formulas for the factors
 are not used here. They serve a reader without this package and a
 comparison with the exact values.
 
-Under S4 and S5 only the BLUE is defined; `version = "wan_luo_shi"` is
-an error there.
+Under S4 and S5, and for a
+[`reporting_scenario`](https://zwulab.github.io/meta5number/reference/reporting_scenario.md),
+only the BLUE is defined; `version = "wan_luo_shi"` is an error there.
+
+Other reported quantiles, and other definitions. A study that reports,
+say, the median with the 5th and 95th percentiles is described by
+`reporting_scenario(c(0.05, 0.5, 0.95))`, and the BLUE and its exact
+factors are computed from these three values. A study whose quantiles
+follow a definition that is not one of R's nine is given a rule as
+`type`. The last example writes Tukey's hinges, the quartiles that
+[`fivenum`](https://rdrr.io/r/stats/fivenum.html) returns, as such a
+rule: the lower hinge is the median of the lower half of the ordered
+sample, the middle value included when \\n\\ is odd, so its position is
+\\d = (\lfloor (n+1)/2 \rfloor + 1)/2\\, and the upper hinge is at \\n +
+1 - d\\.
 
 A constant summary, all reported values equal, has an imputed SD of
 exactly zero (the SD weights sum to zero) and so standard errors of
@@ -156,4 +180,24 @@ se_imputed(c(min = 3, q1 = 10, med = 12, q3 = 15, max = 30), n = 30, "S3")
 #>    mu_hat sigma_hat  se_naive     se_mu  se_sigma 
 #>   12.9405    5.6194    1.0260    1.0591    0.8176 
 #> Factors: C_mu(n) = 0.1885, C_sigma(n) = 0.1455. The weights are $w_mean and $w_sd; every field with str() or unclass().
+
+# other reported quantiles: the median with the 5th and 95th percentiles
+sc <- reporting_scenario(c(0.05, 0.5, 0.95))
+se_imputed(c(2.1, 5.0, 8.4), n = 60, scenario = sc)
+#> Imputed mean and SD under the reported values (p5, p50, p95), n = 60, the BLUE, quantile type 7
+#>    mu_hat sigma_hat  se_naive     se_mu  se_sigma 
+#>    5.0961    2.0124    0.2598    0.2831    0.2242 
+#> Factors: C_mu(n) = 0.1407, C_sigma(n) = 0.1114. The weights are $w_mean and $w_sd; every field with str() or unclass().
+
+# another definition of the quartiles: Tukey's hinges, as stats::fivenum() computes them
+hinges <- function(p, n) {
+  d <- (floor((n + 1) / 2) + 1) / 2              # the position of the lower hinge
+  pos <- ifelse(p < 0.5, d, ifelse(p > 0.5, n + 1 - d, (n + 1) / 2))
+  list(r = floor(pos), gamma = pos - floor(pos)) # (1 - gamma) X_(r) + gamma X_(r+1)
+}
+se_imputed(c(min = 3, q1 = 10, med = 12, q3 = 15, max = 30), n = 30, "S3", type = hinges)
+#> Imputed mean and SD under S3, n = 30, the BLUE, a user-supplied quantile rule
+#>    mu_hat sigma_hat  se_naive     se_mu  se_sigma 
+#>   12.9304    5.5706    1.0170    1.0527    0.8116 
+#> Factors: C_mu(n) = 0.189, C_sigma(n) = 0.1457. The weights are $w_mean and $w_sd; every field with str() or unclass().
 ```

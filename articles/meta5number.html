@@ -19,7 +19,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">meta5number</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,7 +59,7 @@
       <h1>Standard errors for means and SDs imputed from five-number summaries</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/ZWuLab/meta5number/blob/v0.2.1/vignettes/meta5number.Rmd" class="external-link"><code>vignettes/meta5number.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ZWuLab/meta5number/blob/main/vignettes/meta5number.Rmd" class="external-link"><code>vignettes/meta5number.Rmd</code></a></small>
       <div class="d-none name"><code>meta5number.Rmd</code></div>
     </div>
 
@@ -473,6 +473,124 @@ under
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>S</mi><mn>2</mn></msub><annotation encoding="application/x-tex">S_2</annotation></semantics></math>.</p>
 </div>
 <div class="section level2">
+<h2 id="appendix-c--other-reported-quantiles-and-other-quantile-definitions">Appendix C. Other reported quantiles, and other quantile
+definitions<a class="anchor" aria-label="anchor" href="#appendix-c--other-reported-quantiles-and-other-quantile-definitions"></a>
+</h2>
+<p>The scenarios
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>S</mi><mn>1</mn></msub><annotation encoding="application/x-tex">S_1</annotation></semantics></math>
+to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>S</mi><mn>3</mn></msub><annotation encoding="application/x-tex">S_3</annotation></semantics></math>
+are the parts of a five-number summary, and <code>"S4"</code> and
+<code>"S5"</code> add the 10th and 90th percentiles to the quartiles and
+to all five values. A study may report other quantiles.
+<code><a href="../reference/reporting_scenario.html">reporting_scenario()</a></code> describes such a report by the
+probabilities of its quantiles, and by whether the minimum and the
+maximum are reported, and every function takes its result as
+<code>scenario</code>. The estimator is then the BLUE from these
+reported values, and its factors are exact at every sample size. Suppose
+a study of 60 patients reports the median with the 5th and 95th
+percentiles:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reporting_scenario.html">reporting_scenario</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.05</span>, <span class="fl">0.5</span>, <span class="fl">0.95</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">sc</span></span>
+<span><span class="co">#&gt; Reporting scenario with 3 reported values: p5, p50, p95</span></span>
+<span><span class="co">#&gt; Quantiles at the probabilities 0.05, 0.50, 0.95</span></span>
+<span><span class="fu"><a href="../reference/se_imputed.html">se_imputed</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.1</span>, <span class="fl">5.0</span>, <span class="fl">8.4</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">60</span>, scenario <span class="op">=</span> <span class="va">sc</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Imputed mean and SD under the reported values (p5, p50, p95), n = 60, the BLUE, quantile type 7</span></span>
+<span><span class="co">#&gt;    mu_hat sigma_hat  se_naive     se_mu  se_sigma </span></span>
+<span><span class="co">#&gt;    5.0961    2.0124    0.2598    0.2831    0.2242 </span></span>
+<span><span class="co">#&gt; Factors: C_mu(n) = 0.1407, C_sigma(n) = 0.1114. The weights are $w_mean and $w_sd; every field with str() or unclass().</span></span>
+<span><span class="fu"><a href="../reference/inflation_factors.html">inflation_factors</a></span><span class="op">(</span><span class="fl">60</span>, <span class="va">sc</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    kappa_mu kappa_sigma </span></span>
+<span><span class="co">#&gt;    1.089587    1.212702</span></span></code></pre></div>
+<p>The reported values are given in increasing order, or named by the
+labels that the scenario prints. They need not be symmetric about the
+median, and one extreme may be reported without the other:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/estimator_weights.html">estimator_weights</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fu"><a href="../reference/reporting_scenario.html">reporting_scenario</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.75</span><span class="op">)</span>, min <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="st">"mean"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;       min       p50       p75 </span></span>
+<span><span class="co">#&gt; 0.1144422 0.5223927 0.3631651</span></span></code></pre></div>
+<p>The named scenarios are special cases, so the two calls below give
+one number. The inflation factors at two sample sizes follow. The last
+line is their limit in the sample size when the 10th and 90th
+percentiles are reported with the quartiles, computed from the limiting
+covariance matrix of the five sample quantiles as Wu, Shi and Tong
+(2026) give it.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">s4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reporting_scenario.html">reporting_scenario</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">0.9</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>named <span class="op">=</span> <span class="fu"><a href="../reference/c_mu.html">c_mu</a></span><span class="op">(</span><span class="fl">41</span>, <span class="st">"S4"</span><span class="op">)</span>, general <span class="op">=</span> <span class="fu"><a href="../reference/c_mu.html">c_mu</a></span><span class="op">(</span><span class="fl">41</span>, <span class="va">s4</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     named   general </span></span>
+<span><span class="co">#&gt; 0.1609236 0.1609236</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="st">"n = 101"</span> <span class="op">=</span> <span class="fu"><a href="../reference/inflation_factors.html">inflation_factors</a></span><span class="op">(</span><span class="fl">101</span>, <span class="va">s4</span><span class="op">)</span>,</span>
+<span>      <span class="st">"n = 1001"</span> <span class="op">=</span> <span class="fu"><a href="../reference/inflation_factors.html">inflation_factors</a></span><span class="op">(</span><span class="fl">1001</span>, <span class="va">s4</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;          kappa_mu kappa_sigma</span></span>
+<span><span class="co">#&gt; n = 101  1.031489    1.204186</span></span>
+<span><span class="co">#&gt; n = 1001 1.032119    1.203613</span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">s4</span><span class="op">$</span><span class="va">probs</span>; <span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">qnorm</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<span><span class="va">G</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/outer.html" class="external-link">outer</a></span><span class="op">(</span><span class="va">p</span>, <span class="va">p</span>, <span class="va">pmin</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/outer.html" class="external-link">outer</a></span><span class="op">(</span><span class="va">p</span>, <span class="va">p</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/outer.html" class="external-link">outer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">dnorm</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">dnorm</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>kappa_mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/solve.html" class="external-link">solve</a></span><span class="op">(</span><span class="va">G</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  kappa_sigma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">2</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/drop.html" class="external-link">drop</a></span><span class="op">(</span><span class="va">z</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/solve.html" class="external-link">solve</a></span><span class="op">(</span><span class="va">G</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">z</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    kappa_mu kappa_sigma </span></span>
+<span><span class="co">#&gt;    1.032188    1.203551</span></span></code></pre></div>
+<p>The second question is how a study turned its sample into the
+quantiles it reports. The argument <code>type</code> takes one of the
+nine definitions of <code><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile()</a></code>, 7 by default, and a study
+that names the definition it used is given that <code>type</code>. At a
+sample size where the quantiles are interpolated, the definition changes
+the factors. In the example below, at
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>40</mn></mrow><annotation encoding="application/x-tex">n = 40</annotation></semantics></math>
+under
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>S</mi><mn>2</mn></msub><annotation encoding="application/x-tex">S_2</annotation></semantics></math>,
+the factor of the imputed SD changes more than that of the imputed
+mean:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>type6 <span class="op">=</span> <span class="fl">6</span>, type7 <span class="op">=</span> <span class="fl">7</span>, type2 <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">t</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>c_mu <span class="op">=</span> <span class="fu"><a href="../reference/c_mu.html">c_mu</a></span><span class="op">(</span><span class="fl">40</span>, <span class="st">"S2"</span>, type <span class="op">=</span> <span class="va">t</span><span class="op">)</span>, c_sigma <span class="op">=</span> <span class="fu"><a href="../reference/c_sigma.html">c_sigma</a></span><span class="op">(</span><span class="fl">40</span>, <span class="st">"S2"</span>, type <span class="op">=</span> <span class="va">t</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;             type6     type7     type2</span></span>
+<span><span class="co">#&gt; c_mu    0.1686310 0.1692033 0.1686501</span></span>
+<span><span class="co">#&gt; c_sigma 0.1773468 0.1828804 0.1789418</span></span></code></pre></div>
+<p>A definition outside these nine is supplied as a function. Under each
+of the nine definitions a sample quantile is a combination
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>γ</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>X</mi><mrow><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo stretchy="false" form="postfix">)</mo></mrow></msub><mo>+</mo><mi>γ</mi><msub><mi>X</mi><mrow><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow></msub></mrow><annotation encoding="application/x-tex">(1-\gamma)X_{(r)} + \gamma X_{(r+1)}</annotation></semantics></math>
+of two neighboring values of the ordered sample, and a rule of the same
+form covers other definitions: the function takes the probabilities
+<code>p</code> and the sample size <code>n</code> and returns the ranks
+<code>r</code> and the weights <code>gamma</code>. Tukey’s hinges, the
+quartiles that <code><a href="https://rdrr.io/r/stats/fivenum.html" class="external-link">fivenum()</a></code> returns, are an example: the lower
+hinge is the median of the lower half of the ordered sample, the middle
+value included when the sample size is odd. No one of the nine
+definitions gives the hinges at every sample size.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">hinges</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">p</span>, <span class="va">n</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">d</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">floor</a></span><span class="op">(</span><span class="op">(</span><span class="va">n</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span>          <span class="co"># the position of the lower hinge</span></span>
+<span>  <span class="va">pos</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">p</span> <span class="op">&lt;</span> <span class="fl">0.5</span>, <span class="va">d</span>, <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">p</span> <span class="op">&gt;</span> <span class="fl">0.5</span>, <span class="va">n</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">d</span>, <span class="op">(</span><span class="va">n</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>r <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">floor</a></span><span class="op">(</span><span class="va">pos</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="va">pos</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">floor</a></span><span class="op">(</span><span class="va">pos</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.9</span>, <span class="fl">3.4</span>, <span class="fl">4.1</span>, <span class="fl">4.4</span>, <span class="fl">5.0</span>, <span class="fl">5.2</span>, <span class="fl">5.9</span>, <span class="fl">6.3</span>, <span class="fl">7.7</span>, <span class="fl">9.6</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">h</span> <span class="op">&lt;-</span> <span class="fu">hinges</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span>rule <span class="op">=</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">h</span><span class="op">$</span><span class="va">gamma</span><span class="op">)</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="va">h</span><span class="op">$</span><span class="va">r</span><span class="op">]</span> <span class="op">+</span> <span class="va">h</span><span class="op">$</span><span class="va">gamma</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="va">h</span><span class="op">$</span><span class="va">r</span> <span class="op">+</span> <span class="fl">1</span><span class="op">]</span>,</span>
+<span>      fivenum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/fivenum.html" class="external-link">fivenum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         [,1] [,2] [,3]</span></span>
+<span><span class="co">#&gt; rule     4.1  5.1  6.3</span></span>
+<span><span class="co">#&gt; fivenum  4.1  5.1  6.3</span></span>
+<span><span class="fu"><a href="../reference/se_imputed.html">se_imputed</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>min <span class="op">=</span> <span class="fl">3</span>, q1 <span class="op">=</span> <span class="fl">10</span>, med <span class="op">=</span> <span class="fl">12</span>, q3 <span class="op">=</span> <span class="fl">15</span>, max <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">30</span>, <span class="st">"S3"</span>,</span>
+<span>           type <span class="op">=</span> <span class="va">hinges</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Imputed mean and SD under S3, n = 30, the BLUE, a user-supplied quantile rule</span></span>
+<span><span class="co">#&gt;    mu_hat sigma_hat  se_naive     se_mu  se_sigma </span></span>
+<span><span class="co">#&gt;   12.9304    5.5706    1.0170    1.0527    0.8116 </span></span>
+<span><span class="co">#&gt; Factors: C_mu(n) = 0.189, C_sigma(n) = 0.1457. The weights are $w_mean and $w_sd; every field with str() or unclass().</span></span></code></pre></div>
+<p>The rule is called with the probabilities of the scenario’s quantiles
+only, and the minimum and the maximum are taken as they are. The
+data-frame functions <code><a href="../reference/se_imputed_df.html">se_imputed_df()</a></code> and
+<code><a href="../reference/se_imputed_diff.html">se_imputed_diff()</a></code> read the scenarios
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>S</mi><mn>1</mn></msub><annotation encoding="application/x-tex">S_1</annotation></semantics></math>
+to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>S</mi><mn>3</mn></msub><annotation encoding="application/x-tex">S_3</annotation></semantics></math>
+off the columns and take the same <code>type</code>. A study with other
+reported quantiles is computed with <code><a href="../reference/se_imputed.html">se_imputed()</a></code> and its
+row is filled in from the result.</p>
+</div>
+<div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <p>Balakrishnan N, Rychtar J, Taylor D, Walter SD (2022). Unified
@@ -503,11 +621,12 @@ package. Journal of Statistical Software 36(3), 1-48.</p>
 standard deviation from the sample size, median, range and/or
 interquartile range. BMC Medical Research Methodology 14, 135.</p>
 <p>Wu Z (2026). orderStatMoments: Exact Moments of Order Statistics. R
-package version 0.3.0.</p>
+package version 0.3.1.</p>
 <p>Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and
 standard deviation from a five-number summary. Manuscript.</p>
 <p>Wu Z, Tong T (2026). orderStatMoments: Exact means, variances, and
-covariances of order statistics in R. Manuscript.</p>
+covariances of order statistics in R. arXiv preprint arXiv:2611.19980.
+<a href="https://doi.org/10.48550/arXiv.2611.19980" class="external-link uri">https://doi.org/10.48550/arXiv.2611.19980</a></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
