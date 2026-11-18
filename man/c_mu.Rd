@@ -17,14 +17,19 @@ c_mu(
 and 7 under S5, under the default quantile definition. Any such \code{n} is
 computed exactly; see Details. Another definition may need a larger \eqn{n}:
 where two reported values are the same order statistic (type 3 at
-\eqn{n = 5} under S3, for example) the BLUE is not defined and is refused.}
+\eqn{n = 5} under S3, for example) the BLUE is not defined and is refused.
+For a \code{\link{reporting_scenario}}, at least its number of reported
+values.}
 
 \item{scenario}{Character. One of \code{"S1"} (min, median, max),
 \code{"S2"} (three quartiles), \code{"S3"} (all five). McGrath 2023 labels;
 note Wan 2014's C2/C3 are S3/S2 respectively. Also \code{"S4"} (the
 quartiles with the 10th and 90th percentiles) and \code{"S5"} (all five with
 the two percentiles), the names of Wu, Shi and Tong (2026) for Scenarios 5 and 7 of Balakrishnan
-et al. (2022); only the BLUE (\code{"blue"}) is defined for these two.}
+et al. (2022); only the BLUE (\code{"blue"}) is defined for these two.
+Or an object of \code{\link{reporting_scenario}}, which describes any
+other set of reported quantiles, with or without the minimum and the
+maximum; again only the BLUE is defined.}
 
 \item{method}{Mean estimator preset; see \code{\link{estimator_weights}}. The
 default \code{"blue"} is the BLUE, the default estimator version of Wu, Shi and
@@ -44,9 +49,10 @@ before 0.3.0 does not carry \code{affine} and is refused. The package keeps
 the moments it computes itself for the session, so repeated calls at one
 sample size integrate once without this argument.}
 
-\item{type}{The definition of the sample quantiles, an integer from 1 to 9 as
+\item{type}{The definition of the sample quantiles: an integer from 1 to 9 as
 in \code{\link[stats]{quantile}}; 7, R's default, unless a study states
-another.}
+another. Or a function that gives a definition outside these nine, see
+"A quantile rule of your own" in Details.}
 }
 \value{
 Numeric scalar \eqn{C(n)}.
@@ -63,6 +69,8 @@ closed-form shortcut formula see \code{\link{c_mu_shortcut}}.
 c_mu(25, "S2")                 # exact C(n) for the BLUE of the mean under S2
 c_mu(25, "S2", "luo")          # the same for Luo's estimator
 c_mu(25, "S2") * sqrt(25)      # inflation factor over sigma/sqrt(n)
+# any other reported quantiles: the median with the 5th and 95th percentiles
+c_mu(60, reporting_scenario(c(0.05, 0.5, 0.95)))
 }
 \references{
 Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard

@@ -4,10 +4,17 @@
 #          the order-statistic ranks reported under the scenarios S1 to S5.
 #
 # EXPORTED FUNCTIONS:
-#   - estimator_weights() weight vectors of the named estimators (wan/luo/shi/blue)
-#   - scenario_ranks()    order-statistic ranks reported under S1 to S5 at the exact-rank sizes
+#   - estimator_weights()  weight vectors of the named estimators (wan/luo/shi/blue)
+#   - scenario_ranks()     order-statistic ranks reported under S1 to S5 at the exact-rank sizes
+#   - reporting_scenario() a data-reporting scenario with any set of quantiles, with its print
 #
 # INTERNAL HELPERS:
+#   - .scenario()          the `scenario` argument: a name S1 to S5 or a reporting_scenario()
+#   - .scenario_spec()     its probabilities, extremes and the names of the reported values
+#   - .scenario_name()     "S1" to "S5", or "custom"
+#   - .scenario_label()    how a message names the scenario
+#   - .type_label()        how a message names the quantile definition
+#   - .quantile_design()   the quantiles at given probabilities as combinations of order statistics
 #   - .reported_design()   the reported values as linear combinations of order statistics
 #   - .reported_moments()  their means and covariance matrix (standard normal units)
 #   - .check_moments()     a user-supplied `moments` object against the design
@@ -28,7 +35,7 @@
 #'   sizes of \code{\link{imputed_moments}}.
 #' @param estimand \code{"mean"} or \code{"sd"}.
 #' @param method One of the following; \code{"blue"} is the default. Under S4
-#'   and S5 only \code{"blue"}.
+#'   and S5, and for a \code{\link{reporting_scenario}}, only \code{"blue"}.
 #'   \describe{
 #'   \item{\code{"blue"}}{The default. Lloyd's generalized-least-squares best
 #'     linear unbiased estimator computed from the exact means and covariance
@@ -53,7 +60,9 @@
 #' @return Named numeric weight vector over the reported values, in increasing
 #'   order, named as the scenario reports them: \code{a} the minimum, \code{p10}
 #'   the 10th percentile, \code{q1}, \code{m} the median, \code{q3}, \code{p90}
-#'   the 90th percentile and \code{b} the maximum.
+#'   the 90th percentile and \code{b} the maximum. For a
+#'   \code{\link{reporting_scenario}} the names are its labels (\code{min},
+#'   \code{p5}, ..., \code{max}).
 #' @details The Wan/Luo/Shi weights are closed-form functions of \eqn{n} and
 #'   are returned for any single integer \eqn{n \ge 2}, as the source papers
 #'   apply them. The \code{"blue"} weights are computed from the exact means and
@@ -64,6 +73,8 @@
 #' estimator_weights(25, "S3", "sd")             # the BLUE of the SD
 #' estimator_weights(25, "S3", "mean", "luo")
 #' estimator_weights(25, "S3", "sd", "shi")
+#' # the BLUE from the median with the 5th and 95th percentiles
+#' estimator_weights(60, reporting_scenario(c(0.05, 0.5, 0.95)), "mean")
 #' @references
 #' Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
 #' deviation from a five-number summary. Manuscript.
@@ -72,32 +83,31 @@ estimator_weights <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5"),
                         estimand = c("mean", "sd"),
                         method = c("blue", "luo", "wan", "shi"),
                         moments = NULL, type = 7) {
-  scenario <- match.arg(scenario); estimand <- match.arg(estimand)
+  scenario <- .scenario(scenario); estimand <- match.arg(estimand)
   method <- match.arg(method)
+  sp <- .scenario_spec(scenario)
   # the BLUE needs the moments of the reported values; the formula presets only need an n
   if (method == "blue") .check_scenario_n(n, scenario) else {
     .check_n_integer(n)
     if (n < 2) stop("n must be a single integer >= 2; got: ", n)
   }
 
-  nm <- switch(scenario, S1 = c("a", "m", "b"), S2 = c("q1", "m", "q3"),
-               S3 = c("a", "q1", "m", "q3", "b"),
-               S4 = c("p10", "q1", "m", "q3", "p90"),
-               S5 = c("a", "p10", "q1", "m", "q3", "p90", "b"))
+  nm <- sp$w_names                       # the names of the reported values, in increasing order
 
   if (method == "blue") {
     rm <- .reported_moments(n, scenario, type, moments)
     if (!rm$full_rank)
-      stop("the reported values are linearly dependent at n = ", n, " under ", scenario,
-           " and quantile type ", type, " (two of them are the same order statistic), ",
-           "so the BLUE is not defined")
+      stop("the reported values are linearly dependent at n = ", n, " under ",
+           .scenario_label(scenario), " and ", .type_label(type),
+           " (two of them are the same order statistic, or cannot be told apart numerically),",
+           " so the BLUE is not defined")
     bw <- .blue_weights(rm$alpha, rm$B)
     w <- if (estimand == "mean") bw$w_mu else bw$w_sig
     names(w) <- nm
     return(w)
   }
-  if (scenario %in% c("S4", "S5"))
-    stop("the Wan-Luo-Shi estimators are not defined for ", scenario,
+  if (!(.scenario_name(scenario) %in% c("S1", "S2", "S3")))
+    stop("the Wan-Luo-Shi estimators are not defined for ", .scenario_label(scenario),
          "; use method = \"blue\"")
 
   # Divisors shared by the wan/shi SD presets: Blom's (1958) plotting-position
@@ -159,6 +169,9 @@ estimator_weights <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5"),
 #' deviation from a five-number summary. Manuscript.
 #' @export
 scenario_ranks <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5")) {
+  if (inherits(scenario, "reporting_scenario"))
+    stop("scenario_ranks() takes the named scenarios S1 to S5; for a reporting_scenario() ",
+         "the ranks are the component `ranks` of imputed_moments()")
   scenario <- match.arg(scenario)
   .check_exact_rank_n(n, scenario)
   if (scenario == "S1") return(as.integer(c(1, (n + 1) / 2, n)))
@@ -170,38 +183,248 @@ scenario_ranks <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5")) {
   as.integer(if (scenario == "S4") core else c(1, core, n))
 }
 
+#' A data-reporting scenario with any set of quantiles
+#'
+#' The named scenarios \code{"S1"} to \code{"S5"} cover a five-number summary,
+#' its parts, and the 10th and 90th percentiles added to it. A study may report
+#' other quantiles, for example the 5th and 95th percentiles, the tertiles, or
+#' the median with one extreme. \code{reporting_scenario()} describes such a
+#' report by the probabilities of its quantiles and by whether the minimum and
+#' the maximum are reported. Its result is passed as the argument
+#' \code{scenario} of \code{\link{se_imputed}}, \code{\link{c_mu}},
+#' \code{\link{c_sigma}}, \code{\link{inflation_factors}},
+#' \code{\link{estimator_weights}} and \code{\link{imputed_moments}}, which
+#' then compute the BLUE of the mean and of the SD from these reported values
+#' and its exact factors, at any sample size that is at least the number of
+#' reported values.
+#'
+#' @param probs The probabilities of the reported sample quantiles, strictly
+#'   between 0 and 1 and strictly increasing, for example
+#'   \code{c(0.05, 0.25, 0.5, 0.75, 0.95)}. May be empty when only the minimum
+#'   and the maximum are reported.
+#' @param min,max \code{TRUE} when the minimum, or the maximum, of the sample is
+#'   reported.
+#' @param x An object returned by \code{reporting_scenario()}.
+#' @param ... Not used.
+#' @return An object of class \code{"reporting_scenario"}: a list with
+#'   \code{probs}, \code{min}, \code{max} and \code{labels}, the names of the
+#'   reported values in increasing order (\code{min}, then \code{p5},
+#'   \code{p25}, ... for the quantiles, then \code{max}). The weights that
+#'   \code{\link{estimator_weights}} returns carry these names, and
+#'   \code{\link{se_imputed}} takes the reported values in this order.
+#' @details
+#' At least two values must be reported, because the mean and the SD are two
+#' unknowns. The reported values need not be symmetric about the median. Only
+#' the BLUE is defined for such a scenario: the estimators of Wan, Luo and Shi
+#' exist for S1, S2 and S3.
+#'
+#' The named scenarios are special cases: \code{"S2"} gives the same weights and
+#' factors as \code{reporting_scenario(c(0.25, 0.5, 0.75))}, and \code{"S5"} the
+#' same as \code{reporting_scenario(c(0.1, 0.25, 0.5, 0.75, 0.9), min = TRUE,
+#' max = TRUE)}.
+#'
+#' How a study turned its sample into the reported quantiles is the argument
+#' \code{type} of the functions that take the scenario: one of the nine
+#' definitions of \code{\link[stats]{quantile}} or a rule supplied as a
+#' function (see \code{\link{imputed_moments}}).
+#'
+#' Assumptions: an i.i.d. normal sample, as everywhere in the package.
+#' @examples
+#' # a study reports the median with the 5th and 95th percentiles, n = 60
+#' sc <- reporting_scenario(c(0.05, 0.5, 0.95))
+#' sc
+#' inflation_factors(60, sc)                       # the exact IFs of the BLUE
+#' se_imputed(c(2.1, 5.0, 8.4), n = 60, scenario = sc)
+#'
+#' # the 10th and 90th percentiles with the quartiles: the named scenario S4
+#' s4 <- reporting_scenario(c(0.1, 0.25, 0.5, 0.75, 0.9))
+#' all.equal(c_mu(41, s4), c_mu(41, "S4"))
+#'
+#' # the minimum, the median and the third quartile only
+#' c_sigma(30, reporting_scenario(c(0.5, 0.75), min = TRUE))
+#' @references
+#' Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
+#' deviation from a five-number summary. Manuscript.
+#' @seealso \code{\link{se_imputed}}, \code{\link{imputed_moments}}
+#' @export
+reporting_scenario <- function(probs = numeric(0), min = FALSE, max = FALSE) {
+  if (!is.numeric(probs) || any(!is.finite(probs)) || any(probs <= 0 | probs >= 1))
+    stop("probs must be numbers strictly between 0 and 1; the minimum and the maximum ",
+         "are reported with min = TRUE and max = TRUE")
+  if (is.unsorted(probs, strictly = TRUE))
+    stop("probs must be strictly increasing, the order in which the reported quantiles are given")
+  if (!is.logical(min) || length(min) != 1 || is.na(min) ||
+      !is.logical(max) || length(max) != 1 || is.na(max))
+    stop("min and max must each be TRUE or FALSE")
+  probs <- as.numeric(probs)
+  # the mean and the SD are two unknowns, so one reported value cannot give both
+  if (length(probs) + min + max < 2)
+    stop("a scenario needs at least two reported values; got ", length(probs) + min + max)
+  # the names of the reported values: p5, p25, p97.5, ... from the probabilities in percent
+  plab <- if (length(probs)) paste0("p", sub("^\\s+", "", formatC(100 * probs, digits = 10, format = "fg")))
+  if (anyDuplicated(plab))
+    stop("two of the probabilities agree to ten significant digits: ", paste(probs, collapse = ", "))
+  structure(list(probs = probs, min = min, max = max,
+                 labels = c(if (min) "min", plab, if (max) "max")),
+            class = "reporting_scenario")
+}
+
+#' @rdname reporting_scenario
+#' @export
+print.reporting_scenario <- function(x, ...) {
+  cat("Reporting scenario with ", length(x$labels), " reported values: ",
+      paste(x$labels, collapse = ", "), "\n", sep = "")
+  if (length(x$probs))
+    cat("Quantiles at the probabilities ", paste(format(x$probs), collapse = ", "), "\n", sep = "")
+  invisible(x)
+}
+
 #################### INTERNAL HELPER FUNCTIONS ####################
+
+#' The `scenario` argument: a name S1 to S5 or a reporting_scenario()
+#'
+#' Returns the matched name, or the object built again by reporting_scenario()
+#' from its probabilities and flags. With the default vector of names the first,
+#' "S3", is taken, as match.arg() does.
+#' @keywords internal
+#' @noRd
+.scenario <- function(scenario) {
+  # an object is built again from its three inputs, so that one edited by hand (its
+  # probabilities reordered, its labels changed) is checked and relabeled, never used as it is
+  if (inherits(scenario, "reporting_scenario"))
+    return(reporting_scenario(scenario$probs, scenario$min, scenario$max))
+  if (!is.character(scenario))
+    stop("scenario must be one of \"S1\" to \"S5\" or an object of reporting_scenario()")
+  match.arg(scenario, c("S3", "S1", "S2", "S4", "S5"))
+}
+
+#' "S1" to "S5" for a named scenario, "custom" for a reporting_scenario()
+#' @keywords internal
+#' @noRd
+.scenario_name <- function(scenario)
+  if (inherits(scenario, "reporting_scenario")) "custom" else scenario
+
+#' How a message names the scenario
+#' @keywords internal
+#' @noRd
+.scenario_label <- function(scenario)
+  if (inherits(scenario, "reporting_scenario"))
+    paste0("the reported values (", paste(scenario$labels, collapse = ", "), ")") else scenario
+
+#' How a message names the quantile definition
+#' @keywords internal
+#' @noRd
+.type_label <- function(type)
+  if (is.function(type)) "a user-supplied quantile rule" else paste("quantile type", type)
+
+#' What a scenario reports
+#'
+#' The probabilities of the reported quantiles, whether the minimum and the
+#' maximum are reported, and the names of the reported values in increasing
+#' order: `w_names` as the weights carry them and `q_names` as se_imputed()
+#' reads them from `q`. The named scenarios keep the names they had (a, q1, m,
+#' q3, b, p10, p90 for the weights; min, q1, med, q3, max for `q`); a
+#' reporting_scenario() uses its labels for both.
+#' @keywords internal
+#' @noRd
+.scenario_spec <- function(scenario) {
+  if (inherits(scenario, "reporting_scenario"))
+    return(list(probs = scenario$probs, min = scenario$min, max = scenario$max,
+                w_names = scenario$labels, q_names = scenario$labels, preset = FALSE))
+  switch(scenario,
+    S1 = list(probs = 0.5, min = TRUE, max = TRUE,
+              w_names = c("a", "m", "b"), q_names = c("min", "med", "max"), preset = TRUE),
+    S2 = list(probs = c(0.25, 0.5, 0.75), min = FALSE, max = FALSE,
+              w_names = c("q1", "m", "q3"), q_names = c("q1", "med", "q3"), preset = TRUE),
+    S3 = list(probs = c(0.25, 0.5, 0.75), min = TRUE, max = TRUE,
+              w_names = c("a", "q1", "m", "q3", "b"),
+              q_names = c("min", "q1", "med", "q3", "max"), preset = TRUE),
+    S4 = list(probs = c(0.1, 0.25, 0.5, 0.75, 0.9), min = FALSE, max = FALSE,
+              w_names = c("p10", "q1", "m", "q3", "p90"),
+              q_names = c("p10", "q1", "med", "q3", "p90"), preset = TRUE),
+    S5 = list(probs = c(0.1, 0.25, 0.5, 0.75, 0.9), min = TRUE, max = TRUE,
+              w_names = c("a", "p10", "q1", "m", "q3", "p90", "b"),
+              q_names = c("min", "p10", "q1", "med", "q3", "p90", "max"), preset = TRUE))
+}
+
+#' The sample quantiles at probabilities p as combinations of order statistics
+#'
+#' Returns the ranks that carry a weight and the matrix W with one column per
+#' probability, so that the quantiles are W' X_(ranks). `type` is one of the
+#' definitions 1 to 9 of stats::quantile(), taken from
+#' orderStatMoments::os_quantile_weights(), or a function (p, n) that returns a
+#' list with `r` and `gamma`, the quantile at p[j] being
+#' (1 - gamma[j]) X_(r[j]) + gamma[j] X_(r[j] + 1). A weight below 1e-12 is a
+#' rounding residue of the quantile arithmetic and is set to zero, so that its
+#' rank is not computed, and the column sums to one again.
+#' @keywords internal
+#' @noRd
+.quantile_design <- function(p, n, type) {
+  # `type` is checked first, also when the scenario reports no quantile (the range alone)
+  if (!is.function(type) && (length(type) != 1 || !is.numeric(type) || !(type %in% 1:9)))
+    stop("type must be one of the quantile definitions 1 to 9 of stats::quantile(), ",
+         "or a function (p, n) that returns list(r, gamma); got ",
+         if (is.numeric(type)) "" else paste0("a ", class(type)[1], ": "),
+         paste(format(type), collapse = ", "))
+  if (!length(p)) return(list(ranks = integer(0), W = matrix(0, 0, 0)))
+  if (is.function(type)) {
+    rule <- tryCatch(type(p, n), error = function(e)
+      stop("the quantile rule given as `type` failed when called as type(p, n): ",
+           conditionMessage(e), call. = FALSE))
+    if (!is.list(rule) || is.null(rule$r) || is.null(rule$gamma))
+      stop("a quantile rule must return a list with components r and gamma")
+    r <- rule$r; g <- rule$gamma
+    if (!is.numeric(r) || !is.numeric(g) || length(r) != length(p) || length(g) != length(p) ||
+        any(!is.finite(r)) || any(!is.finite(g)))
+      stop("a quantile rule must return r and gamma as finite numbers, one per probability")
+    # a rounding residue of the rule's arithmetic is not an error: whole ranks to 1e-8,
+    # weights in [0, 1] to 1e-12, and a weight within 1e-12 of 0 or 1 is taken as 0 or 1
+    if (any(abs(r - round(r)) > 1e-8) || any(g < -1e-12 | g > 1 + 1e-12))
+      stop("a quantile rule must return whole ranks r and weights gamma between 0 and 1")
+    g[g < 1e-12] <- 0; g[g > 1 - 1e-12] <- 1
+    r <- as.integer(round(r))
+    # (1 - gamma) X_(r) + gamma X_(r+1): both ranks used must exist in a sample of size n
+    if (any(r < 1 | r > n) || any(r[g > 0] + 1L > n))
+      stop("a quantile rule returned a rank outside 1 to n = ", n,
+           " (r, or r + 1 where gamma > 0)")
+    ranks <- sort(unique(c(r[g < 1], r[g > 0] + 1L)))
+    W <- matrix(0, length(ranks), length(p))
+    for (j in seq_along(p)) {
+      if (g[j] < 1) W[match(r[j], ranks), j] <- 1 - g[j]
+      if (g[j] > 0) W[match(r[j] + 1L, ranks), j] <- g[j]
+    }
+    return(list(ranks = ranks, W = W))
+  }
+  qw <- orderStatMoments::os_quantile_weights(p, n, type)
+  Wq <- qw$W
+  Wq[abs(Wq) < 1e-12] <- 0                              # rounding residues of (j, h)
+  Wq <- sweep(Wq, 2, colSums(Wq), "/")                  # each quantile's weights sum to one again
+  keep <- rowSums(Wq != 0) > 0
+  list(ranks = as.integer(qw$ranks[keep]), W = unname(Wq[keep, , drop = FALSE]))
+}
 
 #' The reported values as linear combinations of order statistics
 #'
 #' Under scenario `scenario` at sample size `n`, each reported value is an order
 #' statistic (the minimum, the maximum) or a sample quantile under definition
 #' `type`, which is a fixed linear combination (1 - h) X_(j) + h X_(j+1) of two
-#' adjacent order statistics (orderStatMoments::os_quantile_weights()). Returns the
-#' ranks that carry a weight and the matrix W with one column per reported value,
-#' so that the reported vector is Y = W' X_(ranks). A weight below 1e-12 in
-#' absolute value is a rounding residue of the quantile arithmetic and is set to
-#' zero, so that its rank is not computed, and the column is renormalized to sum
-#' to one.
+#' adjacent order statistics (.quantile_design()). `scenario` is a name S1 to S5
+#' or a reporting_scenario(). Returns the ranks that carry a weight and the
+#' matrix W with one column per reported value, so that the reported vector is
+#' Y = W' X_(ranks).
 #' @keywords internal
 #' @noRd
 .reported_design <- function(n, scenario, type = 7) {
-  if (length(type) != 1 || !is.numeric(type) || !(type %in% 1:9))
-    stop("type must be one of the quantile definitions 1 to 9 of stats::quantile(); got: ",
-         paste(type, collapse = ", "))
-  # the probabilities of the reported quantiles, and whether the extremes are reported
-  p <- switch(scenario, S1 = 0.5, S2 = c(0.25, 0.5, 0.75), S3 = c(0.25, 0.5, 0.75),
-              S4 = c(0.1, 0.25, 0.5, 0.75, 0.9), S5 = c(0.1, 0.25, 0.5, 0.75, 0.9))
-  extremes <- scenario %in% c("S1", "S3", "S5")
-  qw <- orderStatMoments::os_quantile_weights(p, n, type)
-  Wq <- qw$W
-  Wq[abs(Wq) < 1e-12] <- 0                              # rounding residues of (j, h)
-  Wq <- sweep(Wq, 2, colSums(Wq), "/")                  # each quantile's weights sum to one again
-  ranks <- sort(unique(c(if (extremes) c(1, n), qw$ranks[rowSums(Wq != 0) > 0])))
-  W <- matrix(0, length(ranks), length(p) + 2 * extremes)
-  qcols <- if (extremes) 1 + seq_along(p) else seq_along(p)
-  W[match(qw$ranks, ranks, nomatch = 0), qcols] <- Wq[qw$ranks %in% ranks, , drop = FALSE]
-  if (extremes) { W[1, 1] <- 1; W[length(ranks), ncol(W)] <- 1 }
+  sp <- .scenario_spec(scenario)
+  # the reported quantiles as combinations of order statistics, under definition `type`
+  qd <- .quantile_design(sp$probs, n, type)
+  ranks <- sort(unique(c(if (sp$min) 1L, if (sp$max) as.integer(n), qd$ranks)))
+  # one column per reported value: the minimum, the quantiles, the maximum
+  W <- matrix(0, length(ranks), length(sp$probs) + sp$min + sp$max)
+  if (length(sp$probs))
+    W[match(qd$ranks, ranks), sp$min + seq_along(sp$probs)] <- qd$W
+  if (sp$min) W[1, 1] <- 1                              # rank 1 is the first of `ranks`
+  if (sp$max) W[length(ranks), ncol(W)] <- 1            # rank n is the last
   list(ranks = as.integer(ranks), W = W)
 }
 
@@ -247,7 +470,7 @@ scenario_ranks <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5")) {
 #' @noRd
 .check_moments <- function(moments, n, ranks, scenario, type) {
   k <- length(ranks)
-  where <- paste0(" (n = ", n, ", ", scenario, ", type ", type, ")")
+  where <- paste0(" (n = ", n, ", ", .scenario_label(scenario), ", ", .type_label(type), ")")
   if (!is.list(moments) || is.null(moments$alpha) || is.null(moments$B))
     stop("'moments' must be orderStatMoments::os_moments() at the ranks ", paste(ranks, collapse = ", "),
          where, ", or a list with its components alpha and B")

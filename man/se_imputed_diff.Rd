@@ -38,7 +38,9 @@ mean and SD: \code{"sample"} (default), the sample statistics, or
 \code{"imputed"}.}
 
 \item{type}{The definition of the reported sample quantiles, 1 to 9 as in
-\code{\link[stats]{quantile}}; 7, R's default. One value for every row.}
+\code{\link[stats]{quantile}}; 7, R's default. One value for every row.
+A quantile rule supplied as a function is taken too, as in
+\code{\link{se_imputed}}.}
 }
 \value{
 \code{data} with the output columns of \code{\link{se_imputed_df}} for

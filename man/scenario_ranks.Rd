@@ -18,7 +18,10 @@ functions of the package accept it.}
 note Wan 2014's C2/C3 are S3/S2 respectively. Also \code{"S4"} (the
 quartiles with the 10th and 90th percentiles) and \code{"S5"} (all five with
 the two percentiles), the names of Wu, Shi and Tong (2026) for Scenarios 5 and 7 of Balakrishnan
-et al. (2022); only the BLUE (\code{"blue"}) is defined for these two.}
+et al. (2022); only the BLUE (\code{"blue"}) is defined for these two.
+Or an object of \code{\link{reporting_scenario}}, which describes any
+other set of reported quantiles, with or without the minimum and the
+maximum; again only the BLUE is defined.}
 }
 \value{
 Integer vector of ranks, increasing.

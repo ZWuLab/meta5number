@@ -23,12 +23,15 @@ sizes of \code{\link{imputed_moments}}.}
 note Wan 2014's C2/C3 are S3/S2 respectively. Also \code{"S4"} (the
 quartiles with the 10th and 90th percentiles) and \code{"S5"} (all five with
 the two percentiles), the names of Wu, Shi and Tong (2026) for Scenarios 5 and 7 of Balakrishnan
-et al. (2022); only the BLUE (\code{"blue"}) is defined for these two.}
+et al. (2022); only the BLUE (\code{"blue"}) is defined for these two.
+Or an object of \code{\link{reporting_scenario}}, which describes any
+other set of reported quantiles, with or without the minimum and the
+maximum; again only the BLUE is defined.}
 
 \item{estimand}{\code{"mean"} or \code{"sd"}.}
 
 \item{method}{One of the following; \code{"blue"} is the default. Under S4
-and S5 only \code{"blue"}.
+and S5, and for a \code{\link{reporting_scenario}}, only \code{"blue"}.
 \describe{
 \item{\code{"blue"}}{The default. Lloyd's generalized-least-squares best
   linear unbiased estimator computed from the exact means and covariance
@@ -63,15 +66,18 @@ before 0.3.0 does not carry \code{affine} and is refused. The package keeps
 the moments it computes itself for the session, so repeated calls at one
 sample size integrate once without this argument.}
 
-\item{type}{The definition of the sample quantiles, an integer from 1 to 9 as
+\item{type}{The definition of the sample quantiles: an integer from 1 to 9 as
 in \code{\link[stats]{quantile}}; 7, R's default, unless a study states
-another.}
+another. Or a function that gives a definition outside these nine, see
+"A quantile rule of your own" in Details.}
 }
 \value{
 Named numeric weight vector over the reported values, in increasing
   order, named as the scenario reports them: \code{a} the minimum, \code{p10}
   the 10th percentile, \code{q1}, \code{m} the median, \code{q3}, \code{p90}
-  the 90th percentile and \code{b} the maximum.
+  the 90th percentile and \code{b} the maximum. For a
+  \code{\link{reporting_scenario}} the names are its labels (\code{min},
+  \code{p5}, ..., \code{max}).
 }
 \description{
 Returns the weight vector \eqn{w} such that the estimator is \eqn{w'Y}, with
@@ -90,6 +96,8 @@ estimator_weights(25, "S3", "mean")           # the BLUE of the mean, the defaul
 estimator_weights(25, "S3", "sd")             # the BLUE of the SD
 estimator_weights(25, "S3", "mean", "luo")
 estimator_weights(25, "S3", "sd", "shi")
+# the BLUE from the median with the 5th and 95th percentiles
+estimator_weights(60, reporting_scenario(c(0.05, 0.5, 0.95)), "mean")
 }
 \references{
 Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard

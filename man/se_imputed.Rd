@@ -23,18 +23,26 @@ se_imputed(
 \code{min}, \code{p10}, \code{q1}, \code{med}, \code{q3}, \code{p90},
 \code{max} for S5, where \code{p10} and \code{p90} are the 10th and 90th
 percentiles. Extra names are ignored, a required name given twice is an
-error, and the entries used must be non-decreasing.}
+error, and the entries used must be non-decreasing. For a
+\code{\link{reporting_scenario}}, the reported values in its order (the
+minimum if reported, the quantiles by increasing probability, the maximum
+if reported), unnamed or named by its labels.}
 
 \item{n}{Integer sample size: at least 3 under S1 and S2, 5 under S3 and S4,
-and 7 under S5.}
+and 7 under S5, and at least the number of reported values for a
+\code{\link{reporting_scenario}}.}
 
-\item{scenario}{One of "S1" to "S5".}
+\item{scenario}{One of "S1" to "S5", or an object of
+\code{\link{reporting_scenario}} for any other set of reported quantiles.}
 
 \item{version}{\code{"blue"} (default) or \code{"wan_luo_shi"}.}
 
-\item{type}{The definition of the reported sample quantiles, an integer from
+\item{type}{The definition of the reported sample quantiles: an integer from
 1 to 9 as in \code{\link[stats]{quantile}}; 7, R's default, unless the
-study states another. See Details.}
+study states another. Or a function \code{function(p, n)} that returns
+\code{list(r, gamma)} for a definition outside these nine, the quantile at
+probability \eqn{p} being \eqn{(1-\gamma)X_{(r)} + \gamma X_{(r+1)}}; see
+Details and \code{\link{imputed_moments}}.}
 
 \item{x}{An object returned by \code{se_imputed()}.}
 
@@ -87,8 +95,19 @@ The shortcut formulas for the factors (\code{\link{c_mu_shortcut}},
 \code{\link{c_sigma_shortcut}}) are not used here. They serve a reader
 without this package and a comparison with the exact values.
 
-Under S4 and S5 only the BLUE is defined; \code{version = "wan_luo_shi"} is
-an error there.
+Under S4 and S5, and for a \code{\link{reporting_scenario}}, only the BLUE
+is defined; \code{version = "wan_luo_shi"} is an error there.
+
+Other reported quantiles, and other definitions. A study that reports, say,
+the median with the 5th and 95th percentiles is described by
+\code{reporting_scenario(c(0.05, 0.5, 0.95))}, and the BLUE and its exact
+factors are computed from these three values. A study whose quantiles follow
+a definition that is not one of R's nine is given a rule as \code{type}. The
+last example writes Tukey's hinges, the quartiles that
+\code{\link[stats]{fivenum}} returns, as such a rule: the lower hinge is the
+median of the lower half of the ordered sample, the middle value included
+when \eqn{n} is odd, so its position is \eqn{d = (\lfloor (n+1)/2 \rfloor + 1)/2},
+and the upper hinge is at \eqn{n + 1 - d}.
 
 A constant summary, all reported values equal, has an imputed SD of exactly
 zero (the SD weights sum to zero) and so standard errors of zero, which cannot
@@ -106,4 +125,16 @@ r[c("mu_hat", "se_mu")]                  # the fields a meta-analysis needs, as 
 se_imputed(c(q1 = 10, med = 12, q3 = 15), n = 25, scenario = "S2", version = "wan_luo_shi")
 se_imputed(c(q1 = 10, med = 12, q3 = 15), n = 24, scenario = "S2")   # interpolated quartiles
 se_imputed(c(min = 3, q1 = 10, med = 12, q3 = 15, max = 30), n = 30, "S3")
+
+# other reported quantiles: the median with the 5th and 95th percentiles
+sc <- reporting_scenario(c(0.05, 0.5, 0.95))
+se_imputed(c(2.1, 5.0, 8.4), n = 60, scenario = sc)
+
+# another definition of the quartiles: Tukey's hinges, as stats::fivenum() computes them
+hinges <- function(p, n) {
+  d <- (floor((n + 1) / 2) + 1) / 2              # the position of the lower hinge
+  pos <- ifelse(p < 0.5, d, ifelse(p > 0.5, n + 1 - d, (n + 1) / 2))
+  list(r = floor(pos), gamma = pos - floor(pos)) # (1 - gamma) X_(r) + gamma X_(r+1)
+}
+se_imputed(c(min = 3, q1 = 10, med = 12, q3 = 15, max = 30), n = 30, "S3", type = hinges)
 }

@@ -38,12 +38,17 @@
 #'   computed exactly; see Details. Another definition may need a larger \eqn{n}:
 #'   where two reported values are the same order statistic (type 3 at
 #'   \eqn{n = 5} under S3, for example) the BLUE is not defined and is refused.
+#'   For a \code{\link{reporting_scenario}}, at least its number of reported
+#'   values.
 #' @param scenario Character. One of \code{"S1"} (min, median, max),
 #'   \code{"S2"} (three quartiles), \code{"S3"} (all five). McGrath 2023 labels;
 #'   note Wan 2014's C2/C3 are S3/S2 respectively. Also \code{"S4"} (the
 #'   quartiles with the 10th and 90th percentiles) and \code{"S5"} (all five with
 #'   the two percentiles), the names of Wu, Shi and Tong (2026) for Scenarios 5 and 7 of Balakrishnan
 #'   et al. (2022); only the BLUE (\code{"blue"}) is defined for these two.
+#'   Or an object of \code{\link{reporting_scenario}}, which describes any
+#'   other set of reported quantiles, with or without the minimum and the
+#'   maximum; again only the BLUE is defined.
 #' @param method_mean Character, NULL or NA. One of \code{"blue"} (default),
 #'   \code{"luo"} or \code{"wan"}, the mean estimator presets of
 #'   \code{\link{estimator_weights}}. Ignored if \code{w_mean} is given.
@@ -67,9 +72,10 @@
 #'   before 0.3.0 does not carry \code{affine} and is refused. The package keeps
 #'   the moments it computes itself for the session, so repeated calls at one
 #'   sample size integrate once without this argument.
-#' @param type The definition of the sample quantiles, an integer from 1 to 9 as
+#' @param type The definition of the sample quantiles: an integer from 1 to 9 as
 #'   in \code{\link[stats]{quantile}}; 7, R's default, unless a study states
-#'   another.
+#'   another. Or a function that gives a definition outside these nine, see
+#'   "A quantile rule of your own" in Details.
 #'
 #' @return A list with components:
 #'   \code{var_mean} \eqn{= w_\mu'Bw_\mu}, \code{var_sd} \eqn{= w_\sigma'Bw_\sigma},
@@ -98,6 +104,19 @@
 #' quartiles are the order statistics at ranks \eqn{Q+1, 2Q+1, 3Q+1}; at other
 #' \eqn{n}, or under another definition, they are interpolated, and the result
 #' depends on the definition.
+#'
+#' A quantile rule of your own. When a study computed its quantiles by a
+#' definition that is not one of the nine, give \code{type} a function of the
+#' probabilities \code{p} and the sample size \code{n} that returns a list with
+#' two vectors as long as \code{p}: the whole ranks \code{r}, and the weights
+#' \code{gamma}, each weight between 0 and 1. The quantile at probability
+#' \eqn{p_j} is then taken as
+#' \eqn{(1-\gamma_j)X_{(r_j)} + \gamma_j X_{(r_j+1)}}. The ranks must lie
+#' between 1 and \eqn{n}, and \eqn{r_j + 1 \le n} where \eqn{\gamma_j > 0}.
+#' The function is called with the probabilities of the scenario's quantiles
+#' (0.25, 0.5, 0.75 under S2 and S3, for example); the minimum and the maximum
+#' are not passed to it. The examples write Tukey's hinges, the quartiles of
+#' \code{\link[stats]{fivenum}}, as such a rule.
 #' Assumptions: i.i.d. normal sample; the reported values follow definition
 #' \code{type}.
 #'
@@ -130,15 +149,21 @@
 imputed_moments <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5"),
                             method_mean = "blue", method_sd = "blue",
                             w_mean = NULL, w_sd = NULL, moments = NULL, type = 7) {
-  scenario <- match.arg(scenario)
+  scenario <- .scenario(scenario)
   .check_scenario_n(n, scenario)
   # the means and covariance matrix of the standardized reported values, Y = W'X
   rm <- .reported_moments(n, scenario, type, moments)
   moments <- rm$moments; ranks <- rm$ranks
   alpha <- rm$alpha; B <- rm$B
 
+  # user weights: one per reported value
+  for (w in list(w_mean, w_sd))
+    if (!is.null(w) && (!is.numeric(w) || length(w) != length(alpha)))
+      stop("w_mean and w_sd must be numeric vectors with one weight per reported value (",
+           length(alpha), " under ", .scenario_label(scenario), ")")
+
   # method_sd = NULL: the Wan-Luo-Shi pairing, Shi for S3, Wan for S1/S2 (see @param method_sd)
-  if (is.null(method_sd)) method_sd <- if (scenario == "S3") "shi" else "wan"
+  if (is.null(method_sd)) method_sd <- if (.scenario_name(scenario) == "S3") "shi" else "wan"
 
   if (is.null(w_mean) && !is.null(method_mean) && !is.na(method_mean))
     w_mean <- estimator_weights(n, scenario, "mean", method_mean, moments = moments, type = type)
@@ -182,13 +207,15 @@ imputed_moments <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5"),
 #' c_mu(25, "S2")                 # exact C(n) for the BLUE of the mean under S2
 #' c_mu(25, "S2", "luo")          # the same for Luo's estimator
 #' c_mu(25, "S2") * sqrt(25)      # inflation factor over sigma/sqrt(n)
+#' # any other reported quantiles: the median with the 5th and 95th percentiles
+#' c_mu(60, reporting_scenario(c(0.05, 0.5, 0.95)))
 #' @references
 #' Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
 #' deviation from a five-number summary. Manuscript.
 #' @export
 c_mu <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5"), method = "blue", moments = NULL,
                  type = 7) {
-  scenario <- match.arg(scenario)
+  scenario <- .scenario(scenario)
   im <- imputed_moments(n, scenario, method_mean = method, method_sd = NA,
                         moments = moments, type = type)
   im$c_n
@@ -224,7 +251,7 @@ c_mu <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5"), method = "blue",
 #' @export
 c_sigma <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5"), method = "blue",
                     moments = NULL, type = 7) {
-  scenario <- match.arg(scenario)
+  scenario <- .scenario(scenario)
   im <- imputed_moments(n, scenario, method_mean = NA, method_sd = method,
                         moments = moments, type = type)
   sqrt(im$var_sd)
@@ -262,14 +289,15 @@ c_sigma <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5"), method = "blu
 #' @export
 inflation_factors <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5"),
                               version = c("blue", "wan_luo_shi"), type = 7) {
-  scenario <- match.arg(scenario); version <- match.arg(version)
+  scenario <- .scenario(scenario); version <- match.arg(version)
   .check_scenario_n(n, scenario)
-  if (version == "wan_luo_shi" && scenario %in% c("S4", "S5"))
-    stop("the Wan-Luo-Shi estimators are not defined for ", scenario, "; use version = \"blue\"")
+  if (version == "wan_luo_shi" && !(.scenario_name(scenario) %in% c("S1", "S2", "S3")))
+    stop("the Wan-Luo-Shi estimators are not defined for ", .scenario_label(scenario),
+         "; use version = \"blue\"")
   # one exact moment set serves both factors
   mo <- .reported_moments(n, scenario, type)$moments
   m_mean <- if (version == "blue") "blue" else "luo"
-  m_sd   <- if (version == "blue") "blue" else if (scenario == "S3") "shi" else "wan"
+  m_sd   <- if (version == "blue") "blue" else if (.scenario_name(scenario) == "S3") "shi" else "wan"
   cm <- c_mu(n, scenario, method = m_mean, moments = mo, type = type)
   cs <- c_sigma(n, scenario, method = m_sd, moments = mo, type = type)
   # SD(xbar) = sigma / sqrt(n) and, under normality, SD(S) = sigma sqrt(1 - b_S(n)^2)
@@ -298,9 +326,13 @@ inflation_factors <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5"),
   .check_n_integer(n)
   # the smallest n at which the reported values are distinct linear combinations
   # of the order statistics (under type 7): as many order statistics as values
-  nmin <- c(S1 = 3, S2 = 3, S3 = 5, S4 = 5, S5 = 7)[[scenario]]
+  # for a reporting_scenario() the same count: its number of reported values
+  nmin <- if (inherits(scenario, "reporting_scenario")) length(scenario$labels) else
+    c(S1 = 3, S2 = 3, S3 = 5, S4 = 5, S5 = 7)[[scenario]]
   if (n < nmin)
-    stop(scenario, " requires n >= ", nmin, "; got n = ", n)
+    stop(.scenario_label(scenario),
+         if (inherits(scenario, "reporting_scenario")) " require n >= " else " requires n >= ",
+         nmin, "; got n = ", n)
   invisible(TRUE)
 }
 

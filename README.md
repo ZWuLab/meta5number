@@ -65,6 +65,30 @@ order statistics. At any other n each is a fixed combination of two neighboring 
 statistics, by R's default definition (type 7 of `quantile()`) unless the argument `type`
 names another, and the factors there depend on that definition.
 
+A study that reports other quantiles is described by `reporting_scenario()`, and a study
+whose quantiles follow a definition outside R's nine is given a rule as `type`:
+
+```r
+# the median with the 5th and 95th percentiles, n = 60: the BLUE and its exact factors
+sc <- reporting_scenario(c(0.05, 0.5, 0.95))
+se_imputed(c(2.1, 5.0, 8.4), n = 60, scenario = sc)
+inflation_factors(60, sc)
+
+# the quartiles with the 10th and 90th percentiles, the scenario the package names "S4"
+inflation_factors(101, reporting_scenario(c(0.1, 0.25, 0.5, 0.75, 0.9)))
+
+# Tukey's hinges, the quartiles of fivenum(), as a rule: the quantile at probability p is
+# (1 - gamma) x[r] + gamma x[r + 1] in the ordered sample
+hinges <- function(p, n) {
+  d <- (floor((n + 1) / 2) + 1) / 2
+  pos <- ifelse(p < 0.5, d, ifelse(p > 0.5, n + 1 - d, (n + 1) / 2))
+  list(r = floor(pos), gamma = pos - floor(pos))
+}
+se_imputed(c(min = 3, q1 = 10, med = 12, q3 = 15, max = 30), n = 30, "S3", type = hinges)
+```
+
+Appendix C of the vignette explains both.
+
 The vignette, `vignette("meta5number")`, walks through the example above and explains the
 columns, the scenarios and the convention on the sample size. A second vignette,
 `vignette("two-meta-analyses")`, reproduces the two meta-analyses of Wu, Shi and Tong (2026), one
@@ -81,6 +105,6 @@ reports the checks of the computation. `citation("meta5number")` prints this ref
 exact moments of the order statistics come from the package `orderStatMoments`, described in:
 
 Wu Z, Tong T (2026). orderStatMoments: Exact means, variances, and covariances of order statistics in
-R. Manuscript.
+R. arXiv preprint arXiv:2611.19980. <https://doi.org/10.48550/arXiv.2611.19980>
 
 > Developed with AI assistance; see [AI-USE.md](AI-USE.md).

@@ -78,6 +78,9 @@
 #' deviation from a five-number summary. Manuscript.
 #' @export
 c_mu_shortcut <- function(n, scenario = c("S3", "S1", "S2"), version = c("blue", "wan_luo_shi")) {
+  if (inherits(scenario, "reporting_scenario"))
+    stop("the shortcut formulas exist for the scenarios S1, S2 and S3 only; for a ",
+         "reporting_scenario() use the exact factor, c_mu() or c_sigma()")
   scenario <- match.arg(scenario); version <- match.arg(version)
   # Constants as Wu, Shi and Tong (2026) print them (their Table 3 for the BLUE, their supplement table
   # for the Wan-Luo-Shi version): A is the limit of sqrt(n) C_mu(n) to four decimals
@@ -159,6 +162,9 @@ c_mu_shortcut <- function(n, scenario = c("S3", "S1", "S2"), version = c("blue",
 #' deviation from a five-number summary. Manuscript.
 #' @export
 c_sigma_shortcut <- function(n, scenario = c("S3", "S1", "S2"), version = c("blue", "wan_luo_shi")) {
+  if (inherits(scenario, "reporting_scenario"))
+    stop("the shortcut formulas exist for the scenarios S1, S2 and S3 only; for a ",
+         "reporting_scenario() use the exact factor, c_mu() or c_sigma()")
   scenario <- match.arg(scenario); version <- match.arg(version)
   # Constants as Wu, Shi and Tong (2026) print them (their Table 3 for the BLUE, their supplement table
   # for the Wan-Luo-Shi version). S2 and S3: A / sqrt(n + c1 (log n)^2 + c2 log n + c3)

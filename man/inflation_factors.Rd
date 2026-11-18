@@ -16,23 +16,29 @@ inflation_factors(
 and 7 under S5, under the default quantile definition. Any such \code{n} is
 computed exactly; see Details. Another definition may need a larger \eqn{n}:
 where two reported values are the same order statistic (type 3 at
-\eqn{n = 5} under S3, for example) the BLUE is not defined and is refused.}
+\eqn{n = 5} under S3, for example) the BLUE is not defined and is refused.
+For a \code{\link{reporting_scenario}}, at least its number of reported
+values.}
 
 \item{scenario}{Character. One of \code{"S1"} (min, median, max),
 \code{"S2"} (three quartiles), \code{"S3"} (all five). McGrath 2023 labels;
 note Wan 2014's C2/C3 are S3/S2 respectively. Also \code{"S4"} (the
 quartiles with the 10th and 90th percentiles) and \code{"S5"} (all five with
 the two percentiles), the names of Wu, Shi and Tong (2026) for Scenarios 5 and 7 of Balakrishnan
-et al. (2022); only the BLUE (\code{"blue"}) is defined for these two.}
+et al. (2022); only the BLUE (\code{"blue"}) is defined for these two.
+Or an object of \code{\link{reporting_scenario}}, which describes any
+other set of reported quantiles, with or without the minimum and the
+maximum; again only the BLUE is defined.}
 
 \item{version}{\code{"blue"} (default) for the BLUE of both, or
 \code{"wan_luo_shi"} for the estimators of Wan, Luo and Shi (Luo's mean; Wan's
 SD under S1 and S2, Shi's under S3). Under S4 and S5 only \code{"blue"} is
 defined.}
 
-\item{type}{The definition of the sample quantiles, an integer from 1 to 9 as
+\item{type}{The definition of the sample quantiles: an integer from 1 to 9 as
 in \code{\link[stats]{quantile}}; 7, R's default, unless a study states
-another.}
+another. Or a function that gives a definition outside these nine, see
+"A quantile rule of your own" in Details.}
 }
 \value{
 Named numeric vector: \code{kappa_mu}, \code{kappa_sigma}.

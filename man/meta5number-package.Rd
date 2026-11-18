@@ -40,7 +40,11 @@ closed-form shortcut formulas \code{\link{c_mu_shortcut}} and
 \code{\link{c_sigma_shortcut}} for use without the integration. The weights
 and the reported ranks are \code{\link{estimator_weights}} and
 \code{\link{scenario_ranks}}, and \code{\link{imputed_moments}} gives the
-variances and the covariance of the two imputed statistics. Every function
+variances and the covariance of the two imputed statistics. A study that
+reports other quantiles than those of the scenarios S1 to S5 is described by
+\code{\link{reporting_scenario}}, and a definition of the sample quantiles
+outside the nine of \code{\link[stats]{quantile}} is given as a function to
+the argument \code{type}. Every function
 defaults to the BLUE; the estimators of Wan, Luo and Shi are reached by
 \code{version = "wan_luo_shi"} in the study-level functions and in
 \code{inflation_factors()}, and by the argument \code{method} in the others.
@@ -52,10 +56,11 @@ accompanies: the factors, their limits, the shortcut formulas and the checks
 of the computation.
 
 Wu Z (2026). orderStatMoments: Exact Moments of Order Statistics. R package version
-0.3.0. The engine that computes the moments of the normal order statistics.
+0.3.1. The engine that computes the moments of the normal order statistics.
 
 Wu Z, Tong T (2026). orderStatMoments: Exact means, variances, and covariances of
-order statistics in R. Manuscript. The paper of the engine.
+order statistics in R. arXiv preprint arXiv:2611.19980.
+\doi{10.48550/arXiv.2611.19980}. The paper of the engine.
 
 Wan X, Wang W, Liu J, Tong T (2014). Estimating the sample mean and standard
 deviation from the sample size, median, range and/or interquartile range.

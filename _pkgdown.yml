@@ -24,8 +24,10 @@ reference:
   contents:
   - c_mu_shortcut
   - c_sigma_shortcut
-- title: Weights and ranks
+- title: Scenarios, weights and ranks
+  desc: A scenario with any set of reported quantiles, the weights of the estimators and the ranks of the named scenarios.
   contents:
+  - reporting_scenario
   - estimator_weights
   - scenario_ranks
 - title: Data

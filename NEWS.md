@@ -1,3 +1,35 @@
+# meta5number 0.3.0
+
+* Any set of reported quantiles. The new function `reporting_scenario()` describes what
+  a study reports by the probabilities of its sample quantiles, with or without the
+  minimum and the maximum, for example `reporting_scenario(c(0.05, 0.5, 0.95))` for the
+  median with the 5th and 95th percentiles. Its result is passed as the argument
+  `scenario` of `se_imputed()`, `c_mu()`, `c_sigma()`, `inflation_factors()`,
+  `estimator_weights()` and `imputed_moments()`, which compute the BLUE from these
+  reported values and its exact factors at every sample size that is at least the number
+  of reported values. The named scenarios
+  `"S1"` to `"S5"` are special cases and give the results they gave before.
+
+* A quantile definition of your own. The argument `type` takes, besides the nine
+  definitions of `quantile()`, a function of the probabilities `p` and the sample size
+  `n` that returns the ranks `r` and the weights `gamma` of the rule
+  `(1 - gamma) x[r] + gamma x[r + 1]`. The help of `se_imputed()` and Appendix C of the
+  vignette write Tukey's hinges, the quartiles of `fivenum()`, as such a rule.
+
+* The print of `se_imputed()` names a `reporting_scenario()` by its reported values and
+  a rule by "a user-supplied quantile rule".
+
+* `imputed_moments()` checks the length of the weights given as `w_mean` and `w_sd`, and
+  `c_mu_shortcut()` and `c_sigma_shortcut()` say that the shortcut formulas exist for the
+  scenarios S1 to S3 when they are given another scenario.
+
+* The paper of the engine, Wu and Tong (2026), is cited as arXiv:2611.19980
+  (<https://doi.org/10.48550/arXiv.2611.19980>), where it was cited as a manuscript, and
+  `orderStatMoments` at its version 0.3.1.
+
+* The results for the scenarios `"S1"` to `"S5"` and the quantile definitions 1 to 9 are
+  those of 0.2.1.
+
 # meta5number 0.2.1
 
 * This version corrects a defect that meta5number 0.2.0 has when it runs with
