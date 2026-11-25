@@ -11,7 +11,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/ZWuLab/meta5number/blob/main/inst/CITATION)
+[`inst/CITATION`](https://github.com/ZWuLab/meta5number/blob/v0.3.1/inst/CITATION)
 
 Wu, Z., Shi, J. and Tong, T. (2026). Precision of the imputed mean and
 standard deviation from the five-number summary. Manuscript.
