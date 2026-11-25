@@ -45,5 +45,5 @@ scenario_ranks(25, "S3")
 }
 \references{
 Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-deviation from a five-number summary. Manuscript.
+deviation from the five-number summary. Manuscript.
 }

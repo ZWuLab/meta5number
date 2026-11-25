@@ -31,8 +31,9 @@ reference:
   - estimator_weights
   - scenario_ranks
 - title: Data
-  desc: The six studies of the vitamin D meta-analysis, the mean case of the second vignette.
+  desc: The study summaries of the two meta-analyses of the second vignette, and six studies that report the median and the range.
   contents:
+  - bun_icu
   - vitd
 - title: Package
   contents:

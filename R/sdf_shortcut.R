@@ -75,7 +75,7 @@
 #' c_mu_shortcut(5000, "S3")        # no upper limit on n
 #' @references
 #' Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-#' deviation from a five-number summary. Manuscript.
+#' deviation from the five-number summary. Manuscript.
 #' @export
 c_mu_shortcut <- function(n, scenario = c("S3", "S1", "S2"), version = c("blue", "wan_luo_shi")) {
   if (inherits(scenario, "reporting_scenario"))
@@ -159,7 +159,7 @@ c_mu_shortcut <- function(n, scenario = c("S3", "S1", "S2"), version = c("blue",
 #' c_sigma_shortcut(5000, "S3")    # no upper limit on n
 #' @references
 #' Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-#' deviation from a five-number summary. Manuscript.
+#' deviation from the five-number summary. Manuscript.
 #' @export
 c_sigma_shortcut <- function(n, scenario = c("S3", "S1", "S2"), version = c("blue", "wan_luo_shi")) {
   if (inherits(scenario, "reporting_scenario"))

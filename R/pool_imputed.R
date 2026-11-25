@@ -122,7 +122,7 @@
 #' Journal of Statistical Software 36(3), 1-48.
 #'
 #' Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-#' deviation from a five-number summary. Manuscript.
+#' deviation from the five-number summary. Manuscript.
 #' @importFrom stats pnorm qnorm
 #' @export
 pool_imputed <- function(data, method = c("EE", "DL"), level = 0.95) {

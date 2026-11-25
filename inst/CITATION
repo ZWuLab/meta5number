@@ -5,7 +5,7 @@ citHeader("To cite meta5number in publications use:")
 
 bibentry(
   bibtype = "Unpublished",
-  title   = "Precision of the imputed mean and standard deviation from a five-number summary",
+  title   = "Precision of the imputed mean and standard deviation from the five-number summary",
   author  = c(person("Zheyang", "Wu"),
               person("Jiandong", "Shi"),
               person("Tiejun", "Tong")),
@@ -13,7 +13,7 @@ bibentry(
   note    = "Manuscript",
   textVersion = paste(
     "Wu, Z., Shi, J. and Tong, T. (2026).",
-    "Precision of the imputed mean and standard deviation from a five-number summary.",
+    "Precision of the imputed mean and standard deviation from the five-number summary.",
     "Manuscript."
   )
 )

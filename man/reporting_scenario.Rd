@@ -66,7 +66,7 @@ Assumptions: an i.i.d. normal sample, as everywhere in the package.
 # a study reports the median with the 5th and 95th percentiles, n = 60
 sc <- reporting_scenario(c(0.05, 0.5, 0.95))
 sc
-inflation_factors(60, sc)                       # the exact IFs of the BLUE
+inflation_factors(60, sc)                       # the exact inflation factors of the BLUE
 se_imputed(c(2.1, 5.0, 8.4), n = 60, scenario = sc)
 
 # the 10th and 90th percentiles with the quartiles: the named scenario S4
@@ -78,7 +78,7 @@ c_sigma(30, reporting_scenario(c(0.5, 0.75), min = TRUE))
 }
 \references{
 Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-deviation from a five-number summary. Manuscript.
+deviation from the five-number summary. Manuscript.
 }
 \seealso{
 \code{\link{se_imputed}}, \code{\link{imputed_moments}}

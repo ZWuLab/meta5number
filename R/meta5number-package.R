@@ -48,7 +48,7 @@
 #'
 #' @references
 #' Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-#' deviation from a five-number summary. Manuscript. The paper this package
+#' deviation from the five-number summary. Manuscript. The paper this package
 #' accompanies: the factors, their limits, the shortcut formulas and the checks
 #' of the computation.
 #'

@@ -143,7 +143,7 @@
 #' location and scale information in a meta-analysis. Journal of Applied
 #' Statistics 49(15), 3846-3867. (eq. 22)
 #' Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-#' deviation from a five-number summary. Manuscript.
+#' deviation from the five-number summary. Manuscript.
 #'
 #' @export
 imputed_moments <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5"),
@@ -211,7 +211,7 @@ imputed_moments <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5"),
 #' c_mu(60, reporting_scenario(c(0.05, 0.5, 0.95)))
 #' @references
 #' Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-#' deviation from a five-number summary. Manuscript.
+#' deviation from the five-number summary. Manuscript.
 #' @export
 c_mu <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5"), method = "blue", moments = NULL,
                  type = 7) {
@@ -247,7 +247,7 @@ c_mu <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5"), method = "blue",
 #' c_sigma(25, "S2") * sqrt(2 * 25)     # inflation over the large-sample sigma/sqrt(2n)
 #' @references
 #' Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-#' deviation from a five-number summary. Manuscript.
+#' deviation from the five-number summary. Manuscript.
 #' @export
 c_sigma <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5"), method = "blue",
                     moments = NULL, type = 7) {
@@ -259,7 +259,7 @@ c_sigma <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5"), method = "blu
 
 #' Inflation factors of the imputed mean and SD
 #'
-#' The inflation factors (IF) of Wu, Shi and Tong (2026): the ratio of the
+#' The inflation factors of Wu, Shi and Tong (2026): the ratio of the
 #' standard deviation of the imputed mean to that of the sample mean,
 #' \eqn{\kappa_\mu(n) = \mathrm{SD}(\hat\mu)/\mathrm{SD}(\bar X) = C_\mu(n)\sqrt n},
 #' and of the imputed SD to that of the sample SD \eqn{S},
@@ -276,7 +276,7 @@ c_sigma <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5"), method = "blu
 #'   defined.
 #' @return Named numeric vector: \code{kappa_mu}, \code{kappa_sigma}.
 #' @details Assumptions as in \code{\link{imputed_moments}}: iid normal data, the
-#'   reported values following definition \code{type}. An IF of 1.2 means a 20\%
+#'   reported values following definition \code{type}. An inflation factor of 1.2 means a 20\%
 #'   larger SD than that of the full-sample statistic.
 #' @examples
 #' inflation_factors(41, "S2")                       # the BLUE: about 1.076 and 1.651
@@ -285,7 +285,7 @@ c_sigma <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5"), method = "blu
 #' inflation_factors(21, "S4")                       # quartiles with the 10th and 90th percentiles
 #' @references
 #' Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-#' deviation from a five-number summary. Manuscript.
+#' deviation from the five-number summary. Manuscript.
 #' @export
 inflation_factors <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5"),
                               version = c("blue", "wan_luo_shi"), type = 7) {

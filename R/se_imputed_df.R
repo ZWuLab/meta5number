@@ -125,7 +125,7 @@
 #'   for two groups per row, \code{\link{pool_imputed}} to pool the studies.
 #' @references
 #' Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-#' deviation from a five-number summary. Manuscript.
+#' deviation from the five-number summary. Manuscript.
 #' @export
 se_imputed_df <- function(data, n = "n", min = "min", q1 = "q1", med = "med", q3 = "q3",
                           max = "max", mean = "mean", sd = "sd", suffix = "",
@@ -301,7 +301,7 @@ se_imputed_df <- function(data, n = "n", min = "min", q1 = "q1", med = "med", q3
 #' and beyond. Methods in Ecology and Evolution 6(2), 143-152.
 #'
 #' Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-#' deviation from a five-number summary. Manuscript.
+#' deviation from the five-number summary. Manuscript.
 #' @export
 se_imputed_diff <- function(data, suffixes = c(".g1", ".g2"), ..., measure = c("MD", "lnVR"),
                             version = c("blue", "wan_luo_shi"), prefer = c("sample", "imputed"),

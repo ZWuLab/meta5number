@@ -79,5 +79,5 @@ c_sigma(25, "S2") * sqrt(2 * 25)     # inflation over the large-sample sigma/sqr
 }
 \references{
 Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-deviation from a five-number summary. Manuscript.
+deviation from the five-number summary. Manuscript.
 }

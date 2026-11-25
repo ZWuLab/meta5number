@@ -44,7 +44,7 @@ another. Or a function that gives a definition outside these nine, see
 Named numeric vector: \code{kappa_mu}, \code{kappa_sigma}.
 }
 \description{
-The inflation factors (IF) of Wu, Shi and Tong (2026): the ratio of the
+The inflation factors of Wu, Shi and Tong (2026): the ratio of the
 standard deviation of the imputed mean to that of the sample mean,
 \eqn{\kappa_\mu(n) = \mathrm{SD}(\hat\mu)/\mathrm{SD}(\bar X) = C_\mu(n)\sqrt n},
 and of the imputed SD to that of the sample SD \eqn{S},
@@ -56,7 +56,7 @@ factor of \eqn{S}, \eqn{E[S] = b_S(n)\sigma}. The factors \eqn{C_\mu(n)} and
 }
 \details{
 Assumptions as in \code{\link{imputed_moments}}: iid normal data, the
-  reported values following definition \code{type}. An IF of 1.2 means a 20\%
+  reported values following definition \code{type}. An inflation factor of 1.2 means a 20\%
   larger SD than that of the full-sample statistic.
 }
 \examples{
@@ -67,5 +67,5 @@ inflation_factors(21, "S4")                       # quartiles with the 10th and 
 }
 \references{
 Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-deviation from a five-number summary. Manuscript.
+deviation from the five-number summary. Manuscript.
 }

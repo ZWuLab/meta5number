@@ -1,13 +1,13 @@
 # ==============================================================================
 # File: test-vitd.R
-# Purpose: The data set vitd as typed from its source, and the two meta-analyses of
-#          the illustration section of Wu, Shi and Tong (2026) (its Tables 5 and 6)
-#          reproduced with the package in three lines each: the mean case on vitd
-#          and the SD case on metamedian::dat.age, each pooled under the naive and
-#          the exact standard errors with the common-effect model by pool_imputed().
-#          The expected values are the full-precision values that the analysis
-#          behind that section wrote to its output files; the paper's printed values
-#          follow by rounding.
+# Purpose: The data set vitd as typed from its source, and two meta-analyses kept as
+#          regression tests of se_imputed_diff() and pool_imputed(): a mean case on
+#          vitd and an SD case on metamedian::dat.age, each pooled under the naive
+#          and the exact standard errors with the common-effect model. They were the
+#          two examples of an earlier version of Wu, Shi and Tong (2026), whose
+#          examples are now those of test-covid.R. The expected values are the
+#          full-precision values that the analysis behind that earlier version wrote
+#          to its output files.
 
 tol <- 1e-6
 fit_row <- function(f, r, cols) unlist(f$fits[r, cols], use.names = FALSE)
@@ -36,8 +36,8 @@ test_that("vitd is the six studies as typed from Table 1 of Nnoaham and Clarke (
   expect_true(is.na(vitd$sd.cases[i]) && is.na(vitd$med.cases[i]) && !is.na(vitd$min.cases[i]))
 })
 
-test_that("the mean case reproduces Table 5 of the paper, with the data set as the source prints it", {
-  # controls minus cases, the paper's difference
+test_that("the mean case on vitd gives the recorded values, with the data set as the source prints it", {
+  # controls minus cases
   d <- se_imputed_diff(vitd, suffixes = c(".controls", ".cases"))
   expect_identical(attr(d, "measure"), "MD")
   expect_equal(d$scenario.cases, c("S1", "S1", "S1", "sample", "sample", "mean_range"))
@@ -55,24 +55,24 @@ test_that("the mean case reproduces Table 5 of the paper, with the data set as t
                               5.34278421211777, 5.1324598652863, 9.14562123082905), tolerance = tol)
   expect_equal(d$sei, c(6.00637836197536, 4.93055145295272, 9.33953705489607,
                         5.34278421211777, 5.1324598652863, 9.14562123082905), tolerance = tol)
-  # the common-effect fit under each standard error: the paper prints 12.8 (2.30) and 13.3 (2.46)
+  # the common-effect fit under each standard error: 12.8 (2.30) and 13.3 (2.46)
   f <- pool_imputed(d)
   expect_identical(f$measure, "MD"); expect_identical(f$k, 6L)
   expect_equal(fit_row(f, "naive", c("estimate", "se")), c(12.849079839385, 2.29761112499946), tolerance = tol)
   expect_equal(fit_row(f, "exact", c("estimate", "se")), c(13.338517395062, 2.45983630013422), tolerance = tol)
-  expect_equal(round(100 * (f$fits["exact", "se"] / f$fits["naive", "se"] - 1), 1), 7.1)   # the rise the paper quotes
-  # the share of the weight on the three S1 studies falls, as the paper reads it
+  expect_equal(round(100 * (f$fits["exact", "se"] / f$fits["naive", "se"] - 1), 1), 7.1)   # the rise of the pooled SE in percent
+  # the share of the weight on the three S1 studies falls
   expect_lt(sum(f$weights$exact[1:3]), sum(f$weights$naive[1:3]))
 })
 
-test_that("the SD case reproduces Table 6 of the paper through measure = \"lnVR\"", {
+test_that("the SD case on dat.age gives the recorded values through measure = \"lnVR\"", {
   skip_if_not_installed("metamedian")
   d <- se_imputed_diff(metamedian::dat.age, measure = "lnVR")
   expect_identical(attr(d, "measure"), "lnVR")
   expect_equal(nrow(d), 51L)
   expect_equal(sum(d$scenario.g1 == "S2"), 29L)
   expect_equal(sum(d$scenario.g1 == "sample"), 22L)
-  # the effect and its two variances as the paper defines them
+  # the effect and its two variances
   expect_equal(d$yi, log(d$sigma_hat.g1 / d$sigma_hat.g2))
   expect_equal(d$sei_naive^2, 1 / (2 * (d$n.g1 - 1)) + 1 / (2 * (d$n.g2 - 1)))
   term <- function(scenario, n, se_sigma, sigma_hat)
@@ -84,7 +84,7 @@ test_that("the SD case reproduces Table 6 of the paper through measure = \"lnVR\
   expect_equal((d$se_sigma.g1[imp] / d$sigma_hat.g1[imp])^2,
                sapply(d$n.g1[imp], function(n) c_sigma(n, "S2"))^2, tolerance = 1e-10)
   f <- pool_imputed(d)
-  # the paper prints -0.225 (0.0161), Q 346.6, I2 86 and -0.215 (0.0217), Q 165.3, I2 70
+  # -0.225 (0.0161), Q 346.6, I2 86 and -0.215 (0.0217), Q 165.3, I2 70
   expect_equal(fit_row(f, "naive", c("estimate", "se", "Q", "I2")),
                c(-0.225278160713769, 0.0161016004846129, 346.635900749338, 85.5756429464136), tolerance = tol)
   expect_equal(fit_row(f, "exact", c("estimate", "se", "Q", "I2")),

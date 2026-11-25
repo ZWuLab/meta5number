@@ -74,5 +74,5 @@ c_mu(60, reporting_scenario(c(0.05, 0.5, 0.95)))
 }
 \references{
 Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-deviation from a five-number summary. Manuscript.
+deviation from the five-number summary. Manuscript.
 }

@@ -77,7 +77,7 @@
 #' estimator_weights(60, reporting_scenario(c(0.05, 0.5, 0.95)), "mean")
 #' @references
 #' Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-#' deviation from a five-number summary. Manuscript.
+#' deviation from the five-number summary. Manuscript.
 #' @export
 estimator_weights <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5"),
                         estimand = c("mean", "sd"),
@@ -166,7 +166,7 @@ estimator_weights <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5"),
 #' @examples scenario_ranks(25, "S3")
 #' @references
 #' Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-#' deviation from a five-number summary. Manuscript.
+#' deviation from the five-number summary. Manuscript.
 #' @export
 scenario_ranks <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5")) {
   if (inherits(scenario, "reporting_scenario"))
@@ -233,7 +233,7 @@ scenario_ranks <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5")) {
 #' # a study reports the median with the 5th and 95th percentiles, n = 60
 #' sc <- reporting_scenario(c(0.05, 0.5, 0.95))
 #' sc
-#' inflation_factors(60, sc)                       # the exact IFs of the BLUE
+#' inflation_factors(60, sc)                       # the exact inflation factors of the BLUE
 #' se_imputed(c(2.1, 5.0, 8.4), n = 60, scenario = sc)
 #'
 #' # the 10th and 90th percentiles with the quartiles: the named scenario S4
@@ -244,7 +244,7 @@ scenario_ranks <- function(n, scenario = c("S3", "S1", "S2", "S4", "S5")) {
 #' c_sigma(30, reporting_scenario(c(0.5, 0.75), min = TRUE))
 #' @references
 #' Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-#' deviation from a five-number summary. Manuscript.
+#' deviation from the five-number summary. Manuscript.
 #' @seealso \code{\link{se_imputed}}, \code{\link{imputed_moments}}
 #' @export
 reporting_scenario <- function(probs = numeric(0), min = FALSE, max = FALSE) {

@@ -51,7 +51,7 @@ defaults to the BLUE; the estimators of Wan, Luo and Shi are reached by
 }
 \references{
 Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-deviation from a five-number summary. Manuscript. The paper this package
+deviation from the five-number summary. Manuscript. The paper this package
 accompanies: the factors, their limits, the shortcut formulas and the checks
 of the computation.
 
@@ -88,6 +88,8 @@ medians. Statistical Methods in Medical Research 32(2), 373-388.
 Authors:
 \itemize{
   \item Zheyang Wu \email{zheyangwu@wpi.edu}
+  \item Jiandong Shi
+  \item Tiejun Tong
 }
 
 }
