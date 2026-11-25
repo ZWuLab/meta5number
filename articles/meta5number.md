@@ -228,10 +228,12 @@ pools these columns under both standard errors, and
 `metafor::rma(yi, sei = sei)` takes them as they are.
 
 The vignette `two-meta-analyses` reproduces the two meta-analyses of Wu,
-Shi and Tong (2026): a meta-analysis of means in which studies report
-the median and the range, on the data set `vitd` that ships with the
-package, and a meta-analysis of SDs in which studies report the
-quartiles, on this data set.
+Shi and Tong (2026), the mean difference of blood urea nitrogen and the
+SD ratio of hemoglobin between COVID-19 patients in and outside
+intensive care, on the data sets `bun_icu` and `hgb_icu` that ship with
+the package. It first screens the studies by a skewness test, since the
+imputed mean and SD and their exact standard errors rest on normality,
+and it fits a random-effects model beside the common-effect model.
 
 ## Appendix A. The factors by scenario
 
@@ -471,7 +473,7 @@ Wu Z (2026). orderStatMoments: Exact Moments of Order Statistics. R
 package version 0.3.1.
 
 Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-deviation from a five-number summary. Manuscript.
+deviation from the five-number summary. Manuscript.
 
 Wu Z, Tong T (2026). orderStatMoments: Exact means, variances, and
 covariances of order statistics in R. arXiv preprint arXiv:2611.19980.

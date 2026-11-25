@@ -10,8 +10,8 @@
 <script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Five-Number Summaries Based Estimation and Inference in Meta-Analysis">
-<meta name="description" content="Tools for meta-analyses of studies that report a median with quartiles or extremes (a five-number summary or part of it) instead of the sample mean and sample standard deviation (SD). The current version focuses on calculating the precision of the mean and standard deviation imputed from such a summary, under normality. It includes the standard deviation factors (SDF) and the inflation factors (IF) of these imputed estimators, exactly, for the best linear unbiased estimators and for the shortcut estimators of Wan, Luo and Shi. A study may also report any other set of sample quantiles, under one of the nine quantile definitions of R or a definition supplied by the user. The package also provides closed-form shortcut formulas for these factors. Supporting functions are included to calculate the imputed mean and SD of a study with their plug-in standard errors, and to pool the studies under the naive and the exact standard errors, for practical meta-analysis. The methods are described by Wu, Shi and Tong (2026) in Precision of the imputed mean and standard deviation from a five-number summary (manuscript). The moments of the normal order statistics come from the orderStatMoments package, described by Wu and Tong (2026) &lt;doi:10.48550/arXiv.2611.19980&gt;.">
-<meta property="og:description" content="Tools for meta-analyses of studies that report a median with quartiles or extremes (a five-number summary or part of it) instead of the sample mean and sample standard deviation (SD). The current version focuses on calculating the precision of the mean and standard deviation imputed from such a summary, under normality. It includes the standard deviation factors (SDF) and the inflation factors (IF) of these imputed estimators, exactly, for the best linear unbiased estimators and for the shortcut estimators of Wan, Luo and Shi. A study may also report any other set of sample quantiles, under one of the nine quantile definitions of R or a definition supplied by the user. The package also provides closed-form shortcut formulas for these factors. Supporting functions are included to calculate the imputed mean and SD of a study with their plug-in standard errors, and to pool the studies under the naive and the exact standard errors, for practical meta-analysis. The methods are described by Wu, Shi and Tong (2026) in Precision of the imputed mean and standard deviation from a five-number summary (manuscript). The moments of the normal order statistics come from the orderStatMoments package, described by Wu and Tong (2026) &lt;doi:10.48550/arXiv.2611.19980&gt;.">
+<meta name="description" content="Tools for meta-analyses of studies that report a median with quartiles or extremes (a five-number summary or part of it) instead of the sample mean and sample standard deviation (SD). The current version focuses on calculating the precision of the mean and standard deviation imputed from such a summary, under normality. It includes the standard deviation factors (SDF) and the inflation factors of these imputed estimators, exactly, for the best linear unbiased estimators and for the shortcut estimators of Wan, Luo and Shi. A study may also report any other set of sample quantiles, under one of the nine quantile definitions of R or a definition supplied by the user. The package also provides closed-form shortcut formulas for these factors. Supporting functions are included to calculate the imputed mean and SD of a study with their plug-in standard errors, and to pool the studies under the naive and the exact standard errors, for practical meta-analysis. The methods are described by Wu, Shi and Tong (2026) in Precision of the imputed mean and standard deviation from the five-number summary (manuscript). The moments of the normal order statistics come from the orderStatMoments package, described by Wu and Tong (2026) &lt;doi:10.48550/arXiv.2611.19980&gt;.">
+<meta property="og:description" content="Tools for meta-analyses of studies that report a median with quartiles or extremes (a five-number summary or part of it) instead of the sample mean and sample standard deviation (SD). The current version focuses on calculating the precision of the mean and standard deviation imputed from such a summary, under normality. It includes the standard deviation factors (SDF) and the inflation factors of these imputed estimators, exactly, for the best linear unbiased estimators and for the shortcut estimators of Wan, Luo and Shi. A study may also report any other set of sample quantiles, under one of the nine quantile definitions of R or a definition supplied by the user. The package also provides closed-form shortcut formulas for these factors. Supporting functions are included to calculate the imputed mean and SD of a study with their plug-in standard errors, and to pool the studies under the naive and the exact standard errors, for practical meta-analysis. The methods are described by Wu, Shi and Tong (2026) in Precision of the imputed mean and standard deviation from the five-number summary (manuscript). The moments of the normal order statistics come from the orderStatMoments package, described by Wu and Tong (2026) &lt;doi:10.48550/arXiv.2611.19980&gt;.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -21,7 +21,7 @@
 
     <a class="navbar-brand me-2" href="index.html">meta5number</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,7 +35,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="articles/two-meta-analyses.html">Two meta-analysis examples: a mean case and a standard deviation (SD) case</a></li>
+<li><a class="dropdown-item" href="articles/two-meta-analyses.html">Two meta-analysis examples: a mean difference and a standard deviation (SD) ratio</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
@@ -100,12 +100,12 @@
 <span><span class="op">}</span></span>
 <span><span class="fu"><a href="reference/se_imputed.html">se_imputed</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>min <span class="op">=</span> <span class="fl">3</span>, q1 <span class="op">=</span> <span class="fl">10</span>, med <span class="op">=</span> <span class="fl">12</span>, q3 <span class="op">=</span> <span class="fl">15</span>, max <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">30</span>, <span class="st">"S3"</span>, type <span class="op">=</span> <span class="va">hinges</span><span class="op">)</span></span></code></pre></div>
 <p>Appendix C of the vignette explains both.</p>
-<p>The vignette, <code><a href="articles/meta5number.html">vignette("meta5number")</a></code>, walks through the example above and explains the columns, the scenarios and the convention on the sample size. A second vignette, <code><a href="articles/two-meta-analyses.html">vignette("two-meta-analyses")</a></code>, reproduces the two meta-analyses of Wu, Shi and Tong (2026), one of means on the data set <code>vitd</code> that ships with the package and one of SDs on <code><a href="https://rdrr.io/pkg/metamedian/man/dat.age.html" class="external-link">metamedian::dat.age</a></code>, each in three lines.</p>
+<p>The vignette, <code><a href="articles/meta5number.html">vignette("meta5number")</a></code>, walks through the example above and explains the columns, the scenarios and the convention on the sample size. A second vignette, <code><a href="articles/two-meta-analyses.html">vignette("two-meta-analyses")</a></code>, reproduces the two meta-analyses of Wu, Shi and Tong (2026) on COVID-19 patients in and outside intensive care: the mean difference of blood urea nitrogen and the SD ratio of hemoglobin, on the data sets <code>bun_icu</code> and <code>hgb_icu</code> that ship with the package, after a skewness test screens the studies.</p>
 </div>
 <div class="section level2">
 <h2 id="the-papers">The papers<a class="anchor" aria-label="anchor" href="#the-papers"></a>
 </h2>
-<p>Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard deviation from a five-number summary. Manuscript.</p>
+<p>Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard deviation from the five-number summary. Manuscript.</p>
 <p>It defines the factors, gives their limits in the sample size, fits the shortcut formulas and reports the checks of the computation. <code>citation("meta5number")</code> prints this reference. The exact moments of the order statistics come from the package <code>orderStatMoments</code>, described in:</p>
 <p>Wu Z, Tong T (2026). orderStatMoments: Exact means, variances, and covariances of order statistics in R. arXiv preprint arXiv:2611.19980. <a href="https://doi.org/10.48550/arXiv.2611.19980" class="external-link uri">https://doi.org/10.48550/arXiv.2611.19980</a></p>
 <blockquote>
@@ -141,6 +141,8 @@
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Zheyang Wu <br><small class="roles"> Author, maintainer </small>   </li>
+<li>Jiandong Shi <br><small class="roles"> Author </small>   </li>
+<li>Tiejun Tong <br><small class="roles"> Author </small>   </li>
 </ul>
 </div>
 
@@ -151,7 +153,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Zheyang Wu.</p>
+  <p>Developed by Zheyang Wu, Jiandong Shi, Tiejun Tong.</p>
 </div>
 
 <div class="pkgdown-footer-right">

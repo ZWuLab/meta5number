@@ -19,7 +19,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">meta5number</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,7 +33,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/two-meta-analyses.html">Two meta-analysis examples: a mean case and a standard deviation (SD) case</a></li>
+<li><a class="dropdown-item" href="../articles/two-meta-analyses.html">Two meta-analysis examples: a mean difference and a standard deviation (SD) ratio</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -59,7 +59,7 @@
       <h1>Standard errors for means and SDs imputed from five-number summaries</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/ZWuLab/meta5number/blob/v0.3.0/vignettes/meta5number.Rmd" class="external-link"><code>vignettes/meta5number.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ZWuLab/meta5number/blob/main/vignettes/meta5number.Rmd" class="external-link"><code>vignettes/meta5number.Rmd</code></a></small>
       <div class="d-none name"><code>meta5number.Rmd</code></div>
     </div>
 
@@ -383,10 +383,13 @@ the SD of group 2. <code><a href="../reference/pool_imputed.html">pool_imputed()
 both standard errors, and <code>metafor::rma(yi, sei = sei)</code> takes
 them as they are.</p>
 <p>The vignette <code>two-meta-analyses</code> reproduces the two
-meta-analyses of Wu, Shi and Tong (2026): a meta-analysis of means in
-which studies report the median and the range, on the data set
-<code>vitd</code> that ships with the package, and a meta-analysis of
-SDs in which studies report the quartiles, on this data set.</p>
+meta-analyses of Wu, Shi and Tong (2026), the mean difference of blood
+urea nitrogen and the SD ratio of hemoglobin between COVID-19 patients
+in and outside intensive care, on the data sets <code>bun_icu</code> and
+<code>hgb_icu</code> that ship with the package. It first screens the
+studies by a skewness test, since the imputed mean and SD and their
+exact standard errors rest on normality, and it fits a random-effects
+model beside the common-effect model.</p>
 </div>
 <div class="section level2">
 <h2 id="appendix-a--the-factors-by-scenario">Appendix A. The factors by scenario<a class="anchor" aria-label="anchor" href="#appendix-a--the-factors-by-scenario"></a>
@@ -623,7 +626,7 @@ interquartile range. BMC Medical Research Methodology 14, 135.</p>
 <p>Wu Z (2026). orderStatMoments: Exact Moments of Order Statistics. R
 package version 0.3.1.</p>
 <p>Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and
-standard deviation from a five-number summary. Manuscript.</p>
+standard deviation from the five-number summary. Manuscript.</p>
 <p>Wu Z, Tong T (2026). orderStatMoments: Exact means, variances, and
 covariances of order statistics in R. arXiv preprint arXiv:2611.19980.
 <a href="https://doi.org/10.48550/arXiv.2611.19980" class="external-link uri">https://doi.org/10.48550/arXiv.2611.19980</a></p>
@@ -635,7 +638,7 @@ covariances of order statistics in R. arXiv preprint arXiv:2611.19980.
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Zheyang Wu.</p>
+  <p>Developed by Zheyang Wu, Jiandong Shi, Tiejun Tong.</p>
 </div>
 
 <div class="pkgdown-footer-right">

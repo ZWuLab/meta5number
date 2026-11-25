@@ -66,9 +66,9 @@ and by the argument `method` in the others.
 ## References
 
 Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-deviation from a five-number summary. Manuscript. The paper this package
-accompanies: the factors, their limits, the shortcut formulas and the
-checks of the computation.
+deviation from the five-number summary. Manuscript. The paper this
+package accompanies: the factors, their limits, the shortcut formulas
+and the checks of the computation.
 
 Wu Z (2026). orderStatMoments: Exact Moments of Order Statistics. R
 package version 0.3.1. The engine that computes the moments of the
@@ -106,3 +106,7 @@ medians. Statistical Methods in Medical Research 32(2), 373-388.
 Authors:
 
 - Zheyang Wu <zheyangwu@wpi.edu>
+
+- Jiandong Shi
+
+- Tiejun Tong

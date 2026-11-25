@@ -4,22 +4,20 @@ tuberculosis cases against controls of Nnoaham and Clarke (2008), typed from
 their Table 1. Three studies report the median, minimum and maximum of each
 group (Davies, UK; Grange, Indonesia; Davies, Kenya: the scenario &quot;S1&quot;
 of se_imputed_df), two a sample mean and SD (Davies, Thailand;
-Chan, Hong Kong: &quot;sample&quot;), and one a mean with the minimum and
+Chan, Hong Kong: &quot;sample&quot;), and one a sample mean with the minimum and
 maximum (Sasidharan, India: &quot;mean_range&quot;, the mean kept and the SD
 imputed from the range). The same six studies are the real-data example
-of Luo et al. (2018) and of Yang, Hutson and Wang (2022). The vignette
-vignette(&quot;two-meta-analyses&quot;) pools them under the naive and the
-exact standard errors, as Wu, Shi and Tong (2026) do."><meta property="og:description" content="The six studies of the meta-analysis of serum vitamin D (nmol/L) in
+of Luo et al. (2018) and of Yang, Hutson and Wang (2022). They serve here
+as example data for the scenarios &quot;S1&quot; and &quot;mean_range&quot;."><meta property="og:description" content="The six studies of the meta-analysis of serum vitamin D (nmol/L) in
 tuberculosis cases against controls of Nnoaham and Clarke (2008), typed from
 their Table 1. Three studies report the median, minimum and maximum of each
 group (Davies, UK; Grange, Indonesia; Davies, Kenya: the scenario &quot;S1&quot;
 of se_imputed_df), two a sample mean and SD (Davies, Thailand;
-Chan, Hong Kong: &quot;sample&quot;), and one a mean with the minimum and
+Chan, Hong Kong: &quot;sample&quot;), and one a sample mean with the minimum and
 maximum (Sasidharan, India: &quot;mean_range&quot;, the mean kept and the SD
 imputed from the range). The same six studies are the real-data example
-of Luo et al. (2018) and of Yang, Hutson and Wang (2022). The vignette
-vignette(&quot;two-meta-analyses&quot;) pools them under the naive and the
-exact standard errors, as Wu, Shi and Tong (2026) do."></head><body>
+of Luo et al. (2018) and of Yang, Hutson and Wang (2022). They serve here
+as example data for the scenarios &quot;S1&quot; and &quot;mean_range&quot;."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -27,7 +25,7 @@ exact standard errors, as Wu, Shi and Tong (2026) do."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">meta5number</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,7 +37,7 @@ exact standard errors, as Wu, Shi and Tong (2026) do."></head><body>
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/two-meta-analyses.html">Two meta-analysis examples: a mean case and a standard deviation (SD) case</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/two-meta-analyses.html">Two meta-analysis examples: a mean difference and a standard deviation (SD) ratio</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -54,7 +52,7 @@ exact standard errors, as Wu, Shi and Tong (2026) do."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Serum vitamin D in tuberculosis cases and controls: six studies</h1>
-      <small class="dont-index">Source: <a href="https://github.com/ZWuLab/meta5number/blob/v0.3.0/R/data.R" class="external-link"><code>R/data.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ZWuLab/meta5number/blob/main/R/data.R" class="external-link"><code>R/data.R</code></a></small>
       <div class="d-none name"><code>vitd.Rd</code></div>
     </div>
 
@@ -64,12 +62,11 @@ tuberculosis cases against controls of Nnoaham and Clarke (2008), typed from
 their Table 1. Three studies report the median, minimum and maximum of each
 group (Davies, UK; Grange, Indonesia; Davies, Kenya: the scenario <code>"S1"</code>
 of <code><a href="se_imputed_df.html">se_imputed_df</a></code>), two a sample mean and SD (Davies, Thailand;
-Chan, Hong Kong: <code>"sample"</code>), and one a mean with the minimum and
+Chan, Hong Kong: <code>"sample"</code>), and one a sample mean with the minimum and
 maximum (Sasidharan, India: <code>"mean_range"</code>, the mean kept and the SD
 imputed from the range). The same six studies are the real-data example
-of Luo et al. (2018) and of Yang, Hutson and Wang (2022). The vignette
-<code><a href="../articles/two-meta-analyses.html">vignette("two-meta-analyses")</a></code> pools them under the naive and the
-exact standard errors, as Wu, Shi and Tong (2026) do.</p>
+of Luo et al. (2018) and of Yang, Hutson and Wang (2022). They serve here
+as example data for the scenarios <code>"S1"</code> and <code>"mean_range"</code>.</p>
     </div>
 
     <div class="section level2">
@@ -102,8 +99,6 @@ Methods in Medical Research 27(6), 1785-1805.</p>
 <p>Yang X, Hutson AD, Wang D (2022). A generalized BLUE approach for combining
 location and scale information in a meta-analysis. Journal of Applied
 Statistics 49(15), 3846-3867.</p>
-<p>Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-deviation from a five-number summary. Manuscript.</p>
     </div>
 
     <div class="section level2">
@@ -148,7 +143,7 @@ deviation from a five-number summary. Manuscript.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Zheyang Wu.</p>
+  <p>Developed by Zheyang Wu, Jiandong Shi, Tiejun Tong.</p>
 </div>
 
 <div class="pkgdown-footer-right">

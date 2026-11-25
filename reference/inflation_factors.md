@@ -1,6 +1,6 @@
 # Inflation factors of the imputed mean and SD
 
-The inflation factors (IF) of Wu, Shi and Tong (2026): the ratio of the
+The inflation factors of Wu, Shi and Tong (2026): the ratio of the
 standard deviation of the imputed mean to that of the sample mean,
 \\\kappa\_\mu(n) = \mathrm{SD}(\hat\mu)/\mathrm{SD}(\bar X) =
 C\_\mu(n)\sqrt n\\, and of the imputed SD to that of the sample SD
@@ -71,13 +71,14 @@ Named numeric vector: `kappa_mu`, `kappa_sigma`.
 
 Assumptions as in
 [`imputed_moments`](https://zwulab.github.io/meta5number/reference/imputed_moments.md):
-iid normal data, the reported values following definition `type`. An IF
-of 1.2 means a 20% larger SD than that of the full-sample statistic.
+iid normal data, the reported values following definition `type`. An
+inflation factor of 1.2 means a 20% larger SD than that of the
+full-sample statistic.
 
 ## References
 
 Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-deviation from a five-number summary. Manuscript.
+deviation from the five-number summary. Manuscript.
 
 ## Examples
 

@@ -121,16 +121,16 @@ The vignette,
 walks through the example above and explains the columns, the scenarios
 and the convention on the sample size. A second vignette,
 [`vignette("two-meta-analyses")`](https://zwulab.github.io/meta5number/articles/two-meta-analyses.md),
-reproduces the two meta-analyses of Wu, Shi and Tong (2026), one of
-means on the data set `vitd` that ships with the package and one of SDs
-on
-[`metamedian::dat.age`](https://rdrr.io/pkg/metamedian/man/dat.age.html),
-each in three lines.
+reproduces the two meta-analyses of Wu, Shi and Tong (2026) on COVID-19
+patients in and outside intensive care: the mean difference of blood
+urea nitrogen and the SD ratio of hemoglobin, on the data sets `bun_icu`
+and `hgb_icu` that ship with the package, after a skewness test screens
+the studies.
 
 ## The papers
 
 Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-deviation from a five-number summary. Manuscript.
+deviation from the five-number summary. Manuscript.
 
 It defines the factors, gives their limits in the sample size, fits the
 shortcut formulas and reports the checks of the computation.

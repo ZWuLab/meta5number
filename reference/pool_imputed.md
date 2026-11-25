@@ -133,7 +133,7 @@ Viechtbauer W (2010). Conducting meta-analyses in R with the metafor
 package. Journal of Statistical Software 36(3), 1-48.
 
 Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-deviation from a five-number summary. Manuscript.
+deviation from the five-number summary. Manuscript.
 
 ## See also
 

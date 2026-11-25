@@ -1,251 +1,362 @@
-# Two meta-analysis examples: a mean case and a standard deviation (SD) case
+# Two meta-analysis examples: a mean difference and a standard deviation (SD) ratio
 
 ``` r
 
 library(meta5number)
-has_mm <- requireNamespace("metamedian", quietly = TRUE)  # the SD case's data
-has_mf <- requireNamespace("metafor", quietly = TRUE)     # confirms the pooling
+has_mf <- requireNamespace("metafor", quietly = TRUE)  # the random-effects fits
 ```
 
-## What the two cases show
+## What the two examples show
 
 This vignette assumes that the reader knows what
 [`se_imputed_diff()`](https://zwulab.github.io/meta5number/reference/se_imputed_diff.md)
-and
-[`se_imputed_df()`](https://zwulab.github.io/meta5number/reference/se_imputed_df.md)
-return: each study’s imputed mean and SD with their naive and exact
-standard errors, in the columns that
+returns: each group’s mean and SD, imputed or sample, and each study’s
+effect estimate with its naive and its exact standard error, in the
+columns that
 [`vignette("meta5number")`](https://zwulab.github.io/meta5number/articles/meta5number.md)
 describes. Start there if the columns, the scenarios or the conventions
 are new.
 
-Wu, Shi and Tong (2026) illustrate the exact standard errors on two
-published meta-analyses, and this vignette runs both with the package.
-In a meta-analysis of means in which three of six studies report the
-median and the range, the exact standard errors raise the pooled
-standard error by 7.1%. In a meta-analysis of SDs in which 29 of 51
-studies report the quartiles, they raise the pooled standard error by
-35% and bring $`I^2`$ from 86% to 70%. Both data sets are public. The
-vitamin D studies ship with this package as the data set `vitd`, and the
-age studies come with the `metamedian` package as its data set
-`dat.age`. Every number in this vignette is computed when it is built.
-
-Both cases pool with the common-effect model. Study $`i`$ gives an
-effect estimate $`y_i`$ with variance $`v_i`$, and the model weights it
-by $`w_i = 1/v_i`$:
-``` math
-\hat\theta = \frac{\sum_i w_i y_i}{\sum_i w_i}, \qquad
-\mathrm{SE}(\hat\theta) = \Big(\sum_i w_i\Big)^{-1/2}, \qquad
-\mathcal Q = \sum_i w_i (y_i - \hat\theta)^2, \qquad
-I^2 = \max\Big\{0, \frac{\mathcal Q - (K - 1)}{\mathcal Q}\Big\},
-```
-where $`K`$ is the number of studies. $`\mathcal Q`$ and $`I^2`$ are the
-heterogeneity measures of Higgins and Thompson (2002).
+Wu, Shi and Tong (2026) apply the exact standard errors to two
+meta-analyses of COVID-19 patients, and this vignette runs both with the
+package. The first compares the mean blood urea nitrogen (BUN) of
+patients in intensive care (ICU) with that of the other patients. The
+second compares the variability of hemoglobin in the same two groups. In
+both, most studies report the three quartiles of each group in place of
+a sample mean and SD.
 
 We run each meta-analysis twice: with the naive standard errors, which
 treat the imputed mean and SD as a sample mean and SD, and with the
-exact standard errors computed from the exact standard deviation
-factors, which this package takes from the moments of the normal order
-statistics of the `orderStatMoments` package (Wu and Tong, 2026). That
-is, the two analyses share the $`y_i`$ and differ only in the $`v_i`$.
-The function
-[`pool_imputed()`](https://zwulab.github.io/meta5number/reference/pool_imputed.md)
-computes the four quantities above twice from the output of
-[`se_imputed_diff()`](https://zwulab.github.io/meta5number/reference/se_imputed_diff.md),
-once with the naive and once with the exact standard errors, and prints
-the two fits side by side. Both cases call it.
+exact standard errors, which this package computes from the exact
+standard deviation of the imputed mean and SD under normality. The two
+runs share each study’s effect estimate $`y_i`$ and differ only in its
+variance $`v_i`$. The examples show three things:
 
-## A meta-analysis of means from medians and ranges
+- The pooled estimate changes little, by less than 5% in each of the
+  four pairs of fits.
 
-The data are the meta-analysis of serum vitamin D (nmol/L) in
-tuberculosis cases against controls of Nnoaham and Clarke (2008), typed
-from their Table 1 and shipped with this package as the data set `vitd`.
-Three studies report the median, minimum and maximum of each group, two
-a sample mean and SD, and one a mean with the minimum and maximum.
+- The estimated heterogeneity falls, because the larger within-study
+  variances $`v_i`$ leave less of the spread of the $`y_i`$ to be
+  attributed to heterogeneity between studies.
+
+- The standard error of the pooled estimate can rise or fall, depending
+  on the model, and in the hemoglobin example the inference of the
+  random-effects analysis is sensitive to which variances are used.
+
+How large these changes are depends on the data. The examples illustrate
+the methodology, and they do not establish clinical conclusions. Every
+number in this vignette is computed when the vignette is built.
+
+## The data
+
+The study summaries ship with this package as the data sets `bun_icu`
+and `hgb_icu`. They come from the systematic review of Katzenschlager et
+al. (2021) and are the data frames that McGrath et al. (2023) published
+with their article. Group 1 (the columns ending in `.g1`) is the ICU
+group and group 2 (`.g2`) the non-ICU group, as the data classify the
+patients. A study reports the three quartiles of each group, or a sample
+mean and SD.
 
 ``` r
 
-vitd
-#>               study n.cases min.cases med.cases max.cases mean.cases sd.cases
-#> 1        Davies, UK      40      2.25     16.00     74.25         NA       NA
-#> 2 Grange, Indonesia      40     43.75     65.75    130.50         NA       NA
-#> 3     Davies, Kenya      15     16.75     39.75     89.25         NA       NA
-#> 4  Davies, Thailand      51        NA        NA        NA      69.50     24.5
-#> 5   Chan, Hong Kong      22        NA        NA        NA      46.50     18.5
-#> 6 Sasidharan, India      35      2.50        NA     75.00      26.75       NA
-#>   n.controls min.controls med.controls max.controls mean.controls sd.controls
-#> 1         40         9.00        27.25       132.50            NA          NA
-#> 2         38        48.50        69.50       125.00            NA          NA
-#> 3         15        26.25        65.50       114.75            NA          NA
-#> 4         51           NA           NA           NA         95.50       29.25
-#> 5         23           NA           NA           NA         52.25       15.75
-#> 6         16        22.50           NA       145.00         48.50          NA
+bun_icu[, 1:7]   # the ICU group; the non-ICU columns end in .g2
+#>                     author n.g1 q1.g1 med.g1 q3.g1 mean.g1  sd.g1
+#> 1    Hong, Kyung Soo (YMJ)   13    NA     NA    NA    7.14 4.0698
+#> 2    Liu, Yanli (Preprint)   53  4.00   5.50  7.10      NA     NA
+#> 3   Lei, Shaoqing (EClinM)   15  4.90   5.80 10.30      NA     NA
+#> 4 Zhang, Guqin  (Preprint)   55  4.30   5.80  8.50      NA     NA
+#> 5          Wang, Feng (EP)   14  7.20   9.20 11.30      NA     NA
+#> 6       Wang, Dawei (JAMA)   36  4.30   5.90  9.60      NA     NA
+#> 7      Cao, Min (Preprint)   19  3.53   4.54  8.23      NA     NA
 ```
 
-The study that reports a mean with the range (Sasidharan, India) has no
-SD.
-[`se_imputed_df()`](https://zwulab.github.io/meta5number/reference/se_imputed_df.md)
-reads such a row as the scenario `mean_range`: the mean is kept as the
-sample mean, and the SD is imputed from the two extremes alone, as the
-range divided by the expected range of a normal sample of that size,
-which is the best linear unbiased estimator (BLUE) of the SD from the
-extremes. Its exact standard error is the standard deviation of that
-estimator, from the moments of the two extremes. The standard error of
-this study’s mean is then $`\hat\sigma/\sqrt n`$ under both
-calculations, with the imputed SD plugged in.
+## Screening the studies by a skewness test
 
-The call takes the controls first, so the difference `yi` is controls
-minus cases, as the paper reports it. Each group’s factors are taken at
-its own sample size, exact at the even sizes 40 and 38, where the
-reported median is the average of the two middle values under R’s
-default quantile definition. The table lists each study’s scenario, its
-difference with the two standard errors, and its weight in percent under
-each.
+The imputed mean and SD, and their exact standard errors, rest on the
+assumption that the data of a group are normal. Before imputing, we
+therefore apply the skewness test of Shi et al. (2023) to every group
+that reports the three quartiles $`q_1`$, $`q_2`$, $`q_3`$ with its
+sample size $`n`$. At the 5% level, the test rejects normality when
+``` math
+|T| > \frac{2.65}{\sqrt n} - \frac{6}{n^2}, \qquad
+T = \frac{q_1 + q_3 - 2 q_2}{q_3 - q_1},
+```
+where the right-hand side is their approximate critical value. A study
+that reports the sample mean and SD of both groups enters the analysis
+directly. Any other study enters only if the test does not reject
+normality in either of its groups.
 
 ``` r
 
-d <- se_imputed_diff(vitd, suffixes = c(".controls", ".cases"))
-fit_vd <- pool_imputed(d)
-tab <- data.frame(study = d$study, scenario = d$scenario.cases,
-                  yi = d$yi, se_naive = d$sei_naive, se_exact = d$sei,
-                  w_naive = fit_vd$weights$naive,
-                  w_exact = fit_vd$weights$exact)
-print(tab, digits = 3, row.names = FALSE)
-#>              study   scenario    yi se_naive se_exact w_naive w_exact
-#>         Davies, UK         S1 15.42     5.23     6.01   19.30   16.77
-#>  Grange, Indonesia         S1  3.04     4.30     4.93   28.57   24.89
-#>      Davies, Kenya         S1 22.91     8.51     9.34    7.29    6.94
-#>   Davies, Thailand     sample 26.00     5.34     5.34   18.49   21.20
-#>    Chan, Hong Kong     sample  5.75     5.13     5.13   20.04   22.97
-#>  Sasidharan, India mean_range 21.75     9.15     9.15    6.31    7.23
-fit_vd
-#> Pooled difference of means (group 1 minus group 2), common-effect model (EE), 6 studies
-#>          estimate    se ci.lb ci.ub      pval     Q    I2
-#> naive SE    12.85 2.298 8.346 17.35 2.240e-08 15.77 68.29
-#> exact SE    13.34 2.460 8.517 18.16 5.876e-08 14.18 64.75
-#> 95% confidence intervals and p-values from the normal distribution. Q has 5 degrees of freedom, and I2 is in percent.
+# TRUE when the skewness test rejects normality in a group that reports the
+# three quartiles, FALSE when it does not, or when the group reports a mean
+# and SD
+rejects <- function(q1, med, q3, n) {
+  stat <- abs(q1 + q3 - 2 * med) / (q3 - q1)
+  !is.na(stat) & stat > 2.65 / sqrt(n) - 6 / n^2
+}
+# a study is kept when neither of its groups is rejected
+keep <- function(d) {
+  !rejects(d$q1.g1, d$med.g1, d$q3.g1, d$n.g1) &
+    !rejects(d$q1.g2, d$med.g2, d$q3.g2, d$n.g2)
+}
+bun <- bun_icu[keep(bun_icu), ]
+hgb <- hgb_icu[keep(hgb_icu), ]
+c(BUN = nrow(bun), hemoglobin = nrow(hgb))   # the studies that are pooled
+#>        BUN hemoglobin 
+#>          5          7
+```
+
+The test rejects normality in two of the seven BUN studies, which leaves
+five, and in none of the seven hemoglobin studies.
+
+## The two models
+
+Both examples fit a common-effect model and a random-effects model.
+Study $`i`$ gives an effect estimate $`y_i`$ with variance $`v_i`$, and
+the pooled estimate and its standard error are
+``` math
+\hat\theta = \frac{\sum_i w_i y_i}{\sum_i w_i}, \qquad
+\mathrm{SE}(\hat\theta) = \Big(\sum_i w_i\Big)^{-1/2}, \qquad
+w_i = \frac{1}{v_i + \hat\tau^2},
+```
+where $`\hat\tau^2 = 0`$ in the common-effect model, and in the
+random-effects model $`\hat\tau^2`$ is the restricted maximum likelihood
+(REML) estimate of the between-study variance. The 95% confidence
+interval is $`\hat\theta \pm 1.96\,\mathrm{SE}(\hat\theta)`$, a normal
+approximation. The function
+[`pool_imputed()`](https://zwulab.github.io/meta5number/reference/pool_imputed.md)
+fits the common-effect model twice from the output of
+[`se_imputed_diff()`](https://zwulab.github.io/meta5number/reference/se_imputed_diff.md),
+once with the naive and once with the exact standard errors, and prints
+the two fits side by side. The random-effects fits below use the
+`metafor` package (Viechtbauer, 2010), which takes the columns `yi`,
+`sei_naive` and `sei` as they are. We report the heterogeneity by
+$`\hat\tau^2`$ and by the index $`I^2`$, the share of the total
+variation of the $`y_i`$ that is attributed to heterogeneity, in
+percent.
+
+``` r
+
+# the REML random-effects fit under each standard error: the pooled estimate
+# with its 95% confidence interval, its standard error, tau^2, and I^2 in
+# percent as metafor reports it. The control settings tighten the iteration,
+# so that an estimate of tau^2 at its lower bound comes out as 0.
+fit_reml <- function(d) {
+  ctrl <- list(tau2.init = 0, stepadj = 0.25, maxiter = 1000,
+               threshold = 1e-10)
+  one <- function(se) {
+    f <- metafor::rma(yi = d$yi, sei = se, method = "REML", test = "z",
+                      control = ctrl)
+    c(estimate = as.numeric(f$b), ci.lb = f$ci.lb, ci.ub = f$ci.ub,
+      se = f$se, tau2 = f$tau2, I2 = f$I2)
+  }
+  rbind(naive = one(d$sei_naive), exact = one(d$sei))
+}
+```
+
+## The mean difference of BUN
+
+The effect estimate of a study is the difference of the two groups’
+means, ICU minus non-ICU, in mmol/L. For a group that reports the
+quartiles, the mean is the imputed mean, the best linear unbiased
+estimator (BLUE) of the population mean from the three quartiles, and
+for a group that reports its sample mean, it is that sample mean. The
+naive standard error of an imputed mean is $`\hat\sigma/\sqrt n`$ and
+its exact standard error is $`C_\mu(n)\,\hat\sigma`$, where
+$`\hat\sigma`$ is the imputed SD and $`C_\mu(n)`$ is the standard
+deviation of the imputed mean in units of the population SD $`\sigma`$,
+at the group’s own sample size $`n`$. The variance $`v_i`$ is the sum of
+the two groups’ squared standard errors. In the output below,
+`scenario.g1` is `S2` for a group that reports the three quartiles and
+`sample` for a group that reports a sample mean and SD, and `sei_naive`
+and `sei` are $`\sqrt{v_i}`$ under the naive and the exact calculation.
+
+``` r
+
+d_bun <- se_imputed_diff(bun)   # the difference of means, ICU minus non-ICU
+print(d_bun[, c("author", "scenario.g1", "yi", "sei_naive", "sei")],
+      digits = 4, row.names = FALSE)
+#>                    author scenario.g1    yi sei_naive    sei
+#>     Hong, Kyung Soo (YMJ)      sample 1.928    1.1813 1.1813
+#>  Zhang, Guqin  (Preprint)          S2 2.129    0.4418 0.4736
+#>           Wang, Feng (EP)          S2 4.795    1.0516 1.1145
+#>        Wang, Dawei (JAMA)          S2 2.582    0.6968 0.7453
+#>       Cao, Min (Preprint)          S2 1.049    0.8674 0.9210
+ce_bun <- pool_imputed(d_bun)   # the common-effect model
+ce_bun
+#> Pooled difference of means (group 1 minus group 2), common-effect model (EE), 5 studies
+#>          estimate     se ci.lb ci.ub      pval     Q    I2
+#> naive SE    2.303 0.3141 1.688 2.919 2.262e-13 8.122 50.75
+#> exact SE    2.302 0.3341 1.647 2.957 5.616e-12 7.229 44.67
+#> 95% confidence intervals and p-values from the normal distribution. Q has 4 degrees of freedom, and I2 is in percent.
 #> The weights in percent are $weights. Every field with str() or unclass().
 ```
 
-Compared with the naive calculation, the exact calculation raises the
-standard errors of the three studies that report the median and the
-range by 9.8% to 14.8%, the inflation of the imputed mean under that
-scenario at these sample sizes. Their share of the weight falls from 55%
-to 49%. The pooled difference moves from 12.8 to 13.3 nmol/L, and its
-standard error from 2.30 to 2.46, a rise of 7.1%, so its confidence
-interval widens by the same proportion.
+``` r
 
-## A meta-analysis of SDs from quartiles
+re_bun <- fit_reml(d_bun)       # the random-effects model
+round(re_bun, 4)
+#>       estimate  ci.lb  ci.ub     se   tau2      I2
+#> naive   2.4018 1.4063 3.3973 0.5079 0.6375 52.0779
+#> exact   2.3737 1.4530 3.2945 0.4698 0.4172 38.8603
+```
 
-A meta-analysis of variability studies whether an outcome is more
-dispersed in one group than in another. Here the effect size is the log
-variability ratio of Nakagawa et al. (2015), the log of the ratio of the
-two groups’ SDs, $`y_i = \log(\hat\sigma_{i1}/\hat\sigma_{i2})`$. The
-data are the 51 studies of the age of COVID-19 nonsurvivors (group 1)
-against survivors (group 2) of Katzenschlager et al. (2021), shipped
-with the `metamedian` package as its data set `dat.age`: 29 report the
-three quartiles and 22 a sample mean and SD in both groups. The question
-is whether age is less dispersed among those who died.
-`measure = "lnVR"` gives $`y_i`$ with its two standard errors in place
-of the difference of means.
+For the four studies with imputed means, the exact standard error of the
+difference is 6.0% to 7.2% larger than the naive one. The pooled mean
+difference is nearly the same under the two calculations: 2.303 and
+2.302 mmol/L under the common-effect model, and 2.402 and 2.374 mmol/L
+under the random-effects model. All four confidence intervals lie above
+zero.
+
+The two calculations differ mainly in the estimated heterogeneity. In
+the random-effects fit, $`\hat\tau^2`$ falls from 0.6375 (mmol/L)$`^2`$
+under the naive standard errors to 0.4172 under the exact ones, and
+$`I^2`$, as `metafor` reports it for this fit, from 52.1% to 38.9%. The
+standard error of the pooled difference moves in opposite directions
+under the two models. Under the common-effect model, the larger $`v_i`$
+reduce the total weight, and the standard error rises by 6.4%. Under the
+random-effects model, the fall of $`\hat\tau^2`$ more than offsets the
+larger $`v_i`$, and the standard error falls by 7.5%.
+
+## The SD ratio of hemoglobin
+
+A meta-analysis of variability asks whether an outcome is more dispersed
+in one group than in another. The effect estimate is the log of the
+ratio of the two groups’ SDs, each imputed or, where the study reports
+it, the sample SD, $`y_i = \log(\hat\sigma_{1i}/\hat\sigma_{2i})`$, the
+log variability ratio of Nakagawa et al. (2015) without its small-sample
+correction term, as in Wu, Shi and Tong (2026). The argument
+`measure = "lnVR"` of
+[`se_imputed_diff()`](https://zwulab.github.io/meta5number/reference/se_imputed_diff.md)
+gives $`y_i`$ with its two standard errors in place of the difference of
+means. The pooled estimate and the limits of its confidence interval are
+exponentiated to give the pooled SD ratio.
+
+The variance of $`y_i`$ is the sum of one term per group, to first order
+in each group’s SD (the delta method). The naive calculation gives every
+group the term of a sample SD of $`n`$ normal observations,
+$`1/\{2(n - 1)\}`$. The exact calculation keeps that term for a group
+that reports its sample SD and uses $`C^2_\sigma(n)`$, the exact
+variance of the imputed SD in units of $`\sigma^2`$, where $`\sigma`$ is
+the group’s population SD, for a group whose SD is imputed from the
+quartiles.
 
 ``` r
 
-d <- se_imputed_diff(metamedian::dat.age, measure = "lnVR")  # suffixes .g1, .g2
-table(d$scenario.g1)
-#> 
-#>     S2 sample 
-#>     29     22
-fit_vr <- pool_imputed(d)
-fit_vr
-#> Pooled log variability ratio (SD of group 1 over SD of group 2), common-effect model (EE), 51 studies
-#>          estimate      se   ci.lb   ci.ub      pval     Q    I2
-#> naive SE  -0.2253 0.01610 -0.2568 -0.1937 1.768e-44 346.6 85.58
-#> exact SE  -0.2152 0.02167 -0.2577 -0.1728 2.939e-23 165.3 69.75
-#> 95% confidence intervals and p-values from the normal distribution. Q has 50 degrees of freedom, and I2 is in percent.
+d_hgb <- se_imputed_diff(hgb, measure = "lnVR")
+print(d_hgb[, c("author", "scenario.g1", "yi", "sei_naive", "sei")],
+      digits = 4, row.names = FALSE)
+#>                              author scenario.g1       yi sei_naive    sei
+#>             Huang, Chaolin (Lancet)          S2 -0.10164   0.24677 0.4002
+#>     Smadja, David M. (Angiogenesis)          S2 -0.28903   0.22942 0.3628
+#>               Hong, Kyung Soo (YMJ)      sample  0.06062   0.21822 0.2182
+#>  Rentsch, Christopher T. (Preprint)          S2  0.24990   0.07413 0.1221
+#>                     Sun, Suyu (CCA)          S2 -0.08845   0.30317 0.4901
+#>                     Wang, Feng (EP)          S2  0.76214   0.27735 0.4332
+#>                  Yang, Luhuan (JCV)      sample  0.17531   0.14422 0.1442
+ce_hgb <- pool_imputed(d_hgb)   # the common-effect model, on the log scale
+ce_hgb
+#> Pooled log variability ratio (SD of group 1 over SD of group 2), common-effect model (EE), 7 studies
+#>          estimate      se   ci.lb  ci.ub     pval      Q   I2
+#> naive SE   0.1835 0.05676 0.07229 0.2948 0.001223 11.858 49.4
+#> exact SE   0.1713 0.07919 0.01610 0.3265 0.030518  4.888  0.0
+#> 95% confidence intervals and p-values from the normal distribution. Q has 6 degrees of freedom, and I2 is in percent.
 #> exp() of the estimate and of the limits gives the ratio of SDs.
 #> The weights in percent are $weights. Every field with str() or unclass().
 ```
 
-The variance of $`y_i`$ is approximated by the sum of one term per
-group, to first order in each group’s SD (the delta method,
-$`\mathrm{Var}(\log X) \approx \mathrm{Var}(X)/(\mathrm{E}X)^2`$). The
-naive calculation gives every group the large-sample term of a sample SD
-of $`n`$ normal observations, $`1/\{2(n - 1)\}`$. The exact calculation
-keeps that term for a group that gives its sample SD and uses
-$`C^2_\sigma(n)`$, the exact variance of the imputed SD in units of
-$`\sigma^2`$, for a group whose SD is imputed from the quartiles, which
-the output carries as `(se_sigma / sigma_hat)^2`:
-``` math
-v_i^{\mathrm{naive}} = \frac{1}{2(n_{i1} - 1)} + \frac{1}{2(n_{i2} - 1)}, \qquad
-v_i^{\mathrm{exact}} = t(n_{i1}) + t(n_{i2}), \qquad
-t(n) = \begin{cases}
-  1/\{2(n - 1)\} & \text{for a sample SD,} \\
-  C^2_\sigma(n) & \text{for an imputed SD.}
-\end{cases}
+``` r
+
+re_hgb <- fit_reml(d_hgb)       # the random-effects model, on the log scale
+# the pooled SD ratio with its 95% confidence interval
+round(exp(re_hgb[, c("estimate", "ci.lb", "ci.ub")]), 3)
+#>       estimate ci.lb ci.ub
+#> naive    1.138 0.937 1.381
+#> exact    1.187 1.016 1.386
+round(re_hgb[, c("se", "tau2", "I2")], 4)
+#>           se   tau2      I2
+#> naive 0.0988 0.0294 48.4811
+#> exact 0.0792 0.0000  0.0000
 ```
-The columns `sei_naive` and `sei` are the square roots of these two
-variances. Both are first-order approximations of the variance of a log,
-so the intervals below are normal approximations. The bias correction of
-the log ratio of Nakagawa et al. (2015) is not applied, as in Wu, Shi
-and Tong (2026). Both analyses use the plain log ratio.
 
-For a group whose SD is imputed from the quartiles, $`C^2_\sigma(n)`$ is
-2.34 to 2.72 times the naive term $`1/\{2(n - 1)\}`$. Under the exact
-variance, the share of the weight on the 29 quartile studies falls from
-72% to 49%. The pooled log ratio changes little, from -0.225 to -0.215,
-so the SD of age among nonsurvivors is about 0.80 times that among
-survivors either way. Its standard error, however, rises by 35%, from
-0.0161 to 0.0217, and its confidence interval widens by the same
-proportion. $`\mathcal Q`$ falls from 346.6 to 165.3, and $`I^2`$ from
-86% to 70%. Since the two fits share the $`y_i`$ and differ only in the
-variances, the fall in $`\mathcal Q`$ and $`I^2`$ comes from the larger
-within-study variances alone: the extra spread of an imputed SD, which
-the naive variance leaves out, was counted as heterogeneity.
+For each of the five studies whose two SDs are imputed from the
+quartiles, the exact variance $`v_i`$ is 2.44 to 2.71 times the naive
+one. Under the common-effect model, the standard error of the pooled log
+ratio rises by 39.5%, and both confidence intervals of the SD ratio lie
+above 1. Under the random-effects model, $`\hat\tau^2`$ falls from
+0.0294 under the naive standard errors to 0 under the exact ones. With
+$`\hat\tau^2 = 0`$, the random-effects model has the weights of the
+common-effect model, so the two models give the same pooled SD ratio
+under the exact standard errors.
 
-With the `metafor` package, the exact fit is
-`rma(yi, sei = sei, data = d, method = "EE")`, which returns the same
-pooled estimate, standard error and $`\mathcal Q`$, and the naive fit
-takes `sei_naive` in the same way:
+Under the random-effects model, the pooled SD ratio is 1.138 (0.937,
+1.381) with the naive standard errors and 1.187 (1.016, 1.386) with the
+exact ones. The naive interval includes 1, and the exact interval does
+not. The two results differ only through the within-study variances
+$`v_i`$, so the inference is sensitive to how these variances are
+calculated.
+
+The plot below shows each study’s SD ratio with its 95% confidence
+interval under the two calculations. The exact interval is wider for
+every study with imputed SDs and the same for the two studies that
+report their sample SDs.
 
 ``` r
 
-f <- metafor::rma(yi, sei = sei, data = d, method = "EE")
-c(estimate = as.numeric(f$b), se = f$se, Q = f$QE, I2 = f$I2)
-#>     estimate           se            Q           I2 
-#>  -0.21524814   0.02166619 165.27554705  69.74749085
+est <- exp(d_hgb$yi)
+z <- qnorm(0.975)
+half <- cbind(naive = z * d_hgb$sei_naive, exact = z * d_hgb$sei)
+lab <- sub(" \\(.*$", "", d_hgb$author)   # the first author
+k <- nrow(d_hgb)
+op <- par(mar = c(4, 11, 1, 1))
+plot(NA, xlim = c(0, max(exp(d_hgb$yi + half))), ylim = c(0.5, k + 0.5),
+     yaxt = "n", ylab = "", xlab = "Hemoglobin SD ratio, ICU / non-ICU")
+axis(2, at = k:1, labels = lab, las = 1, tick = FALSE)
+abline(v = 1, lty = 3)
+for (v in 1:2) {                          # 1 the naive interval, 2 the exact
+  y <- k:1 + c(0.15, -0.15)[v]
+  segments(exp(d_hgb$yi - half[, v]), y, exp(d_hgb$yi + half[, v]), y,
+           lty = c(2, 1)[v])
+  points(est, y, pch = c(22, 24)[v], bg = c("white", "black")[v])
+}
+legend("bottomright", legend = c("naive", "exact"), lty = c(2, 1),
+       pch = c(22, 24), pt.bg = c("white", "black"), bty = "n")
+```
+
+![Forest plot of the hemoglobin SD ratios of seven studies, each with a
+naive and an exact 95% confidence interval. The exact interval is wider
+for the five studies with imputed
+SDs.](two-meta-analyses_files/figure-html/forest-1.png)
+
+``` r
+
+par(op)
 ```
 
 ## References
 
-Higgins JPT, Thompson SG (2002). Quantifying heterogeneity in a
-meta-analysis. Statistics in Medicine 21(11), 1539-1558.
-
 Katzenschlager S, Zimmer AJ, Gottschalk C, Grafeneder J, Schmitz S,
 Kraker S, Ganslmeier M, Muth A, Seitel A, Maier-Hein L, Benedetti A,
 Larmann J, Weigand MA, McGrath S, Denkinger CM (2021). Can we predict
-the severe course of COVID-19, a systematic review and meta-analysis of
-indicators of clinical outcome? PLOS One 16, e0255154.
+the severe course of COVID-19 - a systematic review and meta-analysis of
+indicators of clinical outcome? PLOS ONE 16(7), e0255154.
 
-McGrath S, Zhao X, Ozturk O, Katzenschlager S, Steele R, Benedetti A
-(2024). metamedian: An R package for meta-analyzing studies reporting
-medians. Research Synthesis Methods 15(2), 332-346.
+McGrath S, Katzenschlager S, Zimmer AJ, Seitel A, Steele R, Benedetti A
+(2023). Standard error estimation in meta-analysis of studies reporting
+medians. Statistical Methods in Medical Research 32(2), 373-388.
 
 Nakagawa S, Poulin R, Mengersen K, Reinhold K, Engqvist L, Lagisz M,
 Senior AM (2015). Meta-analysis of variation: ecological and
 evolutionary applications and beyond. Methods in Ecology and Evolution
 6(2), 143-152.
 
-Nnoaham KE, Clarke A (2008). Low serum vitamin D levels and
-tuberculosis: a systematic review and meta-analysis. International
-Journal of Epidemiology 37(1), 113-119.
+Shi J, Luo D, Wan X, Liu Y, Liu J, Bian Z, Tong T (2023). Detecting the
+skewness of data from the five-number summary and its application in
+meta-analysis. Statistical Methods in Medical Research 32(7), 1338-1360.
 
 Viechtbauer W (2010). Conducting meta-analyses in R with the metafor
 package. Journal of Statistical Software 36(3), 1-48.
 
 Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-deviation from a five-number summary. Manuscript.
-
-Wu Z, Tong T (2026). orderStatMoments: Exact means, variances, and
-covariances of order statistics in R. arXiv preprint arXiv:2611.19980.
-<https://doi.org/10.48550/arXiv.2611.19980>
+deviation from the five-number summary. Manuscript.

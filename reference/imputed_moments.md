@@ -157,7 +157,7 @@ Research Methodology 14, 135. Yang X, Hutson AD, Wang D (2022). A
 generalized BLUE approach for combining location and scale information
 in a meta-analysis. Journal of Applied Statistics 49(15), 3846-3867.
 (eq. 22) Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and
-standard deviation from a five-number summary. Manuscript.
+standard deviation from the five-number summary. Manuscript.
 
 ## Examples
 

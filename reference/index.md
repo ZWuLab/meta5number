@@ -66,9 +66,13 @@ estimators and the ranks of the named scenarios.
 
 ## Data
 
-The six studies of the vitamin D meta-analysis, the mean case of the
-second vignette.
+The study summaries of the two meta-analyses of the second vignette, and
+six studies that report the median and the range.
 
+- [`bun_icu`](https://zwulab.github.io/meta5number/reference/bun_icu.md)
+  [`hgb_icu`](https://zwulab.github.io/meta5number/reference/bun_icu.md)
+  : Blood urea nitrogen and hemoglobin in COVID-19 patients: ICU and
+  non-ICU groups
 - [`vitd`](https://zwulab.github.io/meta5number/reference/vitd.md) :
   Serum vitamin D in tuberculosis cases and controls: six studies
 

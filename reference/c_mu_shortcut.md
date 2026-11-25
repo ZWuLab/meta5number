@@ -93,7 +93,7 @@ computes the exact factor at any \\n\\ and definition.
 ## References
 
 Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-deviation from a five-number summary. Manuscript.
+deviation from the five-number summary. Manuscript.
 
 ## Examples
 

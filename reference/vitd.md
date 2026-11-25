@@ -7,13 +7,11 @@ of each group (Davies, UK; Grange, Indonesia; Davies, Kenya: the
 scenario `"S1"` of
 [`se_imputed_df`](https://zwulab.github.io/meta5number/reference/se_imputed_df.md)),
 two a sample mean and SD (Davies, Thailand; Chan, Hong Kong:
-`"sample"`), and one a mean with the minimum and maximum (Sasidharan,
-India: `"mean_range"`, the mean kept and the SD imputed from the range).
-The same six studies are the real-data example of Luo et al. (2018) and
-of Yang, Hutson and Wang (2022). The vignette
-[`vignette("two-meta-analyses")`](https://zwulab.github.io/meta5number/articles/two-meta-analyses.md)
-pools them under the naive and the exact standard errors, as Wu, Shi and
-Tong (2026) do.
+`"sample"`), and one a sample mean with the minimum and maximum
+(Sasidharan, India: `"mean_range"`, the mean kept and the SD imputed
+from the range). The same six studies are the real-data example of Luo
+et al. (2018) and of Yang, Hutson and Wang (2022). They serve here as
+example data for the scenarios `"S1"` and `"mean_range"`.
 
 ## Usage
 
@@ -47,9 +45,6 @@ Statistical Methods in Medical Research 27(6), 1785-1805.
 Yang X, Hutson AD, Wang D (2022). A generalized BLUE approach for
 combining location and scale information in a meta-analysis. Journal of
 Applied Statistics 49(15), 3846-3867.
-
-Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-deviation from a five-number summary. Manuscript.
 
 ## Examples
 

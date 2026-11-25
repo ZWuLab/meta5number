@@ -120,7 +120,7 @@ evolutionary applications and beyond. Methods in Ecology and Evolution
 6(2), 143-152.
 
 Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-deviation from a five-number summary. Manuscript.
+deviation from the five-number summary. Manuscript.
 
 ## See also
 

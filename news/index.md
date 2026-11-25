@@ -1,5 +1,31 @@
 # Changelog
 
+## meta5number 0.3.1
+
+- Jiandong Shi and Tiejun Tong are authors of the package.
+
+- Two data sets, `bun_icu` and `hgb_icu`: the study summaries of blood
+  urea nitrogen and of hemoglobin in COVID-19 patients in and outside
+  intensive care, seven studies each, as McGrath et al. (2023) published
+  them from the review of Katzenschlager et al. (2021), under the MIT
+  license (the notice is in the file `COPYRIGHTS`).
+
+- The vignette `two-meta-analyses` now runs the two meta-analyses of Wu,
+  Shi and Tong
+
+  2026. on these data: the mean difference of blood urea nitrogen and
+        the SD ratio of hemoglobin, after the skewness test of Shi et
+        al. (2023) screens the studies, under the common-effect and the
+        random-effects models. The analyses of the vitamin D and the age
+        data, the examples of an earlier version of the paper, left the
+        vignette. The data set `vitd` stays as example data.
+
+- The paper is cited by its present title, “Precision of the imputed
+  mean and standard deviation from the five-number summary”, and the
+  help pages write “inflation factor” in full.
+
+- No function changed, and every result of version 0.3.0 is unchanged.
+
 ## meta5number 0.3.0
 
 - Any set of reported quantiles. The new function

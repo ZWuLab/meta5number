@@ -82,7 +82,7 @@ Assumptions: an i.i.d. normal sample, as everywhere in the package.
 ## References
 
 Wu Z, Shi J, Tong T (2026). Precision of the imputed mean and standard
-deviation from a five-number summary. Manuscript.
+deviation from the five-number summary. Manuscript.
 
 ## See also
 
@@ -97,7 +97,7 @@ sc <- reporting_scenario(c(0.05, 0.5, 0.95))
 sc
 #> Reporting scenario with 3 reported values: p5, p50, p95
 #> Quantiles at the probabilities 0.05, 0.50, 0.95
-inflation_factors(60, sc)                       # the exact IFs of the BLUE
+inflation_factors(60, sc)                       # the exact inflation factors of the BLUE
 #>    kappa_mu kappa_sigma 
 #>    1.089587    1.212702 
 se_imputed(c(2.1, 5.0, 8.4), n = 60, scenario = sc)
